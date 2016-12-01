@@ -414,7 +414,7 @@
             [resultArr addObject:bushu];
         }else{//调整
 //            [resultArr addObject:@"未知"];
-            [resultArr addObject:gewei];
+            [resultArr addObject:gewei.intValue == 0 ? str1 : gewei];
         }
     }else{
         [resultArr addObject:@"未知"];
@@ -538,7 +538,7 @@
         if (![gewei isEqualToString:@"0"]) {
             [resultArr addObject:gewei];
         }else{
-            [resultArr addObject:@"未知"];
+            [resultArr addObject:str1];
         }
     }else{
         [resultArr addObject:@"未知"];
@@ -551,7 +551,7 @@
             [resultArr addObject:jianshu];
         }else{//调整
             //[resultArr addObject:@"未知"];
-            [resultArr addObject:gewei];
+            [resultArr addObject:gewei.intValue == 0 ? str1 : gewei];
         }
     }else{
         [resultArr addObject:@"未知"];
@@ -846,8 +846,15 @@
                     //[resultArr addObject:@"未知"];
                     [resultArr addObject:linshus[1]];
                 }
-            }else{
-                [resultArr addObject:@"未知"];
+            }else{//调整
+                //[resultArr addObject:@"未知"];
+                NSString *linshu = linshus[0];
+                if (![linshu isEqualToString:@"0"]) {
+                    [resultArr addObject:linshus[0]];
+                }else{//调整
+                    //[resultArr addObject:@"未知"];
+                    [resultArr addObject:linshus[1]];
+                }
             }
         }
     }else{
