@@ -159,14 +159,17 @@
     self.pageView = [[MLMSegmentPage alloc] initSegmentWithFrame:CGRectZero titlesArray:@[@"本期预测情况", @"下期预测情况"] vcOrviews:@[lastExpectBg, nextExpectBg] headStyle:SegmentHeadStyleLine];
     self.pageView.delegate = self;
     self.pageView.headHeight = viewAdapter(50);
-    self.pageView.headColor = UIColorFromRGB(0xf4f6f5);
+    self.pageView.headColor = [UIColor whiteColor];//UIColorFromRGB(0xf4f6f5);
     self.pageView.fontScale = 0.95;//.85;
     self.pageView.fontSize = viewAdapter(18);
     self.pageView.lineScale = .9;
     self.pageView.deselectColor = [UIColor grayColor];
     self.pageView.selectColor = [UIColor redColor];
     self.pageView.bottomLineHeight = viewAdapter(1.5);
-    self.pageView.bottomLineColor = [UIColor whiteColor];
+    self.pageView.bottomLineColor = UIColorFromRGB(0xf4f6f5);
+    self.pageView.backgroundColor = [UIColor whiteColor];
+    self.pageView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    self.pageView.layer.borderWidth = viewAdapter(1);
     [self.view addSubview:self.pageView];
     [self.pageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo(self.view);
@@ -201,7 +204,7 @@
     self.lastExpect.font = [UIFont fontWithName:@"Menlo-Bold" size:viewAdapter(17)];
 //    self.lastExpect.numberOfLines = 0;
     self.lastExpect.editable = NO;
-    self.lastExpect.backgroundColor = UIColorFromRGB(0xf4f6f5);
+    self.lastExpect.backgroundColor = [UIColor whiteColor];//UIColorFromRGB(0xf4f6f5);
     //下一期
     self.nextExpect = [UITextView new];
     [nextExpectBg addSubview:self.nextExpect];
@@ -214,7 +217,7 @@
     self.nextExpect.font = [UIFont fontWithName:@"Menlo-Bold" size:viewAdapter(17)];
 //    self.nextExpect.numberOfLines = 0;
     self.nextExpect.editable = NO;
-    self.nextExpect.backgroundColor = UIColorFromRGB(0xf4f6f5);
+    self.nextExpect.backgroundColor = [UIColor whiteColor];//UIColorFromRGB(0xf4f6f5);
 
     UISwipeGestureRecognizer *lastExpectSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(upAndDownButtonClick:)];
     lastExpectSwipe.direction = UISwipeGestureRecognizerDirectionRight;
@@ -309,25 +312,45 @@
 
 - (void)upAndDownButtonClick:(id)object
 {
+    CATransition *animation = [CATransition animation];
+//    animation.delegate = self;
+    animation.duration = 0.7;
+    animation.timingFunction = UIViewAnimationCurveEaseInOut;
+    animation.type = @"cube";
+
     SaveModel *model = nil;
     NSString *mbMessage = @"";
     if ([object isKindOfClass:[UIButton class]]) {
         UIButton *button = (UIButton *)object;
-        model = (SaveModel *)[FMDatabaseTool findByFirstProperty:[self getUpOrDownPeriodsString:button.tag == 2000 ? YES : NO withPeriodString:self.model.time] withTableName:NSStringFromClass([SaveModel class]) andModelClass:[SaveModel class]];
-        mbMessage = button.tag == 2000 ? @"未找到上期数据" : @"最后一期";
+        if (button.tag == 2000) {//上一期
+            model = (SaveModel *)[FMDatabaseTool findByFirstProperty:[self getUpOrDownPeriodsString:YES withPeriodString:self.model.time] withTableName:NSStringFromClass([SaveModel class]) andModelClass:[SaveModel class]];
+            mbMessage = @"未找到上期数据";
+            animation.subtype = kCATransitionFromLeft;
+        }else{//下一期
+            model = (SaveModel *)[FMDatabaseTool findByFirstProperty:[self getUpOrDownPeriodsString:NO withPeriodString:self.model.time] withTableName:NSStringFromClass([SaveModel class]) andModelClass:[SaveModel class]];
+            mbMessage = @"最后一期";
+            animation.subtype = kCATransitionFromRight;
+        }
     }else{
         UISwipeGestureRecognizer *swipe = (UISwipeGestureRecognizer *)object;
-        model = (SaveModel *)[FMDatabaseTool findByFirstProperty:[self getUpOrDownPeriodsString:swipe.direction == UISwipeGestureRecognizerDirectionRight ? YES : NO withPeriodString:self.model.time] withTableName:NSStringFromClass([SaveModel class]) andModelClass:[SaveModel class]];
-        mbMessage = swipe.direction == UISwipeGestureRecognizerDirectionRight ? @"未找到上期数据" : @"最后一期";
+        if (swipe.direction == UISwipeGestureRecognizerDirectionRight) {//上一期
+            model = (SaveModel *)[FMDatabaseTool findByFirstProperty:[self getUpOrDownPeriodsString:YES withPeriodString:self.model.time] withTableName:NSStringFromClass([SaveModel class]) andModelClass:[SaveModel class]];
+            mbMessage = @"未找到上期数据";
+            animation.subtype = kCATransitionFromLeft;
+        }else{//下一期
+            model = (SaveModel *)[FMDatabaseTool findByFirstProperty:[self getUpOrDownPeriodsString:NO withPeriodString:self.model.time] withTableName:NSStringFromClass([SaveModel class]) andModelClass:[SaveModel class]];
+            mbMessage = @"最后一期";
+            animation.subtype = kCATransitionFromRight;
+        }
         self.pageView.viewsScroll.scrollEnabled = YES;
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//            self.pageView.viewsScroll.delaysContentTouches = YES;
-//            self.pageView.viewsScroll.canCancelContentTouches = YES;
-        });
     }
     if (model) {
         self.model = model;
         [self reloadUI];
+//        [[self.winingDetailView layer] addAnimation:animation forKey:@"animation"];
+//        [[self.lastExpectView layer] addAnimation:animation forKey:@"animation"];
+//        [[self.nextExpectView layer] addAnimation:animation forKey:@"animation"];
+        [[self.pageView layer] addAnimation:animation forKey:@"animation"];
     }else{
         [ToolClass showMBMessageTitle:mbMessage toView:self.view];
     }

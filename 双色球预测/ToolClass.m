@@ -1401,7 +1401,7 @@ userInfo:[NSDictionary dictionaryWithObject:errStr forKey:NSLocalizedDescription
 /** 异步获得安全主线程 */
 void dispatch_async_get_main_queue_safe(dispatch_block_t block)
 {
-    if ([NSThread mainThread]) {
+    if ([NSThread isMainThread]) {
         block();
     }else{
         dispatch_async(dispatch_get_main_queue(), block);
@@ -1411,7 +1411,7 @@ void dispatch_async_get_main_queue_safe(dispatch_block_t block)
 /** 同步获得安全主线程 */
 void dispatch_sync_get_main_queue_safe(dispatch_block_t block)
 {
-    if ([NSThread mainThread]) {
+    if ([NSThread isMainThread]) {
         block();
     }else{
         dispatch_async(dispatch_get_main_queue(), block);
