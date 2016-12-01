@@ -1,0 +1,690 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0DDB7FD2F7683AB9613C8FFE /* libPods-双色球预测.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 437E14CC7E5998D5A6E6409F /* libPods-双色球预测.a */; };
+		8F1541FE1DC72B7C009C3495 /* ToolClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F1541FD1DC72B7C009C3495 /* ToolClass.m */; };
+		8F241E9E1DC32B050010ED86 /* OperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F241E9D1DC32B050010ED86 /* OperationManager.m */; };
+		8F3B50541DE7D94B003F8A63 /* WiningDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F3B50531DE7D94B003F8A63 /* WiningDetail.m */; };
+		8F3B50571DE7E573003F8A63 /* LastExpectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F3B50561DE7E573003F8A63 /* LastExpectView.m */; };
+		8F3B50601DE7FF69003F8A63 /* MLMSegmentHead.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F3B505A1DE7FF68003F8A63 /* MLMSegmentHead.m */; };
+		8F3B50611DE7FF69003F8A63 /* MLMSegmentPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F3B505C1DE7FF68003F8A63 /* MLMSegmentPage.m */; };
+		8F3B50621DE7FF69003F8A63 /* UIView+ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F3B505F1DE7FF68003F8A63 /* UIView+ViewController.m */; };
+		8F9C37F61DDF111F009D5F69 /* FMDatabaseTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F9C37F51DDF111F009D5F69 /* FMDatabaseTool.m */; };
+		8F9C37F91DDF162D009D5F69 /* SaveModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F9C37F81DDF162D009D5F69 /* SaveModel.m */; };
+		8FB009521DCB7D2D004B5864 /* UITextField+Delete.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FB009511DCB7D2D004B5864 /* UITextField+Delete.m */; };
+		8FBEC9351DE6DE7200933A51 /* OpenAwardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FBEC9341DE6DE7200933A51 /* OpenAwardView.m */; };
+		F7F51B221DBA674F00F639E9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F7F51B211DBA674F00F639E9 /* main.m */; };
+		F7F51B251DBA674F00F639E9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F7F51B241DBA674F00F639E9 /* AppDelegate.m */; };
+		F7F51B281DBA674F00F639E9 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F7F51B271DBA674F00F639E9 /* ViewController.m */; };
+		F7F51B2B1DBA674F00F639E9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F7F51B291DBA674F00F639E9 /* Main.storyboard */; };
+		F7F51B2D1DBA674F00F639E9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F7F51B2C1DBA674F00F639E9 /* Assets.xcassets */; };
+		F7F51B301DBA674F00F639E9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F7F51B2E1DBA674F00F639E9 /* LaunchScreen.storyboard */; };
+		F7F51B3B1DBA674F00F639E9 /* _____Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = F7F51B3A1DBA674F00F639E9 /* _____Tests.m */; };
+		F7F51B461DBA674F00F639E9 /* _____UITests.m in Sources */ = {isa = PBXBuildFile; fileRef = F7F51B451DBA674F00F639E9 /* _____UITests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F7F51B371DBA674F00F639E9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F7F51B151DBA674E00F639E9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F7F51B1C1DBA674F00F639E9;
+			remoteInfo = "双色球预测";
+		};
+		F7F51B421DBA674F00F639E9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F7F51B151DBA674E00F639E9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F7F51B1C1DBA674F00F639E9;
+			remoteInfo = "双色球预测";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		2E986997D33C5FB0E929E39E /* Pods-双色球预测.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-双色球预测.release.xcconfig"; path = "Pods/Target Support Files/Pods-双色球预测/Pods-双色球预测.release.xcconfig"; sourceTree = "<group>"; };
+		437E14CC7E5998D5A6E6409F /* libPods-双色球预测.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-双色球预测.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6AE9141B080618FECC7CC23A /* Pods-双色球预测.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-双色球预测.debug.xcconfig"; path = "Pods/Target Support Files/Pods-双色球预测/Pods-双色球预测.debug.xcconfig"; sourceTree = "<group>"; };
+		8F1541FB1DC72B51009C3495 /* PrefixHeader.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
+		8F1541FC1DC72B7C009C3495 /* ToolClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToolClass.h; sourceTree = "<group>"; };
+		8F1541FD1DC72B7C009C3495 /* ToolClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToolClass.m; sourceTree = "<group>"; };
+		8F241E9C1DC32B050010ED86 /* OperationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OperationManager.h; sourceTree = "<group>"; };
+		8F241E9D1DC32B050010ED86 /* OperationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OperationManager.m; sourceTree = "<group>"; };
+		8F3B50521DE7D94B003F8A63 /* WiningDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WiningDetail.h; sourceTree = "<group>"; };
+		8F3B50531DE7D94B003F8A63 /* WiningDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WiningDetail.m; sourceTree = "<group>"; };
+		8F3B50551DE7E573003F8A63 /* LastExpectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LastExpectView.h; sourceTree = "<group>"; };
+		8F3B50561DE7E573003F8A63 /* LastExpectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LastExpectView.m; sourceTree = "<group>"; };
+		8F3B50591DE7FF68003F8A63 /* MLMSegmentHead.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLMSegmentHead.h; sourceTree = "<group>"; };
+		8F3B505A1DE7FF68003F8A63 /* MLMSegmentHead.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLMSegmentHead.m; sourceTree = "<group>"; };
+		8F3B505B1DE7FF68003F8A63 /* MLMSegmentPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLMSegmentPage.h; sourceTree = "<group>"; };
+		8F3B505C1DE7FF68003F8A63 /* MLMSegmentPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLMSegmentPage.m; sourceTree = "<group>"; };
+		8F3B505D1DE7FF68003F8A63 /* SegmentPageHead.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SegmentPageHead.h; sourceTree = "<group>"; };
+		8F3B505E1DE7FF68003F8A63 /* UIView+ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+ViewController.h"; sourceTree = "<group>"; };
+		8F3B505F1DE7FF68003F8A63 /* UIView+ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+ViewController.m"; sourceTree = "<group>"; };
+		8F9209CA1DCB371500B60B9A /* AppDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDefine.h; sourceTree = "<group>"; };
+		8F9C37F41DDF111F009D5F69 /* FMDatabaseTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabaseTool.h; sourceTree = "<group>"; };
+		8F9C37F51DDF111F009D5F69 /* FMDatabaseTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabaseTool.m; sourceTree = "<group>"; };
+		8F9C37F71DDF162D009D5F69 /* SaveModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SaveModel.h; sourceTree = "<group>"; };
+		8F9C37F81DDF162D009D5F69 /* SaveModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SaveModel.m; sourceTree = "<group>"; };
+		8FB009501DCB7D2D004B5864 /* UITextField+Delete.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextField+Delete.h"; sourceTree = "<group>"; };
+		8FB009511DCB7D2D004B5864 /* UITextField+Delete.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextField+Delete.m"; sourceTree = "<group>"; };
+		8FBEC9331DE6DE7200933A51 /* OpenAwardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenAwardView.h; sourceTree = "<group>"; };
+		8FBEC9341DE6DE7200933A51 /* OpenAwardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenAwardView.m; sourceTree = "<group>"; };
+		F7F51B1D1DBA674F00F639E9 /* 双色球预测.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "双色球预测.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F7F51B211DBA674F00F639E9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		F7F51B231DBA674F00F639E9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		F7F51B241DBA674F00F639E9 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		F7F51B261DBA674F00F639E9 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		F7F51B271DBA674F00F639E9 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		F7F51B2A1DBA674F00F639E9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		F7F51B2C1DBA674F00F639E9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F7F51B2F1DBA674F00F639E9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		F7F51B311DBA674F00F639E9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F7F51B361DBA674F00F639E9 /* 双色球预测Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "双色球预测Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F7F51B3A1DBA674F00F639E9 /* _____Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "_____Tests.m"; sourceTree = "<group>"; };
+		F7F51B3C1DBA674F00F639E9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F7F51B411DBA674F00F639E9 /* 双色球预测UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "双色球预测UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F7F51B451DBA674F00F639E9 /* _____UITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "_____UITests.m"; sourceTree = "<group>"; };
+		F7F51B471DBA674F00F639E9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F7F51B1A1DBA674F00F639E9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0DDB7FD2F7683AB9613C8FFE /* libPods-双色球预测.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F7F51B331DBA674F00F639E9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F7F51B3E1DBA674F00F639E9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		54817F97ABD79FA1E13E18D4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				437E14CC7E5998D5A6E6409F /* libPods-双色球预测.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8F3B50581DE7FF68003F8A63 /* MLMSegmentPageView */ = {
+			isa = PBXGroup;
+			children = (
+				8F3B50591DE7FF68003F8A63 /* MLMSegmentHead.h */,
+				8F3B505A1DE7FF68003F8A63 /* MLMSegmentHead.m */,
+				8F3B505B1DE7FF68003F8A63 /* MLMSegmentPage.h */,
+				8F3B505C1DE7FF68003F8A63 /* MLMSegmentPage.m */,
+				8F3B505D1DE7FF68003F8A63 /* SegmentPageHead.h */,
+				8F3B505E1DE7FF68003F8A63 /* UIView+ViewController.h */,
+				8F3B505F1DE7FF68003F8A63 /* UIView+ViewController.m */,
+			);
+			path = MLMSegmentPageView;
+			sourceTree = "<group>";
+		};
+		B48659ED2F5B22A447CA45CE /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				6AE9141B080618FECC7CC23A /* Pods-双色球预测.debug.xcconfig */,
+				2E986997D33C5FB0E929E39E /* Pods-双色球预测.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		F7F51B141DBA674E00F639E9 = {
+			isa = PBXGroup;
+			children = (
+				F7F51B1F1DBA674F00F639E9 /* 双色球预测 */,
+				F7F51B391DBA674F00F639E9 /* 双色球预测Tests */,
+				F7F51B441DBA674F00F639E9 /* 双色球预测UITests */,
+				F7F51B1E1DBA674F00F639E9 /* Products */,
+				B48659ED2F5B22A447CA45CE /* Pods */,
+				54817F97ABD79FA1E13E18D4 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		F7F51B1E1DBA674F00F639E9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F7F51B1D1DBA674F00F639E9 /* 双色球预测.app */,
+				F7F51B361DBA674F00F639E9 /* 双色球预测Tests.xctest */,
+				F7F51B411DBA674F00F639E9 /* 双色球预测UITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F7F51B1F1DBA674F00F639E9 /* 双色球预测 */ = {
+			isa = PBXGroup;
+			children = (
+				F7F51B231DBA674F00F639E9 /* AppDelegate.h */,
+				F7F51B241DBA674F00F639E9 /* AppDelegate.m */,
+				F7F51B261DBA674F00F639E9 /* ViewController.h */,
+				F7F51B271DBA674F00F639E9 /* ViewController.m */,
+				8FBEC9331DE6DE7200933A51 /* OpenAwardView.h */,
+				8FBEC9341DE6DE7200933A51 /* OpenAwardView.m */,
+				8F3B50521DE7D94B003F8A63 /* WiningDetail.h */,
+				8F3B50531DE7D94B003F8A63 /* WiningDetail.m */,
+				8F3B50551DE7E573003F8A63 /* LastExpectView.h */,
+				8F3B50561DE7E573003F8A63 /* LastExpectView.m */,
+				8F3B50581DE7FF68003F8A63 /* MLMSegmentPageView */,
+				8F9C37F71DDF162D009D5F69 /* SaveModel.h */,
+				8F9C37F81DDF162D009D5F69 /* SaveModel.m */,
+				8F241E9C1DC32B050010ED86 /* OperationManager.h */,
+				8F241E9D1DC32B050010ED86 /* OperationManager.m */,
+				8FB009501DCB7D2D004B5864 /* UITextField+Delete.h */,
+				8FB009511DCB7D2D004B5864 /* UITextField+Delete.m */,
+				8F1541FC1DC72B7C009C3495 /* ToolClass.h */,
+				8F1541FD1DC72B7C009C3495 /* ToolClass.m */,
+				8F9C37F41DDF111F009D5F69 /* FMDatabaseTool.h */,
+				8F9C37F51DDF111F009D5F69 /* FMDatabaseTool.m */,
+				F7F51B291DBA674F00F639E9 /* Main.storyboard */,
+				F7F51B2C1DBA674F00F639E9 /* Assets.xcassets */,
+				F7F51B2E1DBA674F00F639E9 /* LaunchScreen.storyboard */,
+				F7F51B311DBA674F00F639E9 /* Info.plist */,
+				8F9209CA1DCB371500B60B9A /* AppDefine.h */,
+				8F1541FB1DC72B51009C3495 /* PrefixHeader.pch */,
+				F7F51B201DBA674F00F639E9 /* Supporting Files */,
+			);
+			path = "双色球预测";
+			sourceTree = "<group>";
+		};
+		F7F51B201DBA674F00F639E9 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				F7F51B211DBA674F00F639E9 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		F7F51B391DBA674F00F639E9 /* 双色球预测Tests */ = {
+			isa = PBXGroup;
+			children = (
+				F7F51B3A1DBA674F00F639E9 /* _____Tests.m */,
+				F7F51B3C1DBA674F00F639E9 /* Info.plist */,
+			);
+			path = "双色球预测Tests";
+			sourceTree = "<group>";
+		};
+		F7F51B441DBA674F00F639E9 /* 双色球预测UITests */ = {
+			isa = PBXGroup;
+			children = (
+				F7F51B451DBA674F00F639E9 /* _____UITests.m */,
+				F7F51B471DBA674F00F639E9 /* Info.plist */,
+			);
+			path = "双色球预测UITests";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F7F51B1C1DBA674F00F639E9 /* 双色球预测 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F7F51B4A1DBA674F00F639E9 /* Build configuration list for PBXNativeTarget "双色球预测" */;
+			buildPhases = (
+				EC3438DF01BFC6FC04230418 /* [CP] Check Pods Manifest.lock */,
+				F7F51B191DBA674F00F639E9 /* Sources */,
+				F7F51B1A1DBA674F00F639E9 /* Frameworks */,
+				F7F51B1B1DBA674F00F639E9 /* Resources */,
+				35309F9FF37322D8747AF031 /* [CP] Embed Pods Frameworks */,
+				C10DD8A1F7B9FD8BB3FE61A9 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "双色球预测";
+			productName = "双色球预测";
+			productReference = F7F51B1D1DBA674F00F639E9 /* 双色球预测.app */;
+			productType = "com.apple.product-type.application";
+		};
+		F7F51B351DBA674F00F639E9 /* 双色球预测Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F7F51B4D1DBA674F00F639E9 /* Build configuration list for PBXNativeTarget "双色球预测Tests" */;
+			buildPhases = (
+				F7F51B321DBA674F00F639E9 /* Sources */,
+				F7F51B331DBA674F00F639E9 /* Frameworks */,
+				F7F51B341DBA674F00F639E9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F7F51B381DBA674F00F639E9 /* PBXTargetDependency */,
+			);
+			name = "双色球预测Tests";
+			productName = "双色球预测Tests";
+			productReference = F7F51B361DBA674F00F639E9 /* 双色球预测Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		F7F51B401DBA674F00F639E9 /* 双色球预测UITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F7F51B501DBA674F00F639E9 /* Build configuration list for PBXNativeTarget "双色球预测UITests" */;
+			buildPhases = (
+				F7F51B3D1DBA674F00F639E9 /* Sources */,
+				F7F51B3E1DBA674F00F639E9 /* Frameworks */,
+				F7F51B3F1DBA674F00F639E9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F7F51B431DBA674F00F639E9 /* PBXTargetDependency */,
+			);
+			name = "双色球预测UITests";
+			productName = "双色球预测UITests";
+			productReference = F7F51B411DBA674F00F639E9 /* 双色球预测UITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F7F51B151DBA674E00F639E9 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = CPF;
+				TargetAttributes = {
+					F7F51B1C1DBA674F00F639E9 = {
+						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = CFMKUY6322;
+					};
+					F7F51B351DBA674F00F639E9 = {
+						CreatedOnToolsVersion = 7.3;
+						TestTargetID = F7F51B1C1DBA674F00F639E9;
+					};
+					F7F51B401DBA674F00F639E9 = {
+						CreatedOnToolsVersion = 7.3;
+						TestTargetID = F7F51B1C1DBA674F00F639E9;
+					};
+				};
+			};
+			buildConfigurationList = F7F51B181DBA674E00F639E9 /* Build configuration list for PBXProject "双色球预测" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = F7F51B141DBA674E00F639E9;
+			productRefGroup = F7F51B1E1DBA674F00F639E9 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F7F51B1C1DBA674F00F639E9 /* 双色球预测 */,
+				F7F51B351DBA674F00F639E9 /* 双色球预测Tests */,
+				F7F51B401DBA674F00F639E9 /* 双色球预测UITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F7F51B1B1DBA674F00F639E9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F7F51B301DBA674F00F639E9 /* LaunchScreen.storyboard in Resources */,
+				F7F51B2D1DBA674F00F639E9 /* Assets.xcassets in Resources */,
+				F7F51B2B1DBA674F00F639E9 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F7F51B341DBA674F00F639E9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F7F51B3F1DBA674F00F639E9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		35309F9FF37322D8747AF031 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-双色球预测/Pods-双色球预测-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C10DD8A1F7B9FD8BB3FE61A9 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-双色球预测/Pods-双色球预测-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EC3438DF01BFC6FC04230418 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F7F51B191DBA674F00F639E9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8FB009521DCB7D2D004B5864 /* UITextField+Delete.m in Sources */,
+				8F3B50621DE7FF69003F8A63 /* UIView+ViewController.m in Sources */,
+				F7F51B281DBA674F00F639E9 /* ViewController.m in Sources */,
+				8F3B50601DE7FF69003F8A63 /* MLMSegmentHead.m in Sources */,
+				8F241E9E1DC32B050010ED86 /* OperationManager.m in Sources */,
+				8F3B50611DE7FF69003F8A63 /* MLMSegmentPage.m in Sources */,
+				8F9C37F61DDF111F009D5F69 /* FMDatabaseTool.m in Sources */,
+				8F3B50541DE7D94B003F8A63 /* WiningDetail.m in Sources */,
+				8F1541FE1DC72B7C009C3495 /* ToolClass.m in Sources */,
+				F7F51B251DBA674F00F639E9 /* AppDelegate.m in Sources */,
+				8F9C37F91DDF162D009D5F69 /* SaveModel.m in Sources */,
+				8F3B50571DE7E573003F8A63 /* LastExpectView.m in Sources */,
+				F7F51B221DBA674F00F639E9 /* main.m in Sources */,
+				8FBEC9351DE6DE7200933A51 /* OpenAwardView.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F7F51B321DBA674F00F639E9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F7F51B3B1DBA674F00F639E9 /* _____Tests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F7F51B3D1DBA674F00F639E9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F7F51B461DBA674F00F639E9 /* _____UITests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F7F51B381DBA674F00F639E9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F7F51B1C1DBA674F00F639E9 /* 双色球预测 */;
+			targetProxy = F7F51B371DBA674F00F639E9 /* PBXContainerItemProxy */;
+		};
+		F7F51B431DBA674F00F639E9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F7F51B1C1DBA674F00F639E9 /* 双色球预测 */;
+			targetProxy = F7F51B421DBA674F00F639E9 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		F7F51B291DBA674F00F639E9 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F7F51B2A1DBA674F00F639E9 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		F7F51B2E1DBA674F00F639E9 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F7F51B2F1DBA674F00F639E9 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		F7F51B481DBA674F00F639E9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F7F51B491DBA674F00F639E9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		F7F51B4B1DBA674F00F639E9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6AE9141B080618FECC7CC23A /* Pods-双色球预测.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = CFMKUY6322;
+				GCC_PREFIX_HEADER = "双色球预测/PrefixHeader.pch";
+				INFOPLIST_FILE = "双色球预测/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.sifude.ShuangSeQiu;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		F7F51B4C1DBA674F00F639E9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2E986997D33C5FB0E929E39E /* Pods-双色球预测.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = CFMKUY6322;
+				GCC_PREFIX_HEADER = "双色球预测/PrefixHeader.pch";
+				INFOPLIST_FILE = "双色球预测/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.sifude.ShuangSeQiu;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		F7F51B4E1DBA674F00F639E9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = "双色球预测Tests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.cpf.-----Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/双色球预测.app/双色球预测";
+			};
+			name = Debug;
+		};
+		F7F51B4F1DBA674F00F639E9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = "双色球预测Tests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.cpf.-----Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/双色球预测.app/双色球预测";
+			};
+			name = Release;
+		};
+		F7F51B511DBA674F00F639E9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "双色球预测UITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.cpf.-----UITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = "双色球预测";
+			};
+			name = Debug;
+		};
+		F7F51B521DBA674F00F639E9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "双色球预测UITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.cpf.-----UITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = "双色球预测";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F7F51B181DBA674E00F639E9 /* Build configuration list for PBXProject "双色球预测" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F7F51B481DBA674F00F639E9 /* Debug */,
+				F7F51B491DBA674F00F639E9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F7F51B4A1DBA674F00F639E9 /* Build configuration list for PBXNativeTarget "双色球预测" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F7F51B4B1DBA674F00F639E9 /* Debug */,
+				F7F51B4C1DBA674F00F639E9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F7F51B4D1DBA674F00F639E9 /* Build configuration list for PBXNativeTarget "双色球预测Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F7F51B4E1DBA674F00F639E9 /* Debug */,
+				F7F51B4F1DBA674F00F639E9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F7F51B501DBA674F00F639E9 /* Build configuration list for PBXNativeTarget "双色球预测UITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F7F51B511DBA674F00F639E9 /* Debug */,
+				F7F51B521DBA674F00F639E9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F7F51B151DBA674E00F639E9 /* Project object */;
+}

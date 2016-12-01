@@ -1,0 +1,11 @@
+platform :ios, '8.0' 
+
+target '双色球预测' do
+	pod 'AFNetworking'
+	pod 'FMDB'
+	pod 'Masonry'
+	pod 'IQKeyboardManager'
+	pod 'SDWebImage'
+	pod 'MBProgressHUD'
+	pod 'Reachability'
+end
