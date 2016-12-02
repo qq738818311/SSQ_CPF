@@ -15,6 +15,8 @@
 #import "LastExpectView.h"
 #import "SegmentPageHead.h"
 
+static BOOL canAddAnimation = NO;
+
 @interface ViewController ()<UITextFieldDelegate, WJTextFieldDelegate, MLMSegmentPageDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) NSMutableArray *numArray;
@@ -268,7 +270,7 @@
     [currentBtn setTitle:@"刷新" forState:UIControlStateNormal];
     currentBtn.titleLabel.font = [UIFont systemFontOfSize:viewAdapter(18)];
     [currentBtn setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
-    [currentBtn addTarget:self action:@selector(requestData) forControlEvents:UIControlEventTouchUpInside];
+    [currentBtn addTarget:self action:@selector(refreshBtnClick:) forControlEvents:UIControlEventTouchUpInside];
 
 }
 
@@ -303,6 +305,16 @@
             [ToolClass hideMBConnect];
         }];
     }
+    if (canAddAnimation) {
+        CATransition *animation = [CATransition animation];
+        animation.timingFunction = UIViewAnimationCurveEaseInOut;
+        animation.type = @"cube";
+        animation.repeatCount = 10;
+        animation.repeatDuration = 1;
+        animation.subtype = kCATransitionFromRight;
+        [[self.pageView layer] addAnimation:animation forKey:@"animation"];
+        canAddAnimation = NO;
+    }
 }
 
 //- (void)clearBtnClick:(UIButton *)button
@@ -325,7 +337,7 @@
 {
     CATransition *animation = [CATransition animation];
 //    animation.delegate = self;
-    animation.duration = 0.7;
+    animation.duration = 0.5;
     animation.timingFunction = UIViewAnimationCurveEaseInOut;
     animation.type = @"cube";
 
@@ -365,6 +377,12 @@
     }else{
         [ToolClass showMBMessageTitle:mbMessage toView:self.view];
     }
+}
+
+- (void)refreshBtnClick:(UIButton *)button
+{
+    canAddAnimation = YES;
+    [self requestData];
 }
 
 - (void)reloadNumbers
@@ -430,21 +448,35 @@
 //        [self.lastExpectView setLastExpectViewWithText:nil];
         self.lastExpect.text = @"未查询到上期开奖号码";
         self.pageView.showIndex = 1;
+        [ToolClass showMBConnectTitle:nil toView:self.pageView afterDelay:0 isNeedUserInteraction:NO];
     }
     
     //下期预测情况
     NSDictionary *dict = [OperationManager getResultWithArray:[[self.model.number componentsSeparatedByString:@"+"].firstObject componentsSeparatedByString:@","]];
-    [ToolClass timeCountDownWithCount:50 perTime:0.02 inProgress:^(int time) {
+    NSString *string = [self getFormatStringWithDict:dict];
+    self.nextExpect.text = string;
+    [ToolClass timeCountDownWithCount:30 perTime:0.02 inProgress:^(int time) {
         [self.nextExpectView setLastExpectViewWithText:[[OperationManager allNumbersChooesSevenNumberWithAllNumbers:dict[@"allArray"]] componentsJoinedByString:@","]];
     } completion:^{
-        NSString *nextNumber = [[OperationManager allNumbersChooesSevenNumberWithAllNumbers:dict[@"allArray"]] componentsJoinedByString:@","];
-        if (!(self.model.nextNumber.length > 0)) {
-            self.model.nextNumber = nextNumber;
-            [FMDatabaseTool saveObjectToDB:self.model withTableName:NSStringFromClass([SaveModel class])];
-        }
-        [self.nextExpectView setLastExpectViewWithText:self.model.nextNumber];
-        NSString *string = [self getFormatStringWithDict:dict];
-        self.nextExpect.text = [NSString stringWithFormat:@"========= 7个号码 =========\n=  %@  =\n%@", self.model.nextNumber, string];
+        [ToolClass timeCountDownWithCount:8 perTime:0.05 inProgress:^(int time) {
+            [self.nextExpectView setLastExpectViewWithText:[[OperationManager allNumbersChooesSevenNumberWithAllNumbers:dict[@"allArray"]] componentsJoinedByString:@","]];
+        } completion:^{
+            NSString *nextNumber = [[OperationManager allNumbersChooesSevenNumberWithAllNumbers:dict[@"allArray"]] componentsJoinedByString:@","];
+            if (!(self.model.nextNumber.length > 0)) {
+                self.model.nextNumber = nextNumber;
+                [FMDatabaseTool saveObjectToDB:self.model withTableName:NSStringFromClass([SaveModel class])];
+            }
+            [self.nextExpectView setLastExpectViewWithText:self.model.nextNumber];
+            self.nextExpect.text = [NSString stringWithFormat:@"========= 7个号码 =========\n=  %@  =\n%@", self.model.nextNumber, string];
+            [ToolClass hideMBConnect];
+        }];
+//        NSString *nextNumber = [[OperationManager allNumbersChooesSevenNumberWithAllNumbers:dict[@"allArray"]] componentsJoinedByString:@","];
+//        if (!(self.model.nextNumber.length > 0)) {
+//            self.model.nextNumber = nextNumber;
+//            [FMDatabaseTool saveObjectToDB:self.model withTableName:NSStringFromClass([SaveModel class])];
+//        }
+//        [self.nextExpectView setLastExpectViewWithText:self.model.nextNumber];
+//        self.nextExpect.text = [NSString stringWithFormat:@"========= 7个号码 =========\n=  %@  =\n%@", self.model.nextNumber, self.nextExpect.text];
     }];
 }
 

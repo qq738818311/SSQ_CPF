@@ -36,14 +36,18 @@
     UIView *tempView = nil;
     for (int i = 0; i < 7; i++) {
         UILabel *numberLabel = [UILabel new];
-//        numberLabel.layer.borderColor = i == 6 ? [UIColor blueColor].CGColor : [UIColor redColor].CGColor;
-//        numberLabel.layer.borderWidth = viewAdapter(2.5);
-        numberLabel.backgroundColor = i == 6 ? [UIColor blueColor] : [UIColor redColor];
         numberLabel.layer.masksToBounds = YES;
         numberLabel.layer.cornerRadius = ((WIDTH - self.titleLable.bounds.origin.x - self.titleLable.bounds.size.width - viewAdapter(30) - viewAdapter(8) - SPACING_LastExpectView*6)/7)/2;
+        numberLabel.layer.borderColor = i == 6 ? [UIColor blueColor].CGColor : [UIColor redColor].CGColor;
+        numberLabel.layer.borderWidth = viewAdapter(2);
         numberLabel.tag = 1000 + i;
         numberLabel.textAlignment = NSTextAlignmentCenter;
-        numberLabel.textColor = [UIColor whiteColor];
+        //红球白字
+//        numberLabel.backgroundColor = i == 6 ? [UIColor blueColor] : [UIColor redColor];
+//        numberLabel.textColor = [UIColor whiteColor];
+        //红圈红字
+        numberLabel.textColor = i == 6 ? [UIColor blueColor] : [UIColor redColor];
+        
         numberLabel.font = [UIFont boldSystemFontOfSize:viewAdapter(17)];
         [self addSubview:numberLabel];
         [numberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -69,7 +73,9 @@
     for (int i = 0; i < 7; i++) {
         UILabel *numberLabel = [self viewWithTag:1000 + i];
         if (i == 6 && [self.titleLable.text isEqualToString:@"下期预测号码:"]) {
-            numberLabel.backgroundColor = [UIColor redColor];
+//            numberLabel.backgroundColor = [UIColor redColor];
+            numberLabel.layer.borderColor = [UIColor redColor].CGColor;
+            numberLabel.textColor = [UIColor redColor];
         }
         numberLabel.text = text ? [text substringWithRange:NSMakeRange(i*3, 2)] : @"--";
     }

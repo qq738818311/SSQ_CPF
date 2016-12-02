@@ -12,6 +12,8 @@
 
 @property (nonatomic, strong) UILabel *winingLabel;//是否中奖
 @property (nonatomic, strong) UILabel *conjectureLabel;//所用测中号码
+@property (nonatomic, strong) UIView *winingBg;//是否中奖
+@property (nonatomic, strong) UIView *conjectureBg;//所用测中号码
 
 - (void)setWiningDetailWithDictionary:(NSDictionary *)dict;
 

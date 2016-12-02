@@ -8,7 +8,7 @@
 
 #import "OpenAwardView.h"
 
-#define SPACING viewAdapter(12)//间距
+#define SPACING viewAdapter(10)//间距
 
 @implementation OpenAwardView
 
