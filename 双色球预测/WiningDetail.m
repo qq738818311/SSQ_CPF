@@ -20,21 +20,33 @@
 
 - (void)createUI
 {
-    UILabel *titleLabel = [UILabel new];
-    [self addSubview:titleLabel];
-    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self).offset(viewAdapter(5));
-        make.centerX.equalTo(self);
+//    UILabel *titleLabel = [UILabel new];
+//    [self addSubview:titleLabel];
+//    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.equalTo(self).offset(viewAdapter(5));
+//        make.centerY.equalTo(self);
+//    }];
+//    titleLabel.font = [UIFont fontWithName:@"Menlo-Bold" size:viewAdapter(17)];
+////    titleLabel.text = @"===⭐️中奖信息⭐️===";//
+//    titleLabel.text = @"⭐️中信⭐️\n⭐️奖息⭐️";//
+//    titleLabel.textAlignment = NSTextAlignmentCenter;
+//    titleLabel.numberOfLines = 0;
+//    titleLabel.layer.borderColor = [UIColor lightGrayColor].CGColor;
+//    titleLabel.layer.borderWidth = viewAdapter(1);
+    
+    UIImageView *titleImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"中奖信息"]];
+    [self addSubview:titleImage];
+    [titleImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.top.bottom.equalTo(self);
+        make.centerY.equalTo(self);
+        make.height.width.mas_equalTo(viewAdapter(70));
     }];
-    titleLabel.font = [UIFont fontWithName:@"Menlo-Bold" size:viewAdapter(17)];
-    titleLabel.text = @"===⭐️中奖信息⭐️===";//
-    titleLabel.textAlignment = NSTextAlignmentCenter;
     
     self.winingLabel =  [UILabel new];
     [self addSubview:self.winingLabel];
     [self.winingLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self).offset(viewAdapter(10));
-        make.top.equalTo(titleLabel.mas_bottom).offset(viewAdapter(5));
+        make.left.equalTo(titleImage.mas_right);
+        make.top.equalTo(self).offset(viewAdapter(10));
     }];
     self.winingLabel.text = @"未中奖😞:07";
     self.winingLabel.font = [UIFont fontWithName:@"Menlo-Bold" size:viewAdapter(17)];
@@ -42,9 +54,9 @@
     self.conjectureLabel =  [UILabel new];
     [self addSubview:self.conjectureLabel];
     [self.conjectureLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self).offset(viewAdapter(10));
+        make.left.equalTo(titleImage.mas_right);
         make.top.equalTo(self.winingLabel.mas_bottom).offset(viewAdapter(5));
-        make.bottom.equalTo(self).offset(viewAdapter(-10));
+        make.bottom.equalTo(self).offset(viewAdapter(-10)).priorityLow();
     }];
     self.conjectureLabel.text = @"所有测中号码为:07,24";
     self.conjectureLabel.font = [UIFont fontWithName:@"Menlo-Bold" size:viewAdapter(17)];

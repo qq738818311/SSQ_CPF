@@ -10,7 +10,6 @@
 #import "OperationManager.h"
 #import "UITextField+Delete.h"
 #import "SaveModel.h"
-#import "FMDatabaseTool.h"
 #import "OpenAwardView.h"
 #import "WiningDetail.h"
 #import "LastExpectView.h"
@@ -27,7 +26,7 @@
 @property (nonatomic, strong) OpenAwardView *openAwardView;
 @property (nonatomic, strong) WiningDetail *winingDetailView;//中奖信息
 @property (nonatomic, strong) LastExpectView *nextExpectView;//下期预测号码
-@property (nonatomic, strong) LastExpectView *lastExpectView;//上期开奖号码
+//@property (nonatomic, strong) LastExpectView *lastExpectView;//上期开奖号码
 @property (nonatomic, strong) MLMSegmentPage *pageView;
 
 @end
@@ -44,6 +43,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.title = @"双色球预测";
     self.view.backgroundColor = UIColorFromRGB(0xf4f6f5);
     // 控制是否显示键盘上的工具条。
     [IQKeyboardManager sharedManager].enableAutoToolbar = YES;
@@ -116,7 +116,8 @@
     self.openAwardView = [OpenAwardView new];
     [self.view addSubview:self.openAwardView];
     [self.openAwardView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).offset(viewAdapter(35));
+        make.top.equalTo(self.mas_topLayoutGuide).offset(viewAdapter(5));
+//        make.top.equalTo(self.view).offset(viewAdapter(35));
         make.left.equalTo(self.view).offset(viewAdapter(20));
         make.right.equalTo(self.view).offset(viewAdapter(-20));
 //        make.height.mas_equalTo(viewAdapter(150)).priorityLow();
@@ -130,9 +131,9 @@
         make.left.equalTo(self.view).offset(viewAdapter(15));
         make.right.equalTo(self.view).offset(viewAdapter(-15));
     }];
-    self.winingDetailView.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    self.winingDetailView.layer.borderWidth = viewAdapter(1);
-    self.winingDetailView.layer.cornerRadius = viewAdapter(5);
+//    self.winingDetailView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+//    self.winingDetailView.layer.borderWidth = viewAdapter(1);
+//    self.winingDetailView.layer.cornerRadius = viewAdapter(5);
     
     //下期预测号码
     self.nextExpectView = [LastExpectView new];
@@ -145,16 +146,18 @@
     self.nextExpectView.titleLable.text = @"下期预测号码:";
     
     //上期开奖号码
-    self.lastExpectView = [LastExpectView new];
-    [self.view addSubview:self.lastExpectView];
-    [self.lastExpectView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.nextExpectView.mas_bottom).offset(viewAdapter(5));
-        make.left.equalTo(self.view).offset(viewAdapter(15));
-        make.right.equalTo(self.view).offset(viewAdapter(-15));
-    }];
+//    self.lastExpectView = [LastExpectView new];
+//    [self.view addSubview:self.lastExpectView];
+//    [self.lastExpectView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.nextExpectView.mas_bottom).offset(viewAdapter(5));
+//        make.left.equalTo(self.view).offset(viewAdapter(15));
+//        make.right.equalTo(self.view).offset(viewAdapter(-15));
+//    }];
     
     UIView *lastExpectBg = [UIView new];
     UIView *nextExpectBg = [UIView new];
+    lastExpectBg.backgroundColor = RGBACOLOR(251, 244, 211, 1);
+    nextExpectBg.backgroundColor = RGBACOLOR(251, 244, 211, 1);
     //预测信息
     self.pageView = [[MLMSegmentPage alloc] initSegmentWithFrame:CGRectZero titlesArray:@[@"本期预测情况", @"下期预测情况"] vcOrviews:@[lastExpectBg, nextExpectBg] headStyle:SegmentHeadStyleLine];
     self.pageView.delegate = self;
@@ -173,8 +176,8 @@
     [self.view addSubview:self.pageView];
     [self.pageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo(self.view);
-        make.top.equalTo(self.lastExpectView.mas_bottom).offset(viewAdapter(5));
-        make.bottom.equalTo(self.view).offset(-50);
+        make.top.equalTo(self.nextExpectView.mas_bottom).offset(viewAdapter(10));
+        make.bottom.equalTo(self.view).offset(viewAdapter(-50));
     }];
     
 //    self.scrollView = [UIScrollView new];
@@ -196,29 +199,33 @@
     self.lastExpect = [UITextView new];
     [lastExpectBg addSubview:self.lastExpect];
     [self.lastExpect mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(lastExpectBg).offset(viewAdapter(15));
-        make.right.equalTo(lastExpectBg).offset(viewAdapter(-15));
+        make.width.mas_equalTo(WIDTH - viewAdapter(30));
+        make.centerX.equalTo(lastExpectBg);
         make.top.equalTo(lastExpectBg);
         make.bottom.equalTo(lastExpectBg);
     }];
     self.lastExpect.font = [UIFont fontWithName:@"Menlo-Bold" size:viewAdapter(17)];
 //    self.lastExpect.numberOfLines = 0;
     self.lastExpect.editable = NO;
-    self.lastExpect.backgroundColor = [UIColor whiteColor];//UIColorFromRGB(0xf4f6f5);
+//    self.lastExpect.backgroundColor = [UIColor whiteColor];//UIColorFromRGB(0xf4f6f5);
+    self.lastExpect.backgroundColor = RGBACOLOR(251, 244, 211, 1);
+
     //下一期
     self.nextExpect = [UITextView new];
     [nextExpectBg addSubview:self.nextExpect];
     [self.nextExpect mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(nextExpectBg).offset(viewAdapter(15));
-        make.right.equalTo(nextExpectBg).offset(viewAdapter(-15));
+        make.width.mas_equalTo(WIDTH - viewAdapter(30));
+        make.centerX.equalTo(nextExpectBg);
         make.top.equalTo(nextExpectBg);
         make.bottom.equalTo(nextExpectBg);
     }];
     self.nextExpect.font = [UIFont fontWithName:@"Menlo-Bold" size:viewAdapter(17)];
 //    self.nextExpect.numberOfLines = 0;
     self.nextExpect.editable = NO;
-    self.nextExpect.backgroundColor = [UIColor whiteColor];//UIColorFromRGB(0xf4f6f5);
+//    self.nextExpect.backgroundColor = [UIColor whiteColor];//UIColorFromRGB(0xf4f6f5);
+    self.nextExpect.backgroundColor = RGBACOLOR(251, 244, 211, 1);
 
+    //上一期和下一期的手势
     UISwipeGestureRecognizer *lastExpectSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(upAndDownButtonClick:)];
     lastExpectSwipe.direction = UISwipeGestureRecognizerDirectionRight;
     lastExpectSwipe.delegate = self;
@@ -228,16 +235,17 @@
     [self.pageView addGestureRecognizer:lastExpectSwipe];
     [self.pageView addGestureRecognizer:nextExpectSwipe];
     
+    //上一期和下一期的按钮
     UIButton *upButton = [UIButton new];
     [self.view addSubview:upButton];
     UIButton *downButton = [UIButton new];
     [self.view addSubview:downButton];
     [upButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.view).offset(viewAdapter(-10));
+        make.centerY.equalTo(self.view.mas_bottom).offset(viewAdapter(-25));
         make.centerX.equalTo(self.view.mas_centerX).offset(-WIDTH/5);
     }];
     [downButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.view).offset(viewAdapter(-10));
+        make.centerY.equalTo(self.view.mas_bottom).offset(viewAdapter(-25));
         make.centerX.equalTo(self.view.mas_centerX).offset(WIDTH/5);
     }];
     [upButton setTitle:@"<上一期" forState:UIControlStateNormal];
@@ -255,7 +263,7 @@
     [self.view addSubview:currentBtn];
     [currentBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.view);
-        make.bottom.equalTo(self.view).offset(viewAdapter(-10));
+        make.centerY.equalTo(self.view.mas_bottom).offset(viewAdapter(-25));
     }];
     [currentBtn setTitle:@"刷新" forState:UIControlStateNormal];
     currentBtn.titleLabel.font = [UIFont systemFontOfSize:viewAdapter(18)];
@@ -266,32 +274,35 @@
 
 - (void)requestData
 {
-    [ToolClass showMBConnectTitle:@"" toView:self.view afterDelay:0 isNeedUserInteraction:NO];
-    [ToolClass requestPOSTWithURL:@"http://f.apiplus.cn/ssq-1.json" parameters:nil isCache:NO success:^(id responseObject, NSString *msg) {
-        NSArray *data = responseObject[@"data"];
-        NSDictionary *dataDict = data.firstObject;
-        NSString *dateStr = [NSString stringWithFormat:@"%@(%@)", [dataDict[@"opentime"] componentsSeparatedByString:@" "].firstObject, [ToolClass getWeekDayFordate:[ToolClass dateFromTimeInterval:[dataDict[@"opentimestamp"] doubleValue]]]];
-        SaveModel *model = (SaveModel *)[FMDatabaseTool findByFirstProperty:dateStr withTableName:NSStringFromClass([SaveModel class]) andModelClass:[SaveModel class]];
-        if (model) {
-            self.model = model;
-        }else{
-            model = [SaveModel new];
+    SaveModel *model = (SaveModel *)[FMDatabaseTool findByFirstProperty:[self getCurrentPeriodsString] withTableName:NSStringFromClass([SaveModel class]) andModelClass:[SaveModel class]];
+    if (model) {
+        self.model = model;
+        [self reloadUI];
+    }else{
+        [ToolClass showMBConnectTitle:@"" toView:self.view afterDelay:0 isNeedUserInteraction:NO];
+        [ToolClass requestPOSTWithURL:@"http://f.apiplus.cn/ssq-1.json" parameters:nil isCache:YES success:^(id responseObject, NSString *msg) {
+            NSArray *data = responseObject[@"data"];
+            NSDictionary *dataDict = data.firstObject;
+            NSString *dateStr = [NSString stringWithFormat:@"%@(%@)", [dataDict[@"opentime"] componentsSeparatedByString:@" "].firstObject, [ToolClass getWeekDayFordate:[ToolClass dateFromTimeInterval:[dataDict[@"opentimestamp"] doubleValue]]]];
+            SaveModel *model =  [SaveModel new];
             model.time = dateStr;
             model.number = dataDict[@"opencode"];
             model.expect = dataDict[@"expect"];
             [FMDatabaseTool saveObjectToDB:model withTableName:NSStringFromClass([SaveModel class])];
             self.model = model;
-        }
-        [self reloadUI];
-        [ToolClass hideMBConnect];
-    } failure:^(NSString *errorInfo, NSError *error) {
-        SaveModel *model = (SaveModel *)[FMDatabaseTool findByFirstProperty:[self getCurrentPeriodsString] withTableName:NSStringFromClass([SaveModel class]) andModelClass:[SaveModel class]];
-        if (model) {
-            self.model = model;
             [self reloadUI];
-        }
-        [ToolClass hideMBConnect];
-    }];
+            [ToolClass hideMBConnect];
+        } failure:^(NSString *errorInfo, NSError *error) {
+            if ([errorInfo containsString:@"无缓存"]) {
+                SaveModel *model = (SaveModel *)[FMDatabaseTool findByFirstProperty:[self getCurrentPeriodsString] withTableName:NSStringFromClass([SaveModel class]) andModelClass:[SaveModel class]];
+                if (model) {
+                    self.model = model;
+                    [self reloadUI];
+                }
+            }
+            [ToolClass hideMBConnect];
+        }];
+    }
 }
 
 //- (void)clearBtnClick:(UIButton *)button
@@ -379,8 +390,11 @@
 //设置显示数据
 - (void)reloadUI
 {
+    //设置当前期开奖号码
     [self.openAwardView setOpenAwardViewWithModel:self.model];
+    //上一期的时间
     NSString *lastTimeStr = [self getUpOrDownPeriodsString:YES withPeriodString:self.model.time];
+    //上一期的模型
     SaveModel *lastTimeModel = (SaveModel *)[FMDatabaseTool findByFirstProperty:lastTimeStr withTableName:NSStringFromClass([SaveModel class]) andModelClass:[SaveModel class]];
     
     if (lastTimeModel) {
@@ -389,7 +403,7 @@
         //本期中奖号码
         NSArray *okNums = [[self.model.number componentsSeparatedByString:@"+"].firstObject componentsSeparatedByString:@","];
         //7个号码中买中的号码
-        NSArray *sevenArray = [self findIsWinningWithArray1:okNums array2:dict[@"sevenArray"]];
+        NSArray *sevenArray = [self findIsWinningWithArray1:okNums array2:[lastTimeModel.nextNumber componentsSeparatedByString:@","]];
         //所有个号码中测中的号码
         NSArray *allArray = [self findIsWinningWithArray1:okNums array2:dict[@"allArray"]];
         //中奖信息拼参
@@ -397,10 +411,10 @@
         //设置中奖信息
         [self.winingDetailView setWiningDetailWithDictionary:winingDetailDict];
         //设置上期开奖号码
-        [self.lastExpectView setLastExpectViewWithText:lastTimeModel.number];
+//        [self.lastExpectView setLastExpectViewWithText:lastTimeModel.number];
         
         //上期预测情况
-        NSString *string = [self getFormatStringWithDict:dict];
+        NSString *string = [NSString stringWithFormat:@"========= 7个号码 =========\n=  %@  =\n%@", lastTimeModel.nextNumber, [self getFormatStringWithDict:dict]];
         NSMutableAttributedString *attuibutedString = [[NSMutableAttributedString alloc] initWithString:string];
         [attuibutedString addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Menlo-Bold" size:viewAdapter(17)] range:NSMakeRange(0, attuibutedString.length)];
         for (long i = 0; i < string.length-2; i++) {
@@ -413,16 +427,25 @@
         self.pageView.showIndex = 0;
     }else{
         [self.winingDetailView setWiningDetailWithDictionary:nil];
-        [self.lastExpectView setLastExpectViewWithText:nil];
+//        [self.lastExpectView setLastExpectViewWithText:nil];
         self.lastExpect.text = @"未查询到上期开奖号码";
         self.pageView.showIndex = 1;
     }
     
     //下期预测情况
     NSDictionary *dict = [OperationManager getResultWithArray:[[self.model.number componentsSeparatedByString:@"+"].firstObject componentsSeparatedByString:@","]];
-    [self.nextExpectView setLastExpectViewWithText:[dict[@"sevenArray"] componentsJoinedByString:@","]];
-    NSString *string = [self getFormatStringWithDict:dict];
-    self.nextExpect.text = string;
+    [ToolClass timeCountDownWithCount:50 perTime:0.02 inProgress:^(int time) {
+        [self.nextExpectView setLastExpectViewWithText:[[OperationManager allNumbersChooesSevenNumberWithAllNumbers:dict[@"allArray"]] componentsJoinedByString:@","]];
+    } completion:^{
+        NSString *nextNumber = [[OperationManager allNumbersChooesSevenNumberWithAllNumbers:dict[@"allArray"]] componentsJoinedByString:@","];
+        if (!(self.model.nextNumber.length > 0)) {
+            self.model.nextNumber = nextNumber;
+            [FMDatabaseTool saveObjectToDB:self.model withTableName:NSStringFromClass([SaveModel class])];
+        }
+        [self.nextExpectView setLastExpectViewWithText:self.model.nextNumber];
+        NSString *string = [self getFormatStringWithDict:dict];
+        self.nextExpect.text = [NSString stringWithFormat:@"========= 7个号码 =========\n=  %@  =\n%@", self.model.nextNumber, string];
+    }];
 }
 
 /** 两个数组的交集 */
@@ -499,7 +522,7 @@
     NSString *example2 = [dict[@"example2"] componentsJoinedByString:@","];
     NSString *example3 = [dict[@"example3"] componentsJoinedByString:@","];
     NSString *example4 = [dict[@"example4"] componentsJoinedByString:@","];
-    NSString *sevenStr = [dict[@"sevenArray"] componentsJoinedByString:@","];
+//    NSString *sevenStr = [dict[@"sevenArray"] componentsJoinedByString:@","];
     NSString *allStr = [dict[@"allArray"] componentsJoinedByString:@","];
     NSString *dictString = [dict[@"dictArr"] componentsJoinedByString:@""];
     /** 
@@ -515,7 +538,7 @@
         出现次数：08-3,06-2,23-2,02-2,27-1,16-1,14-1;
         28-1,24-1,13-1,04-1,01-1,29-1,22-1,19-1,09-1,21-1,15-1,11-1。 
      */
-    return [NSString stringWithFormat:@"==========================\n= 例一：%@ =\n= 例二：%@ =\n= 例三：%@ =\n= 例四：%@ =\n========= 7个号码 =========\n=  %@  =\n==========================\n共%@个号码：%@\n出现次数：%@", example1, example2, example3, example4, sevenStr, dict[@"allArrayCount"], allStr, dictString];
+    return [NSString stringWithFormat:@"==========================\n= 例一：%@ =\n= 例二：%@ =\n= 例三：%@ =\n= 例四：%@ =\n==========================\n共%@个号码：%@\n出现次数：%@", example1, example2, example3, example4, dict[@"allArrayCount"], allStr, dictString];
 }
 
 //- (void)textFieldDidChange:(UITextField *)textField

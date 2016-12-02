@@ -8,7 +8,7 @@
 
 #import "OpenAwardView.h"
 
-#define SPACING viewAdapter(10)//间距
+#define SPACING viewAdapter(12)//间距
 
 @implementation OpenAwardView
 
@@ -28,17 +28,17 @@
         make.top.equalTo(self).offset(viewAdapter(5));
         make.left.equalTo(self);
     }];
-    self.expectLabel.text = @"第xxxxxxx期开奖结果";
-    self.expectLabel.font = [UIFont boldSystemFontOfSize:viewAdapter(16.5)];
+    self.expectLabel.text = @"第xxxxxxx期";
+    self.expectLabel.font = [UIFont boldSystemFontOfSize:viewAdapter(18)];
     
     self.timeLabel = [UILabel new];
     [self addSubview:self.timeLabel];
     [self.timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.expectLabel.mas_right).offset(viewAdapter(5));
+        make.right.equalTo(self).offset(viewAdapter(0));
         make.centerY.equalTo(self.expectLabel);
     }];
     self.timeLabel.text = @"开奖日期:xxxx-xx-xx(周xx)";
-    self.timeLabel.font = [UIFont systemFontOfSize:viewAdapter(16.5)];
+    self.timeLabel.font = [UIFont systemFontOfSize:viewAdapter(16)];
 
     UIView *tempView = nil;
     for (int i = 0; i < 7; i++) {
@@ -52,7 +52,7 @@
         numberLabel.font = [UIFont systemFontOfSize:viewAdapter(25)];
         [self addSubview:numberLabel];
         [numberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.expectLabel.mas_bottom).offset(viewAdapter(5));
+            make.top.equalTo(self.expectLabel.mas_bottom).offset(viewAdapter(10));
             make.width.height.mas_equalTo((WIDTH - viewAdapter(40) - SPACING*6)/7);
             if (!tempView) {
                 make.left.equalTo(self);
@@ -71,7 +71,7 @@
 
 - (void)setOpenAwardViewWithModel:(SaveModel *)model
 {
-    self.expectLabel.text = [NSString stringWithFormat:@"第%@期开奖结果", model.expect];
+    self.expectLabel.text = [NSString stringWithFormat:@"第%@期", model.expect];
     self.timeLabel.text = [NSString stringWithFormat:@"开奖日期:%@", model.time];
     for (int i = 0; i < 7; i++) {
         UILabel *numberLabel = [self viewWithTag:1000 + i];

@@ -12,4 +12,6 @@
 
 + (NSDictionary *)getResultWithArray:(NSArray *)numbArray;
 
+/** 所有号码随机选7个 */
++ (NSMutableArray *)allNumbersChooesSevenNumberWithAllNumbers:(NSMutableArray *)allNumbers;
 @end

@@ -19,6 +19,7 @@
 		8F9C37F91DDF162D009D5F69 /* SaveModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F9C37F81DDF162D009D5F69 /* SaveModel.m */; };
 		8FB009521DCB7D2D004B5864 /* UITextField+Delete.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FB009511DCB7D2D004B5864 /* UITextField+Delete.m */; };
 		8FBEC9351DE6DE7200933A51 /* OpenAwardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FBEC9341DE6DE7200933A51 /* OpenAwardView.m */; };
+		8FF3E9E01DF1546A0038D69A /* LaunchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FF3E9DF1DF1546A0038D69A /* LaunchViewController.m */; };
 		F7F51B221DBA674F00F639E9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F7F51B211DBA674F00F639E9 /* main.m */; };
 		F7F51B251DBA674F00F639E9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F7F51B241DBA674F00F639E9 /* AppDelegate.m */; };
 		F7F51B281DBA674F00F639E9 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F7F51B271DBA674F00F639E9 /* ViewController.m */; };
@@ -73,6 +74,8 @@
 		8FB009511DCB7D2D004B5864 /* UITextField+Delete.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextField+Delete.m"; sourceTree = "<group>"; };
 		8FBEC9331DE6DE7200933A51 /* OpenAwardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenAwardView.h; sourceTree = "<group>"; };
 		8FBEC9341DE6DE7200933A51 /* OpenAwardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenAwardView.m; sourceTree = "<group>"; };
+		8FF3E9DE1DF1546A0038D69A /* LaunchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LaunchViewController.h; sourceTree = "<group>"; };
+		8FF3E9DF1DF1546A0038D69A /* LaunchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LaunchViewController.m; sourceTree = "<group>"; };
 		F7F51B1D1DBA674F00F639E9 /* 双色球预测.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "双色球预测.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7F51B211DBA674F00F639E9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		F7F51B231DBA674F00F639E9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -173,6 +176,8 @@
 			children = (
 				F7F51B231DBA674F00F639E9 /* AppDelegate.h */,
 				F7F51B241DBA674F00F639E9 /* AppDelegate.m */,
+				8FF3E9DE1DF1546A0038D69A /* LaunchViewController.h */,
+				8FF3E9DF1DF1546A0038D69A /* LaunchViewController.m */,
 				F7F51B261DBA674F00F639E9 /* ViewController.h */,
 				F7F51B271DBA674F00F639E9 /* ViewController.m */,
 				8FBEC9331DE6DE7200933A51 /* OpenAwardView.h */,
@@ -415,6 +420,7 @@
 				8F3B50611DE7FF69003F8A63 /* MLMSegmentPage.m in Sources */,
 				8F9C37F61DDF111F009D5F69 /* FMDatabaseTool.m in Sources */,
 				8F3B50541DE7D94B003F8A63 /* WiningDetail.m in Sources */,
+				8FF3E9E01DF1546A0038D69A /* LaunchViewController.m in Sources */,
 				8F1541FE1DC72B7C009C3495 /* ToolClass.m in Sources */,
 				F7F51B251DBA674F00F639E9 /* AppDelegate.m in Sources */,
 				8F9C37F91DDF162D009D5F69 /* SaveModel.m in Sources */,
@@ -545,7 +551,7 @@
 			baseConfigurationReference = 6AE9141B080618FECC7CC23A /* Pods-双色球预测.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = Launch;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = CFMKUY6322;
 				GCC_PREFIX_HEADER = "双色球预测/PrefixHeader.pch";
@@ -563,7 +569,7 @@
 			baseConfigurationReference = 2E986997D33C5FB0E929E39E /* Pods-双色球预测.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = Launch;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = CFMKUY6322;
 				GCC_PREFIX_HEADER = "双色球预测/PrefixHeader.pch";

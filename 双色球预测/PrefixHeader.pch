@@ -12,5 +12,6 @@
 #import "AppDefine.h"
 #import "ToolClass.h"
 #import "Masonry.h"
+#import "FMDatabaseTool.h"
 
 #endif /* PrefixHeader_pch */

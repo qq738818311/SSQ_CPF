@@ -13,5 +13,6 @@
 @property (nonatomic, copy) NSString *time;//开奖时间
 @property (nonatomic, copy) NSString *number;//号码
 @property (nonatomic, copy) NSString *expect;//期数
+@property (nonatomic, copy) NSString *nextNumber;//下期预测号码
 
 @end

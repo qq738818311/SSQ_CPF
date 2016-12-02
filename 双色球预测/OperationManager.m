@@ -80,19 +80,29 @@
             [dictArray addObject:dict];
         }
     }
-    NSMutableArray *sevenArray = [NSMutableArray new];
-    if (dictArray.count > 7) {
-        for (int i = 0; i < 7; i++) {
-            [sevenArray addObject:[(NSDictionary *)dictArray[i] allKeys].firstObject];
-        }
+    //所有号码随机选7
+    NSMutableArray *allCSevenArray = [NSMutableArray new];
+    for (NSDictionary *dict in dictArray) {
+        [allCSevenArray addObject:[dict allKeys].firstObject];
     }
-    [sevenArray sortUsingComparator:^NSComparisonResult(NSString *obj1, NSString *obj2) {
-        if (obj1.intValue < obj2.intValue) {
-            return(NSComparisonResult)NSOrderedAscending;
-        }else {
-            return(NSComparisonResult)NSOrderedDescending;
-        }
-    }];
+    //7个号码
+    NSMutableArray *sevenArray = [NSMutableArray new];
+    //出现次数最多的
+//    if (dictArray.count > 7) {
+//        for (int i = 0; i < 7; i++) {
+//            [sevenArray addObject:[(NSDictionary *)dictArray[i] allKeys].firstObject];
+//        }
+//    }
+//    [sevenArray sortUsingComparator:^NSComparisonResult(NSString *obj1, NSString *obj2) {
+//        if (obj1.intValue < obj2.intValue) {
+//            return(NSComparisonResult)NSOrderedAscending;
+//        }else {
+//            return(NSComparisonResult)NSOrderedDescending;
+//        }
+//    }];
+    
+    //随机选择
+    sevenArray = [self allNumbersChooesSevenNumberWithAllNumbers:allCSevenArray];
     
 //    NSMutableString *sevenStr = [NSMutableString new];
 //    for (int i = 0; i < sevenArray.count; i++) {
@@ -155,6 +165,28 @@
         }
     }
     return mArray;
+}
+
+/** 所有号码随机选7个 */
++ (NSMutableArray *)allNumbersChooesSevenNumberWithAllNumbers:(NSMutableArray *)allNumbers
+{
+    NSMutableArray *allNumbersCopy = [allNumbers mutableCopy];
+    NSMutableArray *sevenArray = [NSMutableArray new];
+    if (allNumbersCopy.count > 7) {
+        for (int i = 0; i < 7; i++) {
+            NSString *str = allNumbersCopy[arc4random()%allNumbersCopy.count];
+            [sevenArray addObject:str];
+            [allNumbersCopy removeObject:str];
+        }
+    }
+    [sevenArray sortUsingComparator:^NSComparisonResult(NSString *obj1, NSString *obj2) {
+        if (obj1.intValue < obj2.intValue) {
+            return(NSComparisonResult)NSOrderedAscending;
+        }else {
+            return(NSComparisonResult)NSOrderedDescending;
+        }
+    }];
+    return sevenArray;
 }
 
 //例一

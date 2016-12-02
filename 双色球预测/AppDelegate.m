@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "ViewController.h"
+#import "LaunchViewController.h"
 
 @interface AppDelegate ()
 
@@ -23,8 +24,8 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
-    
-    self.window.rootViewController = [ViewController new];
+
+    self.window.rootViewController = [LaunchViewController new];
 
     return YES;
 }
