@@ -619,6 +619,11 @@
     
 }
 
+- (void)selectedIndex:(NSInteger)index
+{
+
+}
+
 #pragma mark - UIGestureRecognizerDelegate
 // called when a gesture recognizer attempts to transition out of UIGestureRecognizerStatePossible. returning NO causes it to transition to UIGestureRecognizerStateFailed
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer

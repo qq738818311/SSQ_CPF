@@ -31,3 +31,5 @@ UserInterfaceState.xcuserstate
 project.xcworkspace/
 xcuserdata/
 UserInterface.xcuserstate
+
+*.mobileprovision
