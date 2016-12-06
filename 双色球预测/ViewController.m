@@ -14,6 +14,7 @@
 #import "WiningDetail.h"
 #import "LastExpectView.h"
 #import "SegmentPageHead.h"
+#import "BottomBar.h"
 
 static BOOL canAddAnimation = NO;
 
@@ -31,6 +32,8 @@ static BOOL canAddAnimation = NO;
 //@property (nonatomic, strong) LastExpectView *lastExpectView;//上期开奖号码
 @property (nonatomic, strong) MLMSegmentPage *pageView;
 
+@property (nonatomic, strong) UIVisualEffectView *effectPWView;
+
 @end
 
 @implementation ViewController
@@ -43,6 +46,18 @@ static BOOL canAddAnimation = NO;
     return _numArray;
 }
 
+- (UIVisualEffectView *)effectPWView
+{
+    if (!_effectPWView) {
+        UIBlurEffect *blur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+        _effectPWView = [[UIVisualEffectView alloc] initWithEffect:blur];
+        _effectPWView.userInteractionEnabled = YES;
+        _effectPWView.frame = self.view.frame;
+        _effectPWView.alpha = 0.5;
+    }
+    return _effectPWView;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"双色球预测";
@@ -51,6 +66,11 @@ static BOOL canAddAnimation = NO;
     [IQKeyboardManager sharedManager].enableAutoToolbar = YES;
     [self createUI];
     [self requestData];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
 }
 
 - (void)createUI
@@ -115,6 +135,14 @@ static BOOL canAddAnimation = NO;
 //    clearBtn.contentEdgeInsets = UIEdgeInsetsMake(2, 4, 2, 4);
 //    [clearBtn addTarget:self action:@selector(clearBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     
+//    UIImageView *imageBg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dna_bg"]];
+//    [self.view addSubview:imageBg];
+//    [imageBg mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.edges.equalTo(self.view);
+//    }];
+    
+//    [imageBg addSubview:self.effectPWView];
+
     self.openAwardView = [OpenAwardView new];
     [self.view addSubview:self.openAwardView];
     [self.openAwardView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -141,11 +169,11 @@ static BOOL canAddAnimation = NO;
     self.nextExpectView = [LastExpectView new];
     [self.view addSubview:self.nextExpectView];
     [self.nextExpectView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.winingDetailView.mas_bottom).offset(viewAdapter(5));
-        make.left.equalTo(self.view).offset(viewAdapter(15));
-        make.right.equalTo(self.view).offset(viewAdapter(-15));
+        make.top.equalTo(self.winingDetailView.mas_bottom);
+        make.left.right.equalTo(self.view).offset(viewAdapter(0));
+//        make.right.equalTo(self.view).offset(viewAdapter(-15));
     }];
-    self.nextExpectView.titleLable.text = @"下期预测号码:";
+    self.nextExpectView.titleLable.text = @"下期预测号码";
     
     //上期开奖号码
 //    self.lastExpectView = [LastExpectView new];
@@ -156,6 +184,16 @@ static BOOL canAddAnimation = NO;
 //        make.right.equalTo(self.view).offset(viewAdapter(-15));
 //    }];
     
+    UIView *pageViewBg = [UIView new];
+    [self.view insertSubview:pageViewBg belowSubview:self.winingDetailView];
+    [pageViewBg mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.equalTo(self.view);
+        make.top.equalTo(self.nextExpectView.mas_bottom).offset(viewAdapter(0));
+    }];
+    pageViewBg.backgroundColor = [UIColor whiteColor];
+    pageViewBg.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    pageViewBg.layer.borderWidth = viewAdapter(0.5);
+    
     UIView *lastExpectBg = [UIView new];
     UIView *nextExpectBg = [UIView new];
     lastExpectBg.backgroundColor = RGBACOLOR(251, 244, 211, 1);
@@ -163,23 +201,28 @@ static BOOL canAddAnimation = NO;
     //预测信息
     self.pageView = [[MLMSegmentPage alloc] initSegmentWithFrame:CGRectZero titlesArray:@[@"本期预测情况", @"下期预测情况"] vcOrviews:@[lastExpectBg, nextExpectBg] headStyle:SegmentHeadStyleLine];
     self.pageView.delegate = self;
-    self.pageView.headHeight = viewAdapter(50);
-    self.pageView.headColor = [UIColor whiteColor];//UIColorFromRGB(0xf4f6f5);
+    self.pageView.headHeight = viewAdapter(40);
+    self.pageView.headColor = RGBACOLOR(255, 255, 255, 1);//UIColorFromRGB(0xf4f6f5);
     self.pageView.fontScale = 0.95;//.85;
     self.pageView.fontSize = viewAdapter(18);
     self.pageView.lineScale = .9;
     self.pageView.deselectColor = [UIColor grayColor];
     self.pageView.selectColor = [UIColor redColor];
-    self.pageView.bottomLineHeight = viewAdapter(1.5);
-    self.pageView.bottomLineColor = UIColorFromRGB(0xf4f6f5);
+    self.pageView.bottomLineHeight = viewAdapter(0.8);
+    self.pageView.bottomLineColor = UIColorFromRGBWithAlpha(0xf4f6f5, 1);
     self.pageView.backgroundColor = [UIColor whiteColor];
-    self.pageView.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    self.pageView.layer.borderWidth = viewAdapter(1);
-    [self.view addSubview:self.pageView];
+    [pageViewBg addSubview:self.pageView];
     [self.pageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.bottom.equalTo(pageViewBg);
+        make.top.equalTo(pageViewBg).offset(viewAdapter(18));
+    }];
+    
+    UIImageView *headerImageBg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bookshelf_header_mask"]];
+    [self.view insertSubview:headerImageBg atIndex:0];
+    [headerImageBg mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.mas_topLayoutGuideTop);
         make.left.right.equalTo(self.view);
-        make.top.equalTo(self.nextExpectView.mas_bottom).offset(viewAdapter(10));
-        make.bottom.equalTo(self.view).offset(viewAdapter(-50));
+        make.bottom.equalTo(pageViewBg.mas_top);
     }];
     
 //    self.scrollView = [UIScrollView new];
@@ -210,7 +253,7 @@ static BOOL canAddAnimation = NO;
 //    self.lastExpect.numberOfLines = 0;
     self.lastExpect.editable = NO;
 //    self.lastExpect.backgroundColor = [UIColor whiteColor];//UIColorFromRGB(0xf4f6f5);
-    self.lastExpect.backgroundColor = RGBACOLOR(251, 244, 211, 1);
+    self.lastExpect.backgroundColor = RGBACOLOR(251, 244, 211, 0);
 
     //下一期
     self.nextExpect = [UITextView new];
@@ -225,7 +268,7 @@ static BOOL canAddAnimation = NO;
 //    self.nextExpect.numberOfLines = 0;
     self.nextExpect.editable = NO;
 //    self.nextExpect.backgroundColor = [UIColor whiteColor];//UIColorFromRGB(0xf4f6f5);
-    self.nextExpect.backgroundColor = RGBACOLOR(251, 244, 211, 1);
+    self.nextExpect.backgroundColor = RGBACOLOR(251, 244, 211, 0);
 
     //上一期和下一期的手势
     UISwipeGestureRecognizer *lastExpectSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(upAndDownButtonClick:)];
@@ -237,41 +280,25 @@ static BOOL canAddAnimation = NO;
     [self.pageView addGestureRecognizer:lastExpectSwipe];
     [self.pageView addGestureRecognizer:nextExpectSwipe];
     
-    //上一期和下一期的按钮
-    UIButton *upButton = [UIButton new];
-    [self.view addSubview:upButton];
-    UIButton *downButton = [UIButton new];
-    [self.view addSubview:downButton];
-    [upButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.view.mas_bottom).offset(viewAdapter(-25));
-        make.centerX.equalTo(self.view.mas_centerX).offset(-WIDTH/5);
+    BottomBar *bottomBar = [BottomBar new];
+    [self.view addSubview:bottomBar];
+    [bottomBar mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.pageView.mas_bottom);
+        make.left.right.bottom.equalTo(self.view);
+        make.height.mas_equalTo(viewAdapter(50));
     }];
-    [downButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.view.mas_bottom).offset(viewAdapter(-25));
-        make.centerX.equalTo(self.view.mas_centerX).offset(WIDTH/5);
-    }];
-    [upButton setTitle:@"<上一期" forState:UIControlStateNormal];
-    [downButton setTitle:@"下一期>" forState:UIControlStateNormal];
-    upButton.titleLabel.font = [UIFont systemFontOfSize:viewAdapter(18)];
-    downButton.titleLabel.font = [UIFont systemFontOfSize:viewAdapter(18)];
-    [upButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-    [downButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-    upButton.tag = 2000;
-    downButton.tag = 2001;
-    [upButton addTarget:self action:@selector(upAndDownButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [downButton addTarget:self action:@selector(upAndDownButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     
-    UIButton *currentBtn = [UIButton new];
-    [self.view addSubview:currentBtn];
-    [currentBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(self.view);
-        make.centerY.equalTo(self.view.mas_bottom).offset(viewAdapter(-25));
+    WeakObj(self);
+    [bottomBar setButtonClick:^(UIButton *button, NSInteger index) {
+        if (index == 0 || index == 1) {//上一期或下一期
+            [selfWeak upAndDownButtonClick:button];
+        }else if (index == 2){//刷新
+            canAddAnimation = YES;
+            [selfWeak requestData];
+        }else if (index == 3){//设置
+        
+        }
     }];
-    [currentBtn setTitle:@"刷新" forState:UIControlStateNormal];
-    currentBtn.titleLabel.font = [UIFont systemFontOfSize:viewAdapter(18)];
-    [currentBtn setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
-    [currentBtn addTarget:self action:@selector(refreshBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-
 }
 
 - (void)requestData
@@ -377,12 +404,6 @@ static BOOL canAddAnimation = NO;
     }else{
         [ToolClass showMBMessageTitle:mbMessage toView:self.view];
     }
-}
-
-- (void)refreshBtnClick:(UIButton *)button
-{
-    canAddAnimation = YES;
-    [self requestData];
 }
 
 - (void)reloadNumbers

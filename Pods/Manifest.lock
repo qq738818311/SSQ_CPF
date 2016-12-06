@@ -20,6 +20,8 @@ PODS:
   - IQKeyboardManager (4.0.7)
   - Masonry (1.0.2)
   - MBProgressHUD (1.0.0)
+  - Pgyer (2.8.4)
+  - PgyUpdate (1.2)
   - Reachability (3.2)
   - SDWebImage (3.8.2):
     - SDWebImage/Core (= 3.8.2)
@@ -31,6 +33,8 @@ DEPENDENCIES:
   - IQKeyboardManager
   - Masonry
   - MBProgressHUD
+  - Pgyer
+  - PgyUpdate
   - Reachability
   - SDWebImage
 
@@ -40,9 +44,11 @@ SPEC CHECKSUMS:
   IQKeyboardManager: 69002bb4fea60596b710e57d426abc00e5063630
   Masonry: 7c429b56da9d4ee0bbb3ed77a5ea710d6a5df39e
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
+  Pgyer: 26edfcc8da6da6383fabfdbccd2f77c623b9d6eb
+  PgyUpdate: a42e82cec5ad4e992af390e9d494f6fc62db65e4
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
 
-PODFILE CHECKSUM: 6c753bf0812a0206d54517780c9cbebc4239afd4
+PODFILE CHECKSUM: aa06fb844bd83f187a5b32389c6ffeed029b7409
 
 COCOAPODS: 1.1.1

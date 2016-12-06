@@ -15,6 +15,7 @@
 		8F3B50601DE7FF69003F8A63 /* MLMSegmentHead.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F3B505A1DE7FF68003F8A63 /* MLMSegmentHead.m */; };
 		8F3B50611DE7FF69003F8A63 /* MLMSegmentPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F3B505C1DE7FF68003F8A63 /* MLMSegmentPage.m */; };
 		8F3B50621DE7FF69003F8A63 /* UIView+ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F3B505F1DE7FF68003F8A63 /* UIView+ViewController.m */; };
+		8F8615281DF6B80E008C6F2F /* BottomBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F8615271DF6B80E008C6F2F /* BottomBar.m */; };
 		8F9C37F61DDF111F009D5F69 /* FMDatabaseTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F9C37F51DDF111F009D5F69 /* FMDatabaseTool.m */; };
 		8F9C37F91DDF162D009D5F69 /* SaveModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F9C37F81DDF162D009D5F69 /* SaveModel.m */; };
 		8FB009521DCB7D2D004B5864 /* UITextField+Delete.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FB009511DCB7D2D004B5864 /* UITextField+Delete.m */; };
@@ -65,11 +66,14 @@
 		8F3B505D1DE7FF68003F8A63 /* SegmentPageHead.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SegmentPageHead.h; sourceTree = "<group>"; };
 		8F3B505E1DE7FF68003F8A63 /* UIView+ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+ViewController.h"; sourceTree = "<group>"; };
 		8F3B505F1DE7FF68003F8A63 /* UIView+ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+ViewController.m"; sourceTree = "<group>"; };
+		8F8615261DF6B80E008C6F2F /* BottomBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BottomBar.h; sourceTree = "<group>"; };
+		8F8615271DF6B80E008C6F2F /* BottomBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BottomBar.m; sourceTree = "<group>"; };
 		8F9209CA1DCB371500B60B9A /* AppDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDefine.h; sourceTree = "<group>"; };
 		8F9C37F41DDF111F009D5F69 /* FMDatabaseTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabaseTool.h; sourceTree = "<group>"; };
 		8F9C37F51DDF111F009D5F69 /* FMDatabaseTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabaseTool.m; sourceTree = "<group>"; };
 		8F9C37F71DDF162D009D5F69 /* SaveModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SaveModel.h; sourceTree = "<group>"; };
 		8F9C37F81DDF162D009D5F69 /* SaveModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SaveModel.m; sourceTree = "<group>"; };
+		8FA36F881DF5170400E09A34 /* ProvisioningProfiles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProvisioningProfiles.h; sourceTree = "<group>"; };
 		8FB009501DCB7D2D004B5864 /* UITextField+Delete.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextField+Delete.h"; sourceTree = "<group>"; };
 		8FB009511DCB7D2D004B5864 /* UITextField+Delete.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextField+Delete.m"; sourceTree = "<group>"; };
 		8FBEC9331DE6DE7200933A51 /* OpenAwardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenAwardView.h; sourceTree = "<group>"; };
@@ -186,6 +190,8 @@
 				8F3B50531DE7D94B003F8A63 /* WiningDetail.m */,
 				8F3B50551DE7E573003F8A63 /* LastExpectView.h */,
 				8F3B50561DE7E573003F8A63 /* LastExpectView.m */,
+				8F8615261DF6B80E008C6F2F /* BottomBar.h */,
+				8F8615271DF6B80E008C6F2F /* BottomBar.m */,
 				8F3B50581DE7FF68003F8A63 /* MLMSegmentPageView */,
 				8F9C37F71DDF162D009D5F69 /* SaveModel.h */,
 				8F9C37F81DDF162D009D5F69 /* SaveModel.m */,
@@ -199,6 +205,7 @@
 				8F9C37F51DDF111F009D5F69 /* FMDatabaseTool.m */,
 				F7F51B2C1DBA674F00F639E9 /* Assets.xcassets */,
 				F7F51B311DBA674F00F639E9 /* Info.plist */,
+				8FA36F881DF5170400E09A34 /* ProvisioningProfiles.h */,
 				8F9209CA1DCB371500B60B9A /* AppDefine.h */,
 				8F1541FB1DC72B51009C3495 /* PrefixHeader.pch */,
 				F7F51B201DBA674F00F639E9 /* Supporting Files */,
@@ -412,6 +419,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8F8615281DF6B80E008C6F2F /* BottomBar.m in Sources */,
 				8FB009521DCB7D2D004B5864 /* UITextField+Delete.m in Sources */,
 				8F3B50621DE7FF69003F8A63 /* UIView+ViewController.m in Sources */,
 				F7F51B281DBA674F00F639E9 /* ViewController.m in Sources */,

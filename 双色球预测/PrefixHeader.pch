@@ -10,8 +10,11 @@
 #define PrefixHeader_pch
 
 #import "AppDefine.h"
+#import "ProvisioningProfiles.h"
 #import "ToolClass.h"
 #import "Masonry.h"
 #import "FMDatabaseTool.h"
+#import <PgySDK/PgyManager.h>
+#import <PgyUpdate/PgyUpdateManager.h>
 
 #endif /* PrefixHeader_pch */

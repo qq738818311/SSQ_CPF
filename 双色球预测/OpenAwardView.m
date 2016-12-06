@@ -30,6 +30,7 @@
     }];
     self.expectLabel.text = @"第xxxxxxx期";
     self.expectLabel.font = [UIFont boldSystemFontOfSize:viewAdapter(18)];
+    self.expectLabel.textColor = [UIColor whiteColor];
     
     self.timeLabel = [UILabel new];
     [self addSubview:self.timeLabel];
@@ -39,6 +40,7 @@
     }];
     self.timeLabel.text = @"开奖日期:xxxx-xx-xx(周xx)";
     self.timeLabel.font = [UIFont systemFontOfSize:viewAdapter(16)];
+    self.timeLabel.textColor = [UIColor whiteColor];
 
     UIView *tempView = nil;
     for (int i = 0; i < 7; i++) {
@@ -49,6 +51,8 @@
         numberLabel.tag = 1000 + i;
         numberLabel.textAlignment = NSTextAlignmentCenter;
         numberLabel.textColor = i == 6 ? [UIColor blueColor] : [UIColor redColor];
+//        numberLabel.layer.masksToBounds = YES;
+//        numberLabel.backgroundColor = RGBACOLOR(255, 255, 255, 0.6);
         numberLabel.font = [UIFont systemFontOfSize:viewAdapter(25)];
         [self addSubview:numberLabel];
         [numberLabel mas_makeConstraints:^(MASConstraintMaker *make) {

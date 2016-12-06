@@ -38,10 +38,12 @@
         model.expect = dataDict[@"expect"];
         [FMDatabaseTool saveObjectToDB:model withTableName:NSStringFromClass([SaveModel class])];
         [ToolClass hideMBConnect];
-        [ToolClass appDelegate].window.rootViewController = [[UINavigationController alloc] initWithRootViewController:[ViewController new]];
+//        [ToolClass appDelegate].window.rootViewController = [[UINavigationController alloc] initWithRootViewController:[ViewController new]];
+        [ToolClass appDelegate].window.rootViewController = [ViewController new];
     } failure:^(NSString *errorInfo, NSError *error) {
         [ToolClass hideMBConnect];
         if (![errorInfo containsString:@"-有缓存"]) {
+//            [ToolClass appDelegate].window.rootViewController = [ViewController new];
             [ToolClass appDelegate].window.rootViewController = [ViewController new];
         }
     }];

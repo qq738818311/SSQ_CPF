@@ -8,4 +8,6 @@ target '双色球预测' do
 	pod 'SDWebImage'
 	pod 'MBProgressHUD'
 	pod 'Reachability'
+	pod 'Pgyer'
+	pod 'PgyUpdate'
 end

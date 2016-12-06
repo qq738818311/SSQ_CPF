@@ -35,12 +35,12 @@ static dispatch_source_t timer;
 //    titleLabel.numberOfLines = 0;
 //    titleLabel.layer.borderColor = [UIColor lightGrayColor].CGColor;
 //    titleLabel.layer.borderWidth = viewAdapter(1);
-    
+        
     UIImageView *titleImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"中奖信息"]];
     [self addSubview:titleImage];
     [titleImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.top.bottom.equalTo(self);
-        make.centerY.equalTo(self);
+        make.left.top.equalTo(self).priorityLow();
+        make.left.equalTo(self);
         make.height.width.mas_equalTo(viewAdapter(70));
     }];
     
@@ -51,30 +51,42 @@ static dispatch_source_t timer;
         make.centerY.equalTo(self).offset(viewAdapter(-12));
     }];
     self.winingLabel.text = @"未中奖😞😞:";
-    self.winingLabel.font = [UIFont fontWithName:@"Menlo-Bold" size:viewAdapter(17)];
+//    self.winingLabel.font = [UIFont fontWithName:@"Menlo-Bold" size:viewAdapter(17)];
+    self.winingLabel.font = [UIFont systemFontOfSize:viewAdapter(17)];
     
     self.conjectureLabel =  [UILabel new];
     [self addSubview:self.conjectureLabel];
     [self.conjectureLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(titleImage.mas_right);
         make.centerY.equalTo(self).offset(viewAdapter(18));
-        make.bottom.equalTo(self).offset(viewAdapter(-10)).priorityLow();
+//        make.bottom.equalTo(self).offset(viewAdapter(-10)).priorityLow();
     }];
     self.conjectureLabel.text = @"所有测中号码:";
-    self.conjectureLabel.font = [UIFont fontWithName:@"Menlo-Bold" size:viewAdapter(17)];
-    
+//    self.conjectureLabel.font = [UIFont fontWithName:@"Menlo-Bold" size:viewAdapter(17)];
+    self.conjectureLabel.font = [UIFont systemFontOfSize:viewAdapter(17)];
+
     self.winingBg = [UIView new];
     self.conjectureBg = [UIView new];
     [self addSubview:self.winingBg];
     [self addSubview:self.conjectureBg];
     [self.winingBg mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.winingLabel);
-        make.left.equalTo(self.winingLabel.mas_right);
+        make.left.equalTo(self.winingLabel.mas_right).offset(viewAdapter(5));
     }];
     [self.conjectureBg mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.conjectureLabel);
-        make.left.equalTo(self.conjectureLabel.mas_right);
+        make.left.equalTo(self.conjectureLabel.mas_right).offset(viewAdapter(5));
     }];
+    
+    UIView *lineView = [UIView new];
+    [self addSubview:lineView];
+    [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.equalTo(self);
+        make.top.equalTo(titleImage.mas_bottom).offset(viewAdapter(10));
+        make.height.mas_equalTo(viewAdapter(1));
+        make.bottom.equalTo(self).priorityLow();
+    }];
+    lineView.backgroundColor = [UIColor lightGrayColor];
 }
 
 - (void)setWiningDetailWithDictionary:(NSDictionary *)dict
@@ -97,7 +109,6 @@ static dispatch_source_t timer;
         NSArray *sevenArray = dict[@"sevenArray"];
         NSArray *allArray = dict[@"allArray"];
         if (sevenArray.count > 4) {
-//            self.winingLabel.text = [NSString stringWithFormat:@"已中奖😄😄:%@", [sevenArray componentsJoinedByString:@","]];
             self.winingLabel.text = @"已中奖😄😄:";
             timer = [ToolClass timeCountDownWithCount:1000 perTime:0.2 inProgress:^(int time) {
                 self.winingLabel.textColor = RGBACOLOR(arc4random()%255, arc4random()%255, arc4random()%255, 1);
@@ -105,12 +116,11 @@ static dispatch_source_t timer;
                 self.winingLabel.textColor = [UIColor redColor];
             }];
         }else if (sevenArray.count > 0){
-//            self.winingLabel.text = [NSString stringWithFormat:@"未中奖😞😞:%@", [sevenArray componentsJoinedByString:@","]];
             self.winingLabel.text = @"未中奖😞😞:";
         }else{
-            self.winingLabel.text = @"未中奖😟😟:暂无买中号码";
+            self.winingLabel.text = @"未中奖😟😟:";
+            sevenArray = @[@"--"];
         }
-//        self.conjectureLabel.text = [NSString stringWithFormat:@"所有测中号码为:%@", [allArray componentsJoinedByString:@","]];
         self.conjectureLabel.text = @"所有测中号码:";
         
         //是否中奖号码布局

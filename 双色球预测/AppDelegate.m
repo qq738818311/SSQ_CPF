@@ -18,6 +18,14 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
+    //启动基本SDK
+    [[PgyManager sharedPgyManager] startManagerWithAppId:PGY_APP_ID];
+    //启动更新检查SDK
+    [[PgyUpdateManager sharedPgyManager] startManagerWithAppId:PGY_APP_ID];
+    //检查是否有版本更新
+    [[PgyUpdateManager sharedPgyManager] checkUpdate];
+    
     //注册Keyboard
     [ToolClass registerIQKeyboard];
     NSLog(@"%@",NSHomeDirectory());
