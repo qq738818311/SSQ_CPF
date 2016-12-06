@@ -71,10 +71,75 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:a]
 #define kRequestTimeoutInterval 10                           //请求超时时间
 
 #import <Foundation/Foundation.h>
+#import <Availability.h>
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
 #import "IQKeyboardManager.h"
 #import "AFNetworking.h"
+
+/************************************** 日历适配相关 *****************************************/
+
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
+#define NSGregorianCalendar         NSCalendarIdentifierGregorian
+#define NSBuddhistCalendar          NSCalendarIdentifierBuddhist
+#define NSChineseCalendar           NSCalendarIdentifierChinese
+#define NSHebrewCalendar            NSCalendarIdentifierHebrew
+#define NSIslamicCalendar           NSCalendarIdentifierIslamic
+#define NSIslamicCivilCalendar      NSCalendarIdentifierIslamicCivil
+#define NSJapaneseCalendar          NSCalendarIdentifierJapanese
+#define NSRepublicOfChinaCalendar   NSCalendarIdentifierRepublicOfChina
+#define NSPersianCalendar           NSCalendarIdentifierPersian
+#define NSIndianCalendar            NSCalendarIdentifierIndian
+#define NSISO8601Calendar           NSCalendarIdentifierISO8601
+#else
+#define NSGregorianCalendar         NSGregorianCalendar
+#define NSBuddhistCalendar          NSBuddhistCalendar
+#define NSChineseCalendar           NSChineseCalendar
+#define NSHebrewCalendar            NSHebrewCalendar
+#define NSIslamicCalendar           NSIslamicCalendar
+#define NSIslamicCivilCalendar      NSIslamicCivilCalendar
+#define NSJapaneseCalendar          NSJapaneseCalendar
+#define NSRepublicOfChinaCalendar   NSRepublicOfChinaCalendar
+#define NSPersianCalendar           NSPersianCalendar
+#define NSIndianCalendar            NSIndianCalendar
+#define NSISO8601Calendar           NSISO8601Calendar
+#endif
+
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
+#define NSEraCalendarUnit                   NSCalendarUnitEra
+#define NSYearCalendarUnit                  NSCalendarUnitYear
+#define NSMonthCalendarUnit                 NSCalendarUnitMonth
+#define NSDayCalendarUnit                   NSCalendarUnitDay
+#define NSHourCalendarUnit                  NSCalendarUnitHour
+#define NSMinuteCalendarUnit                NSCalendarUnitMinute
+#define NSSecondCalendarUnit                NSCalendarUnitSecond
+#define NSWeekCalendarUnit                  kCFCalendarUnitWeek
+#define NSWeekdayCalendarUnit               NSCalendarUnitWeekday
+#define NSWeekdayOrdinalCalendarUnit        NSCalendarUnitWeekdayOrdinal
+#define NSQuarterCalendarUnit               NSCalendarUnitQuarter
+#define NSWeekOfMonthCalendarUnit           NSCalendarUnitWeekOfMonth
+#define NSWeekOfYearCalendarUnit            NSCalendarUnitWeekOfYear
+#define NSYearForWeekOfYearCalendarUnit     NSCalendarUnitYearForWeekOfYear
+#define NSCalendarCalendarUnit              NSCalendarUnitCalendar
+#define NSTimeZoneCalendarUnit              NSCalendarUnitTimeZone
+#else
+#define NSEraCalendarUnit                   NSEraCalendarUnit
+#define NSYearCalendarUnit                  NSYearCalendarUnit
+#define NSMonthCalendarUnit                 NSMonthCalendarUnit
+#define NSDayCalendarUnit                   NSDayCalendarUnit
+#define NSHourCalendarUnit                  NSHourCalendarUnit
+#define NSMinuteCalendarUnit                NSMinuteCalendarUnit
+#define NSSecondCalendarUnit                NSSecondCalendarUnit
+#define NSWeekCalendarUnit                  NSWeekCalendarUnit
+#define NSWeekdayCalendarUnit               NSWeekdayCalendarUnit
+#define NSWeekdayOrdinalCalendarUnit        NSWeekdayOrdinalCalendarUnit
+#define NSQuarterCalendarUnit               NSQuarterCalendarUnit
+#define NSWeekOfMonthCalendarUnit           NSWeekOfMonthCalendarUnit
+#define NSWeekOfYearCalendarUnit            NSWeekOfYearCalendarUnit
+#define NSYearForWeekOfYearCalendarUnit     NSYearForWeekOfYearCalendarUnit
+#define NSCalendarCalendarUnit              NSCalendarCalendarUnit
+#define NSTimeZoneCalendarUnit              NSTimeZoneCalendarUnit
+#endif
 
 @class MBProgressHUD;
 
@@ -506,6 +571,18 @@ singleton_interface(ToolClass)
 
 + (BOOL)jr_swizzleMethod:(SEL)origSel_ withMethod:(SEL)altSel_ error:(NSError**)error_;
 + (BOOL)jr_swizzleClassMethod:(SEL)origSel_ withClassMethod:(SEL)altSel_ error:(NSError**)error_;
+
+@end
+
+@interface NSDictionary (Unicode)
+
+- (NSString*)my_description;
+
+@end
+
+@interface NSArray (Unicode)
+
+- (NSString*)my_description;
 
 @end
 

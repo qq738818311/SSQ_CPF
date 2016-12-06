@@ -31,12 +31,15 @@
         NSArray *data = responseObject[@"data"];
         NSDictionary *dataDict = data.firstObject;
         NSString *dateStr = [NSString stringWithFormat:@"%@(%@)", [dataDict[@"opentime"] componentsSeparatedByString:@" "].firstObject, [ToolClass getWeekDayFordate:[ToolClass dateFromTimeInterval:[dataDict[@"opentimestamp"] doubleValue]]]];
-        SaveModel *model = nil;
-        model = [SaveModel new];
-        model.time = dateStr;
-        model.number = dataDict[@"opencode"];
-        model.expect = dataDict[@"expect"];
-        [FMDatabaseTool saveObjectToDB:model withTableName:NSStringFromClass([SaveModel class])];
+        SaveModel *model = (SaveModel *)[FMDatabaseTool findByFirstProperty:dateStr withTableName:NSStringFromClass([SaveModel class]) andModelClass:[SaveModel class]];
+        if (!model) {
+            model = [SaveModel new];
+            model.time = dateStr;
+            model.number = dataDict[@"opencode"];
+            model.expect = dataDict[@"expect"];
+            [FMDatabaseTool saveObjectToDB:model withTableName:NSStringFromClass([SaveModel class])];
+        }
+
         [ToolClass hideMBConnect];
 //        [ToolClass appDelegate].window.rootViewController = [[UINavigationController alloc] initWithRootViewController:[ViewController new]];
         [ToolClass appDelegate].window.rootViewController = [ViewController new];
