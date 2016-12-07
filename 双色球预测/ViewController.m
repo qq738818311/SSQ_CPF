@@ -198,6 +198,8 @@ static dispatch_source_t timer;
         if (index == 0 || index == 1) {//上一期或下一期
             [selfWeak upAndDownButtonClick:button];
         }else if (index == 2){//刷新
+            [ToolClass cancelTimeCountDownWith:timer];
+            self.nextExpectView.startBtn.selected = NO;
             canAddAnimation = YES;
             [selfWeak requestData];
         }else if (index == 3){//设置
@@ -221,10 +223,10 @@ static dispatch_source_t timer;
                 [ToolClass cancelTimeCountDownWith:timer];
                 nextNumber = [[OperationManager allNumbersChooesSevenNumberWithAllNumbers:dict[@"allArray"]] componentsJoinedByString:@","];
                 [selfWeak.nextExpectView setLastExpectViewWithText:nextNumber];
-                selfWeak.nextExpect.text = [NSString stringWithFormat:@"========= 7个号码 =========\n=  %@  =\n%@", nextNumber, string];
             }
         }else{//保存
             if (nextNumber.length > 0) {
+                selfWeak.nextExpect.text = [NSString stringWithFormat:@"========= 7个号码 =========\n=  %@  =\n%@", nextNumber, string];
                 selfWeak.model.nextNumber = nextNumber;
                 [FMDatabaseTool saveObjectToDB:selfWeak.model withTableName:NSStringFromClass([SaveModel class])];
                 [ToolClass showMBMessageTitle:@"保存成功" toView:selfWeak.view completion:^{
@@ -313,11 +315,10 @@ static dispatch_source_t timer;
         self.pageView.viewsScroll.scrollEnabled = YES;
     }
     if (model) {
+        [ToolClass cancelTimeCountDownWith:timer];
+        self.nextExpectView.startBtn.selected = NO;
         self.model = model;
         [self reloadUI];
-//        [[self.winingDetailView layer] addAnimation:animation forKey:@"animation"];
-//        [[self.lastExpectView layer] addAnimation:animation forKey:@"animation"];
-//        [[self.nextExpectView layer] addAnimation:animation forKey:@"animation"];
         [[self.pageView layer] addAnimation:animation forKey:@"animation"];
     }else{
         [ToolClass showMBMessageTitle:mbMessage toView:self.view];

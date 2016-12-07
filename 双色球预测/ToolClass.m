@@ -119,7 +119,11 @@ singleton_implementation(ToolClass)
             if (!res) {
                 //创建表格
                 BOOL result = [_db executeUpdate:@"CREATE TABLE IF NOT EXISTS HTTPData (id integer PRIMARY KEY AUTOINCREMENT,url text NOT NULL,data blob NOT NULL,savetime date);"];
-                if (result) NSLog(@"创建网络请求缓存表成功"); else NSLog(@"创建网络请求缓存表失败");
+                if (result) {
+                    NSLog(@"创建网络请求缓存表成功");
+                }else{
+                    NSLog(@"创建网络请求缓存表失败");
+                }
             }
         }
         [_db close];
