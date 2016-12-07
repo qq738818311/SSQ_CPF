@@ -17,6 +17,7 @@
 #import "BottomBar.h"
 
 static BOOL canAddAnimation = NO;
+static dispatch_source_t timer;
 
 @interface ViewController ()<UITextFieldDelegate, WJTextFieldDelegate, MLMSegmentPageDelegate, UIGestureRecognizerDelegate>
 
@@ -75,82 +76,12 @@ static BOOL canAddAnimation = NO;
 
 - (void)createUI
 {
-//    self.textFieldBg = [UIView new];
-//    [self.view addSubview:self.textFieldBg];
-//    [self.textFieldBg mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(self.view).offset(viewAdapter(35));
-//        make.left.equalTo(self.view).offset(viewAdapter(20));
-//        make.right.equalTo(self.view).offset(viewAdapter(-20));
-//        make.height.mas_equalTo(viewAdapter(150)).priorityLow();
-//    }];
-//    self.textFieldBg.backgroundColor = DEBUGCOLOR(redColor);
-
-//    UIView *tempView = nil;
-//    for (int i = 0; i < 6; i++) {
-//        UITextField *textField = [UITextField new];
-//        textField.layer.borderColor = [UIColor lightGrayColor].CGColor;
-//        textField.layer.borderWidth = viewAdapter(2.5);
-//        textField.layer.cornerRadius = viewAdapter(3);
-//        textField.tag = 1000 + i;
-//        textField.backgroundColor = [UIColor whiteColor];
-//        textField.tintColor = [UIColor blackColor];
-//        textField.textAlignment = NSTextAlignmentCenter;
-//        textField.font = [UIFont systemFontOfSize:viewAdapter(25)];
-//        textField.keyboardType = UIKeyboardTypePhonePad;
-//        textField.delegate = self;
-//        textField.enabled = NO;
-//        [textField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-//        [self.textFieldBg addSubview:textField];
-//        [textField mas_makeConstraints:^(MASConstraintMaker *make) {
-//            make.top.equalTo(self.textFieldBg).offset(viewAdapter(5));
-////            make.centerX.equalTo(textFieldBg.mas_right).multipliedBy(((CGFloat)i + 1) / ((CGFloat)6 + 1));
-//            make.width.mas_equalTo((WIDTH - viewAdapter(40) - SPACING*5)/6);
-//            make.height.equalTo(textField.mas_width).offset(viewAdapter(5));
-//            if (!tempView) {
-//                make.left.equalTo(self.textFieldBg);
-//            }else{
-//                make.left.equalTo(tempView.mas_right).offset(SPACING);
-//            }
-//            if (i == 5) {
-//                make.right.equalTo(self.textFieldBg);
-//                make.bottom.equalTo(self.textFieldBg.mas_bottom).offset(viewAdapter(-5));
-//            }
-//        }];
-//        tempView = textField;
-//    }
-//    
-//    UIButton *clearBtn = [UIButton buttonWithType:UIButtonTypeSystem];
-//    [self.view addSubview:clearBtn];
-//    [clearBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.right.equalTo(self.textFieldBg).offset(viewAdapter(-5));
-//        make.top.equalTo(self.textFieldBg.mas_bottom).offset(viewAdapter(5));
-//    }];
-//    [clearBtn setTitle:@"清除" forState:UIControlStateNormal];
-//    clearBtn.titleLabel.font = [UIFont systemFontOfSize:viewAdapter(18)];
-//    [clearBtn setTitleColor:[UIColor lightGrayColor] forState:UIControlStateDisabled];
-//    [clearBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-//    clearBtn.layer.borderColor = [UIColor blackColor].CGColor;
-//    clearBtn.layer.borderWidth = viewAdapter(1);
-//    clearBtn.layer.cornerRadius = viewAdapter(3);
-//    clearBtn.contentEdgeInsets = UIEdgeInsetsMake(2, 4, 2, 4);
-//    [clearBtn addTarget:self action:@selector(clearBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-    
-//    UIImageView *imageBg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dna_bg"]];
-//    [self.view addSubview:imageBg];
-//    [imageBg mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.edges.equalTo(self.view);
-//    }];
-    
-//    [imageBg addSubview:self.effectPWView];
-
     self.openAwardView = [OpenAwardView new];
     [self.view addSubview:self.openAwardView];
     [self.openAwardView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.mas_topLayoutGuide).offset(viewAdapter(5));
-//        make.top.equalTo(self.view).offset(viewAdapter(35));
         make.left.equalTo(self.view).offset(viewAdapter(20));
         make.right.equalTo(self.view).offset(viewAdapter(-20));
-//        make.height.mas_equalTo(viewAdapter(150)).priorityLow();
     }];
     
     //中奖信息
@@ -161,9 +92,7 @@ static BOOL canAddAnimation = NO;
         make.left.equalTo(self.view).offset(viewAdapter(15));
         make.right.equalTo(self.view).offset(viewAdapter(-15));
     }];
-//    self.winingDetailView.layer.borderColor = [UIColor lightGrayColor].CGColor;
-//    self.winingDetailView.layer.borderWidth = viewAdapter(1);
-//    self.winingDetailView.layer.cornerRadius = viewAdapter(5);
+
     
     //下期预测号码
     self.nextExpectView = [LastExpectView new];
@@ -175,20 +104,19 @@ static BOOL canAddAnimation = NO;
     }];
     self.nextExpectView.titleLable.text = @"下期预测号码";
     
-    //上期开奖号码
-//    self.lastExpectView = [LastExpectView new];
-//    [self.view addSubview:self.lastExpectView];
-//    [self.lastExpectView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(self.nextExpectView.mas_bottom).offset(viewAdapter(5));
-//        make.left.equalTo(self.view).offset(viewAdapter(15));
-//        make.right.equalTo(self.view).offset(viewAdapter(-15));
-//    }];
+    UIImageView *headerImageBg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bookshelf_header_mask"]];
+    [self.view insertSubview:headerImageBg atIndex:0];
+    [headerImageBg mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.mas_topLayoutGuideTop);
+        make.left.right.equalTo(self.view);
+        make.bottom.equalTo(self.nextExpectView).offset(viewAdapter(-18));
+    }];
     
     UIView *pageViewBg = [UIView new];
     [self.view insertSubview:pageViewBg belowSubview:self.winingDetailView];
     [pageViewBg mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo(self.view);
-        make.top.equalTo(self.nextExpectView.mas_bottom).offset(viewAdapter(0));
+        make.top.equalTo(headerImageBg.mas_bottom).offset(viewAdapter(0));
     }];
     pageViewBg.backgroundColor = [UIColor whiteColor];
     pageViewBg.layer.borderColor = [UIColor lightGrayColor].CGColor;
@@ -217,29 +145,6 @@ static BOOL canAddAnimation = NO;
         make.top.equalTo(pageViewBg).offset(viewAdapter(18));
     }];
     
-    UIImageView *headerImageBg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bookshelf_header_mask"]];
-    [self.view insertSubview:headerImageBg atIndex:0];
-    [headerImageBg mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.mas_topLayoutGuideTop);
-        make.left.right.equalTo(self.view);
-        make.bottom.equalTo(pageViewBg.mas_top);
-    }];
-    
-//    self.scrollView = [UIScrollView new];
-//    [self.view addSubview:self.scrollView];
-//    [self.scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(self.lastExpectView.mas_bottom);
-//        make.left.right.equalTo(self.view);
-//        make.bottom.equalTo(self.view).offset(-50);
-//    }];
-//    self.scrollView.backgroundColor = DEBUGCOLOR(cyanColor);
-//    
-//    UIView *container = [UIView new];
-//    [self.scrollView addSubview:container];
-//    [container mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.edges.equalTo(self.scrollView);
-//        make.width.equalTo(self.scrollView);
-//    }];
     //上一期
     self.lastExpect = [UITextView new];
     [lastExpectBg addSubview:self.lastExpect];
@@ -249,7 +154,7 @@ static BOOL canAddAnimation = NO;
         make.top.equalTo(lastExpectBg);
         make.bottom.equalTo(lastExpectBg);
     }];
-    self.lastExpect.font = [UIFont fontWithName:@"Menlo-Bold" size:viewAdapter(17)];
+    self.lastExpect.font = [UIFont fontWithName:@"Menlo-Bold" size:viewAdapter(16)];
 //    self.lastExpect.numberOfLines = 0;
     self.lastExpect.editable = NO;
 //    self.lastExpect.backgroundColor = [UIColor whiteColor];//UIColorFromRGB(0xf4f6f5);
@@ -264,7 +169,7 @@ static BOOL canAddAnimation = NO;
         make.top.equalTo(nextExpectBg);
         make.bottom.equalTo(nextExpectBg);
     }];
-    self.nextExpect.font = [UIFont fontWithName:@"Menlo-Bold" size:viewAdapter(17)];
+    self.nextExpect.font = [UIFont fontWithName:@"Menlo-Bold" size:viewAdapter(16)];
 //    self.nextExpect.numberOfLines = 0;
     self.nextExpect.editable = NO;
 //    self.nextExpect.backgroundColor = [UIColor whiteColor];//UIColorFromRGB(0xf4f6f5);
@@ -297,6 +202,35 @@ static BOOL canAddAnimation = NO;
             [selfWeak requestData];
         }else if (index == 3){//设置
         
+        }
+    }];
+    
+    __block NSString *nextNumber = @"";
+    [self.nextExpectView setButtonClick:^(UIButton *button, NSInteger index) {
+        NSDictionary *dict = [OperationManager getResultWithArray:[[selfWeak.model.number componentsSeparatedByString:@"+"].firstObject componentsSeparatedByString:@","]];
+        NSString *string = [selfWeak getFormatStringWithDict:dict];
+        if (index == 0) {//开始&停止
+            if (button.selected) {//开始
+                [ToolClass cancelTimeCountDownWith:timer];
+                timer = [ToolClass timeCountDownWithCount:3000 perTime:0.02 inProgress:^(int time) {
+                    [selfWeak.nextExpectView setLastExpectViewWithText:[[OperationManager allNumbersChooesSevenNumberWithAllNumbers:dict[@"allArray"]] componentsJoinedByString:@","]];
+                } completion:^{
+                    
+                }];
+            }else{//停止
+                [ToolClass cancelTimeCountDownWith:timer];
+                nextNumber = [[OperationManager allNumbersChooesSevenNumberWithAllNumbers:dict[@"allArray"]] componentsJoinedByString:@","];
+                [selfWeak.nextExpectView setLastExpectViewWithText:nextNumber];
+                selfWeak.nextExpect.text = [NSString stringWithFormat:@"========= 7个号码 =========\n=  %@  =\n%@", nextNumber, string];
+            }
+        }else{//保存
+            if (nextNumber.length > 0) {
+                selfWeak.model.nextNumber = nextNumber;
+                [FMDatabaseTool saveObjectToDB:selfWeak.model withTableName:NSStringFromClass([SaveModel class])];
+                [ToolClass showMBMessageTitle:@"保存成功" toView:selfWeak.view completion:^{
+                    nextNumber = @"";
+                }];
+            }
         }
     }];
 }
@@ -344,22 +278,6 @@ static BOOL canAddAnimation = NO;
     }
 }
 
-//- (void)clearBtnClick:(UIButton *)button
-//{
-//    for (int i = 0; i < 6; i++) {
-//        UITextField *textField = [self.textFieldBg viewWithTag:1000 + i];
-//        textField.text = @"";
-//        if (i == 0) {
-//            textField.enabled = YES;
-//            [textField becomeFirstResponder];
-//            textField.layer.borderColor = [UIColor blackColor].CGColor;
-//        }else{
-//            textField.enabled = NO;
-//            textField.layer.borderColor = [UIColor lightGrayColor].CGColor;
-//        }
-//    }
-//}
-
 - (void)upAndDownButtonClick:(id)object
 {
     CATransition *animation = [CATransition animation];
@@ -406,29 +324,11 @@ static BOOL canAddAnimation = NO;
     }
 }
 
-- (void)reloadNumbers
-{
-//    for (int i = 0; i < 6; i++) {
-//        UITextField *textField = self.textFieldBg.subviews[i];
-//        if (self.numArray.count == 6) {
-//            textField.text = self.numArray[i];
-//            textField.layer.borderColor = [UIColor blackColor].CGColor;
-//            if (i == 5) {
-//                textField.enabled = YES;
-//            }
-//        }else{
-//            if (i == 0) {
-//                textField.enabled = YES;
-//                [textField becomeFirstResponder];
-//                textField.layer.borderColor = [UIColor blackColor].CGColor;
-//            }
-//        }
-//    }
-}
-
 //设置显示数据
 - (void)reloadUI
 {
+    self.nextExpectView.buttonEnabled = [self.model.time isEqualToString:[self getCurrentPeriodsString]];
+
     //设置当前期开奖号码
     [self.openAwardView setOpenAwardViewWithModel:self.model];
     //上一期的时间
@@ -455,7 +355,7 @@ static BOOL canAddAnimation = NO;
         //上期预测情况
         NSString *string = [NSString stringWithFormat:@"========= 7个号码 =========\n=  %@  =\n%@", lastTimeModel.nextNumber, [self getFormatStringWithDict:dict]];
         NSMutableAttributedString *attuibutedString = [[NSMutableAttributedString alloc] initWithString:string];
-        [attuibutedString addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Menlo-Bold" size:viewAdapter(17)] range:NSMakeRange(0, attuibutedString.length)];
+        [attuibutedString addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Menlo-Bold" size:viewAdapter(16)] range:NSMakeRange(0, attuibutedString.length)];
         for (long i = 0; i < string.length-2; i++) {
             NSString *str = [string substringWithRange:NSMakeRange(i, 2)];
             if ([allArray containsObject:str]) {
@@ -466,39 +366,26 @@ static BOOL canAddAnimation = NO;
         self.pageView.showIndex = 0;
     }else{
         [self.winingDetailView setWiningDetailWithDictionary:nil];
-//        [self.lastExpectView setLastExpectViewWithText:nil];
         self.lastExpect.text = @"未查询到上期开奖号码";
         self.pageView.showIndex = 1;
-        [ToolClass showMBConnectTitle:nil toView:self.pageView afterDelay:0 isNeedUserInteraction:NO];
     }
     
     //下期预测情况
     NSDictionary *dict = [OperationManager getResultWithArray:[[self.model.number componentsSeparatedByString:@"+"].firstObject componentsSeparatedByString:@","]];
     NSString *string = [self getFormatStringWithDict:dict];
     self.nextExpect.text = string;
-    [ToolClass timeCountDownWithCount:30 perTime:0.02 inProgress:^(int time) {
-        [self.nextExpectView setLastExpectViewWithText:[[OperationManager allNumbersChooesSevenNumberWithAllNumbers:dict[@"allArray"]] componentsJoinedByString:@","]];
-    } completion:^{
-        [ToolClass timeCountDownWithCount:8 perTime:0.05 inProgress:^(int time) {
+    
+    if (self.model.nextNumber.length > 0) {//已有预测号码
+        [self.nextExpectView setLastExpectViewWithText:self.model.nextNumber];
+        self.nextExpect.text = [NSString stringWithFormat:@"========= 7个号码 =========\n=  %@  =\n%@", self.model.nextNumber, string];
+    }else{//没有预测号码
+        self.nextExpectView.startBtn.selected = YES;
+        timer = [ToolClass timeCountDownWithCount:3000 perTime:0.02 inProgress:^(int time) {
             [self.nextExpectView setLastExpectViewWithText:[[OperationManager allNumbersChooesSevenNumberWithAllNumbers:dict[@"allArray"]] componentsJoinedByString:@","]];
         } completion:^{
-            NSString *nextNumber = [[OperationManager allNumbersChooesSevenNumberWithAllNumbers:dict[@"allArray"]] componentsJoinedByString:@","];
-            if (!(self.model.nextNumber.length > 0)) {
-                self.model.nextNumber = nextNumber;
-                [FMDatabaseTool saveObjectToDB:self.model withTableName:NSStringFromClass([SaveModel class])];
-            }
-            [self.nextExpectView setLastExpectViewWithText:self.model.nextNumber];
-            self.nextExpect.text = [NSString stringWithFormat:@"========= 7个号码 =========\n=  %@  =\n%@", self.model.nextNumber, string];
-            [ToolClass hideMBConnect];
+            
         }];
-//        NSString *nextNumber = [[OperationManager allNumbersChooesSevenNumberWithAllNumbers:dict[@"allArray"]] componentsJoinedByString:@","];
-//        if (!(self.model.nextNumber.length > 0)) {
-//            self.model.nextNumber = nextNumber;
-//            [FMDatabaseTool saveObjectToDB:self.model withTableName:NSStringFromClass([SaveModel class])];
-//        }
-//        [self.nextExpectView setLastExpectViewWithText:self.model.nextNumber];
-//        self.nextExpect.text = [NSString stringWithFormat:@"========= 7个号码 =========\n=  %@  =\n%@", self.model.nextNumber, self.nextExpect.text];
-    }];
+    }
 }
 
 /** 两个数组的交集 */

@@ -77,7 +77,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:a]
 #import "IQKeyboardManager.h"
 #import "AFNetworking.h"
 
-/************************************** 日历适配相关 *****************************************/
+/*********************************** 日历方法弃用适配相关 **************************************/
 
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
 #define NSGregorianCalendar         NSCalendarIdentifierGregorian
@@ -607,3 +607,11 @@ void dispatch_async_get_main_queue_safe(dispatch_block_t block);
 void dispatch_sync_get_main_queue_safe(dispatch_block_t block);
 
 #endif
+
+/*********************************** 以下为UIImage类别代码 *************************************/
+
+@interface UIImage (Color)
+
++ (UIImage *)imageWithColor:(UIColor *)color;
+
+@end
