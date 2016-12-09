@@ -25,7 +25,7 @@
     UIImageView *titleImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"book_detail_note"]];
     [self addSubview:titleImage];
     [titleImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self).offset(viewAdapter(10));
+        make.top.equalTo(self).offset(viewAdapter(12));
         make.left.equalTo(self).offset(viewAdapter(20));
         make.width.height.mas_equalTo(viewAdapter(20));
     }];
@@ -38,7 +38,7 @@
     }];
     self.titleLable.text = @"上期开奖号码:";
     self.titleLable.font = [UIFont systemFontOfSize:viewAdapter(16)];
-    self.titleLable.textColor = [UIColor whiteColor];
+    self.titleLable.textColor = [UIColor lightGrayColor];
     
     [self layoutIfNeeded];
     
@@ -88,14 +88,14 @@
     self.btnBg = [UIView new];
     [self addSubview:self.btnBg];
     [self.btnBg mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.mas_equalTo(viewAdapter(300));
-        make.height.mas_equalTo(viewAdapter(36));
+        make.width.mas_equalTo(viewAdapter(280));
+        make.height.mas_equalTo(viewAdapter(32));
         make.centerX.equalTo(self);
         make.top.equalTo(numberBg.mas_bottom).offset(viewAdapter(10));
         make.bottom.equalTo(self);
     }];
     self.btnBg.layer.masksToBounds = YES;
-    self.btnBg.layer.cornerRadius = viewAdapter(36)/2;
+    self.btnBg.layer.cornerRadius = viewAdapter(32)/2;
     self.btnBg.backgroundColor = RGBACOLOR(253, 185, 17, 1);
     
     self.startBtn = [UIButton new];
@@ -140,6 +140,15 @@
     self.saveBtn.titleLabel.font = [UIFont systemFontOfSize:viewAdapter(15)];
     self.saveBtn.tag = 2001;
     [self.saveBtn addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
+    
+    self.btnBgLineView = [UIView new];
+    [self insertSubview:self.btnBgLineView belowSubview:self.btnBg];
+    [self.btnBgLineView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_equalTo(viewAdapter(1.5));
+        make.left.right.equalTo(self);
+        make.centerY.equalTo(self.btnBg);
+    }];
+    self.btnBgLineView.backgroundColor = RGBACOLOR(253, 185, 17, 1);
 }
 
 - (void)setLastExpectViewWithText:(NSString *)text

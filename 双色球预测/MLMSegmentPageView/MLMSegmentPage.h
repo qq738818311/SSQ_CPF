@@ -25,6 +25,7 @@
 //@property (nonatomic, assign) BOOL loadAll;
 ///缓存页面数目，默认 - all
 //@property (nonatomic, assign) NSInteger countLimit;
+@property (nonatomic, strong) MLMSegmentHead *headView;
 @property (nonatomic, strong) UIScrollView *viewsScroll;
 
 ///顶部样式，默认 - SegmentHeadStyleDefault
@@ -59,13 +60,13 @@
 ///箭头颜色，默认 - selectedColor
 @property (nonatomic, strong) UIColor *arrowColor;
 
-///滑块颜色，默认 - deselectedColor
+/** 滑块颜色，默认 - deselectedColor */
 @property (nonatomic, strong) UIColor *slideColor;
-///滑块高度，默认 - 头部按钮的高度* .8
+/** 滑块高度，默认 - 头部按钮的高度* .8 */
 @property (nonatomic, assign) CGFloat slideHeight;
-///滑块圆角，默认 - slideHeight/2
+/** 滑块圆角，默认 - slideHeight/2 */
 @property (nonatomic, assign) CGFloat slideCorner;
-///滑块占比,默认 - 1
+/** 滑块占比,默认 - 1 */
 @property (nonatomic, assign) CGFloat slideScale;
 
 

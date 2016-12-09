@@ -21,48 +21,41 @@
 - (void)createUI
 {
     [self layoutIfNeeded];
-    //上一期
-    UIButton *upButton = [UIButton new];
-    [self addSubview:upButton];
-    [upButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self);
-        make.centerX.equalTo(self.mas_left).offset(WIDTH/2/2/2);
-    }];
-    [self setButtonWithButton:upButton title:@"上一期" tag:2000 imageName:@"bottom_bar_last_btn"];
-    //下一期
-    UIButton *downButton = [UIButton new];
-    [self addSubview:downButton];
-    [downButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self);
-        make.centerX.equalTo(self).offset(-WIDTH/2/2/2);
-    }];
-    [self setButtonWithButton:downButton title:@"下一期" tag:2001 imageName:@"bottom_bar_next_btn"];
-    //刷新
-    UIButton *refreshBtn = [UIButton new];
-    [self addSubview:refreshBtn];
-    [refreshBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(self).offset(WIDTH/2/2/2);
-        make.centerY.equalTo(self);
-    }];
-    [self setButtonWithButton:refreshBtn title:@"刷新" tag:2002 imageName:@"bottom_bar_refresh"];
-    //设置
-    UIButton *settingBtn = [UIButton new];
-    [self addSubview:settingBtn];
-    [settingBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(self.mas_right).offset(-WIDTH/2/2/2);
-        make.centerY.equalTo(self);
-    }];
-    [self setButtonWithButton:settingBtn title:@"设置" tag:2003 imageName:@"bottom_bar_setting"];
+    NSArray *titleArray = @[@"上一期", @"下一期", @"刷新", @"设置"];
+    NSArray *imageNameArray = @[@"bottom_bar_last_btn", @"bottom_bar_next_btn", @"bottom_bar_refresh", @"bottom_bar_setting"];
+    
+    UIView *tempView = nil;
+    for (int i = 0; i < 4; i++) {
+        UIButton *button = [self createButtonWithTitle:titleArray[i] tag:2000 + i imageName:imageNameArray[i]];
+        [self addSubview:button];
+        [button mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self).offset(viewAdapter(5));
+            make.bottom.equalTo(self).offset(viewAdapter(-5));
+            make.width.mas_equalTo((WIDTH - viewAdapter(20)*5)/4);
+            if (!tempView) {
+                make.left.equalTo(self).offset(viewAdapter(20));
+            }else{
+                make.left.equalTo(tempView.mas_right).offset(viewAdapter(20));
+            }
+            if (i == 5) {
+                make.right.equalTo(self).offset(viewAdapter(-20)).priorityLow();
+            }
+        }];
+        tempView = button;
+    }
+    self.backgroundColor = UIColorFromRGBWithAlpha(0xffffff, 0.5);
 }
 
-- (void)setButtonWithButton:(UIButton *)button title:(NSString *)title tag:(NSInteger)tag imageName:(NSString *)imageName
+- (UIButton *)createButtonWithTitle:(NSString *)title tag:(NSInteger)tag imageName:(NSString *)imageName
 {
+    UIButton *button = [UIButton new];
     [button setTitle:title forState:UIControlStateNormal];
     [button setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
     [button setTitleColor:RGBACOLOR(18, 109, 255, 1) forState:UIControlStateNormal];
     button.titleLabel.font = [UIFont systemFontOfSize:viewAdapter(13)];
     button.tag = tag;
     [button addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
+    return button;
 }
 
 - (void)buttonClick:(UIButton *)button
@@ -77,7 +70,8 @@
     [super layoutSubviews];
     for (UIView *view in self.subviews) {
         if ([view isKindOfClass:[UIButton class]]) {
-            [self initButton:(UIButton *)view];
+            UIButton *button = (UIButton *)view;
+            [self initButton:button];
         }
     }
 }

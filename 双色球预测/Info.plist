@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>LEPgyerApiKey</key>
+	<string>25ca80dbd2a141072e37590de146bba6</string>
+	<key>LEPgyerUKey</key>
+	<string>745a408791af3dd0df4bd4204242a084</string>
 	<key>CFBundleAllowMixedLocalizations</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>

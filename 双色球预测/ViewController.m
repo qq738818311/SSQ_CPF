@@ -50,11 +50,11 @@ static dispatch_source_t timer;
 - (UIVisualEffectView *)effectPWView
 {
     if (!_effectPWView) {
-        UIBlurEffect *blur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+        UIBlurEffect *blur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
         _effectPWView = [[UIVisualEffectView alloc] initWithEffect:blur];
         _effectPWView.userInteractionEnabled = YES;
         _effectPWView.frame = self.view.frame;
-        _effectPWView.alpha = 0.5;
+        _effectPWView.alpha = 1;
     }
     return _effectPWView;
 }
@@ -76,6 +76,12 @@ static dispatch_source_t timer;
 
 - (void)createUI
 {
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"1242x2208"]];
+    [self.view addSubview:imageView];
+    [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.view);
+    }];
+    
     self.openAwardView = [OpenAwardView new];
     [self.view addSubview:self.openAwardView];
     [self.openAwardView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -100,49 +106,52 @@ static dispatch_source_t timer;
     [self.nextExpectView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.winingDetailView.mas_bottom);
         make.left.right.equalTo(self.view).offset(viewAdapter(0));
-//        make.right.equalTo(self.view).offset(viewAdapter(-15));
     }];
     self.nextExpectView.titleLable.text = @"下期预测号码";
     
-    UIImageView *headerImageBg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bookshelf_header_mask"]];
-    [self.view insertSubview:headerImageBg atIndex:0];
-    [headerImageBg mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.mas_topLayoutGuideTop);
-        make.left.right.equalTo(self.view);
-        make.bottom.equalTo(self.nextExpectView).offset(viewAdapter(-18));
-    }];
+//    UIImageView *headerImageBg = [[UIImageView alloc] init/*WithImage:[UIImage imageNamed:@"bookshelf_header_mask"]*/];
+//    [self.view insertSubview:headerImageBg atIndex:0];
+//    [headerImageBg mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.mas_topLayoutGuideTop);
+//        make.left.right.equalTo(self.view);
+//        make.bottom.equalTo(self.nextExpectView.btnBg.mas_centerY).offset(viewAdapter(0));
+//    }];
+//    headerImageBg.backgroundColor = RGBACOLOR(236, 237, 236, 1);
+//    [headerImageBg addSubview:self.effectPWView];
     
     UIView *pageViewBg = [UIView new];
     [self.view insertSubview:pageViewBg belowSubview:self.winingDetailView];
     [pageViewBg mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo(self.view);
-        make.top.equalTo(headerImageBg.mas_bottom).offset(viewAdapter(0));
+        make.top.equalTo(self.nextExpectView.btnBg.mas_centerY).offset(viewAdapter(0));
     }];
-    pageViewBg.backgroundColor = [UIColor whiteColor];
-    pageViewBg.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    pageViewBg.layer.borderWidth = viewAdapter(0.5);
+//    pageViewBg.backgroundColor = [UIColor whiteColor];
+//    pageViewBg.layer.borderColor = [UIColor lightGrayColor].CGColor;
+//    pageViewBg.layer.borderWidth = viewAdapter(0.5);
     
     UIView *lastExpectBg = [UIView new];
     UIView *nextExpectBg = [UIView new];
-    lastExpectBg.backgroundColor = RGBACOLOR(251, 244, 211, 1);
-    nextExpectBg.backgroundColor = RGBACOLOR(251, 244, 211, 1);
+    lastExpectBg.backgroundColor = RGBACOLOR(251, 244, 211, 0.6);
+    nextExpectBg.backgroundColor = RGBACOLOR(251, 244, 211, 0.6);
     //预测信息
-    self.pageView = [[MLMSegmentPage alloc] initSegmentWithFrame:CGRectZero titlesArray:@[@"本期预测情况", @"下期预测情况"] vcOrviews:@[lastExpectBg, nextExpectBg] headStyle:SegmentHeadStyleLine];
+    self.pageView = [[MLMSegmentPage alloc] initSegmentWithFrame:CGRectZero titlesArray:@[@"本期预测情况", @"下期预测情况"] vcOrviews:@[lastExpectBg, nextExpectBg] headStyle:SegmentHeadStyleSlide];
     self.pageView.delegate = self;
-    self.pageView.headHeight = viewAdapter(40);
-    self.pageView.headColor = RGBACOLOR(255, 255, 255, 1);//UIColorFromRGB(0xf4f6f5);
-    self.pageView.fontScale = 0.95;//.85;
-    self.pageView.fontSize = viewAdapter(18);
-    self.pageView.lineScale = .9;
-    self.pageView.deselectColor = [UIColor grayColor];
-    self.pageView.selectColor = [UIColor redColor];
-    self.pageView.bottomLineHeight = viewAdapter(0.8);
-    self.pageView.bottomLineColor = UIColorFromRGBWithAlpha(0xf4f6f5, 1);
-    self.pageView.backgroundColor = [UIColor whiteColor];
+    self.pageView.headHeight = viewAdapter(50);
+    self.pageView.headColor = RGBACOLOR(255, 255, 255, 0);//UIColorFromRGB(0xf4f6f5);
+    self.pageView.fontSize = viewAdapter(16);
+    self.pageView.deselectColor = UIColorFromRGBWithAlpha(0xffffff, 1);
+    self.pageView.selectColor = RGBACOLOR(18, 109, 255, 1);
+    //滑块占比,默认 - 1
+    self.pageView.slideScale = 0.7;
+    //滑块高度
+    self.pageView.slideHeight = viewAdapter(30);
+    //滑块颜色
+    self.pageView.slideColor = UIColorFromRGBWithAlpha(0xffffff, 0.6);
+    self.pageView.bottomLineHeight = viewAdapter(0);
     [pageViewBg addSubview:self.pageView];
     [self.pageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.bottom.equalTo(pageViewBg);
-        make.top.equalTo(pageViewBg).offset(viewAdapter(18));
+        make.top.equalTo(pageViewBg).offset(viewAdapter(20));
     }];
     
     //上一期
@@ -226,12 +235,25 @@ static dispatch_source_t timer;
             }
         }else{//保存
             if (nextNumber.length > 0) {
-                selfWeak.nextExpect.text = [NSString stringWithFormat:@"========= 7个号码 =========\n=  %@  =\n%@", nextNumber, string];
-                selfWeak.model.nextNumber = nextNumber;
-                [FMDatabaseTool saveObjectToDB:selfWeak.model withTableName:NSStringFromClass([SaveModel class])];
-                [ToolClass showMBMessageTitle:@"保存成功" toView:selfWeak.view completion:^{
-                    nextNumber = @"";
-                }];
+                if (kIsString(selfWeak.model.nextNumber)) {
+                    [ToolClass showAlertControllerWithPreferredStyle:UIAlertControllerStyleAlert title:@"检测到已有保存过的号码\n是否更新?" message:@"" handlerBlock:^(NSUInteger buttonIndex) {
+                        if (buttonIndex == 1) {
+                            selfWeak.nextExpect.text = [NSString stringWithFormat:@"========= 7个号码 =========\n=  %@  =\n%@", nextNumber, string];
+                            selfWeak.model.nextNumber = nextNumber;
+                            [FMDatabaseTool saveObjectToDB:selfWeak.model withTableName:NSStringFromClass([SaveModel class])];
+                            [ToolClass showMBMessageTitle:@"保存成功" toView:selfWeak.view completion:^{
+                                nextNumber = @"";
+                            }];
+                        }
+                    } cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+                }else{
+                    selfWeak.nextExpect.text = [NSString stringWithFormat:@"========= 7个号码 =========\n=  %@  =\n%@", nextNumber, string];
+                    selfWeak.model.nextNumber = nextNumber;
+                    [FMDatabaseTool saveObjectToDB:selfWeak.model withTableName:NSStringFromClass([SaveModel class])];
+                    [ToolClass showMBMessageTitle:@"保存成功" toView:selfWeak.view completion:^{
+                        nextNumber = @"";
+                    }];
+                }
             }
         }
     }];
@@ -245,7 +267,7 @@ static dispatch_source_t timer;
         [self reloadUI];
     }else{
         [ToolClass showMBConnectTitle:@"" toView:self.view afterDelay:0 isNeedUserInteraction:NO];
-        [ToolClass requestPOSTWithURL:@"http://f.apiplus.cn/ssq-1.json" parameters:nil isCache:YES success:^(id responseObject, NSString *msg) {
+        [ToolClass requestPOSTWithURL:@"http://f.apiplus.cn/ssq-1.json" parameters:nil isCache:NO success:^(id responseObject, NSString *msg) {
             NSArray *data = responseObject[@"data"];
             NSDictionary *dataDict = data.firstObject;
             NSString *dateStr = [NSString stringWithFormat:@"%@(%@)", [dataDict[@"opentime"] componentsSeparatedByString:@" "].firstObject, [ToolClass getWeekDayFordate:[ToolClass dateFromTimeInterval:[dataDict[@"opentimestamp"] doubleValue]]]];
@@ -319,7 +341,7 @@ static dispatch_source_t timer;
         self.nextExpectView.startBtn.selected = NO;
         self.model = model;
         [self reloadUI];
-        [[self.pageView layer] addAnimation:animation forKey:@"animation"];
+        [[self.pageView.viewsScroll layer] addAnimation:animation forKey:@"animation"];
     }else{
         [ToolClass showMBMessageTitle:mbMessage toView:self.view];
     }
@@ -381,10 +403,18 @@ static dispatch_source_t timer;
         self.nextExpect.text = [NSString stringWithFormat:@"========= 7个号码 =========\n=  %@  =\n%@", self.model.nextNumber, string];
     }else{//没有预测号码
         self.nextExpectView.startBtn.selected = YES;
-        timer = [ToolClass timeCountDownWithCount:3000 perTime:0.02 inProgress:^(int time) {
-            [self.nextExpectView setLastExpectViewWithText:[[OperationManager allNumbersChooesSevenNumberWithAllNumbers:dict[@"allArray"]] componentsJoinedByString:@","]];
+        [ToolClass timeCountDownWithCount:6 perTime:0.5 inProgress:^(int time) {
+            if (time%2) {
+                [self.nextExpectView setLastExpectViewWithText:[[@[@"--",@"--",@"--",@"--",@"--",@"--",@"--"] mutableCopy] componentsJoinedByString:@","]];
+            }else{
+                [self.nextExpectView setLastExpectViewWithText:[[@[@"  ",@"  ",@"  ",@"  ",@"  ",@"  ",@"  "] mutableCopy] componentsJoinedByString:@","]];
+            }
         } completion:^{
-            
+            timer = [ToolClass timeCountDownWithCount:3000 perTime:0.02 inProgress:^(int time) {
+                [self.nextExpectView setLastExpectViewWithText:[[OperationManager allNumbersChooesSevenNumberWithAllNumbers:dict[@"allArray"]] componentsJoinedByString:@","]];
+            } completion:^{
+                
+            }];
         }];
     }
 }

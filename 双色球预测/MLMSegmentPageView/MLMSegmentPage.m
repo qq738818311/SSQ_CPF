@@ -16,7 +16,6 @@
     NSInteger currentIndex;
 }
 //@property (nonatomic, strong) NSCache *viewsCache;//存储页面(使用计数功能)
-@property (nonatomic, strong) MLMSegmentHead *headView;
 
 @end
 
