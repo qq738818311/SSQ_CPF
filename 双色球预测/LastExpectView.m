@@ -8,7 +8,7 @@
 
 #import "LastExpectView.h"
 
-#define SPACING_LastExpectView viewAdapter(10)//间距
+#define SPACING_LastExpectView viewAdapter(8)//间距
 
 @implementation LastExpectView
 
@@ -45,8 +45,9 @@
     UIView *numberBg = [UIView new];
     [self addSubview:numberBg];
     [numberBg mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.titleLable.mas_bottom).offset(viewAdapter(5));
-        make.centerX.equalTo(self);
+        make.top.equalTo(self.titleLable.mas_bottom).offset(viewAdapter(10));
+        make.left.equalTo(self).offset(viewAdapter(5));
+        make.bottom.equalTo(self).offset(viewAdapter(-10));
     }];
     
     UIView *tempView = nil;
@@ -84,18 +85,44 @@
         tempView = numberLabel;
     }
     
+//    self.startBtn = [UIButton new];
+//    [self addSubview:self.startBtn];
+//    [self.startBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.equalTo(numberBg.mas_right).offset(viewAdapter(10));
+////        make.right.equalTo(self).offset(viewAdapter(-25));
+//        make.width.height.mas_equalTo(viewAdapter(60));
+//        make.centerY.equalTo(self);
+//    }];
+////    self.startBtn.titleEdgeInsets = UIEdgeInsetsMake(0, viewAdapter(20), 0, 0);
+//    self.startBtn.titleLabel.font = [UIFont systemFontOfSize:viewAdapter(14)];
+//    [self.startBtn setTitleColor:RGBACOLOR(78, 47, 34, 1) forState:UIControlStateNormal];
+//    [self.startBtn setTitle:@"开始" forState:UIControlStateNormal];
+//    [self.startBtn setImage:[UIImage imageNamed:@"start"] forState:UIControlStateNormal];
+//    [self.startBtn setTitle:@"停止" forState:UIControlStateSelected];
+//    [self.startBtn setImage:[UIImage imageNamed:@"stop"] forState:UIControlStateSelected];
+//    [self.startBtn setBackgroundImage:[UIImage imageWithColor:RGBACOLOR(253, 185, 17, 1)] forState:UIControlStateNormal];
+//    [self.startBtn setBackgroundImage:[UIImage imageWithColor:UIColorFromRGB(0xd4d4d9)] forState:UIControlStateDisabled];
+//    self.startBtn.layer.masksToBounds = YES;
+//    self.startBtn.layer.cornerRadius = viewAdapter(60)/2;
+//    self.startBtn.tag = 2000;
+//    [self.startBtn addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
+    
     //按钮的背景
     self.btnBg = [UIView new];
     [self addSubview:self.btnBg];
     [self.btnBg mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.mas_equalTo(viewAdapter(280));
-        make.height.mas_equalTo(viewAdapter(32));
-        make.centerX.equalTo(self);
-        make.top.equalTo(numberBg.mas_bottom).offset(viewAdapter(10));
-        make.bottom.equalTo(self);
+//        make.width.mas_equalTo(viewAdapter(140));
+        make.height.mas_equalTo(viewAdapter(30));
+//        make.centerX.equalTo(self);
+//        make.top.equalTo(numberBg.mas_bottom).offset(viewAdapter(10));
+//        make.bottom.equalTo(self);
+        make.centerY.equalTo(numberBg);
+        make.left.equalTo(numberBg.mas_right).offset(viewAdapter(5));
+        make.right.equalTo(self).offset(viewAdapter(-15));
     }];
+//    [self.btnBg.superview layoutIfNeeded];
     self.btnBg.layer.masksToBounds = YES;
-    self.btnBg.layer.cornerRadius = viewAdapter(32)/2;
+    self.btnBg.layer.cornerRadius = viewAdapter(5);
     self.btnBg.backgroundColor = RGBACOLOR(253, 185, 17, 1);
     
     self.startBtn = [UIButton new];
@@ -103,10 +130,10 @@
     [self.startBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.top.bottom.equalTo(self.btnBg);
 //        make.width.mas_equalTo(viewAdapter(75));
-        make.width.equalTo(self.btnBg).multipliedBy(2.0/3);
+        make.width.equalTo(self.btnBg).multipliedBy(1.8/3);
     }];
-    self.startBtn.titleEdgeInsets = UIEdgeInsetsMake(0, viewAdapter(20), 0, 0);
-    self.startBtn.titleLabel.font = [UIFont boldSystemFontOfSize:viewAdapter(15)];
+//    self.startBtn.titleEdgeInsets = UIEdgeInsetsMake(0, viewAdapter(20), 0, 0);
+    self.startBtn.titleLabel.font = [UIFont boldSystemFontOfSize:viewAdapter(14)];
     [self.startBtn setTitleColor:RGBACOLOR(78, 47, 34, 1) forState:UIControlStateNormal];
     [self.startBtn setTitle:@"开始" forState:UIControlStateNormal];
     [self.startBtn setImage:[UIImage imageNamed:@"start"] forState:UIControlStateNormal];
@@ -137,18 +164,19 @@
     [self.saveBtn setTitleColor:RGBACOLOR(78, 47, 34, 1) forState:UIControlStateNormal];
     [self.saveBtn setBackgroundImage:[UIImage imageWithColor:RGBACOLOR(253, 185, 17, 1)] forState:UIControlStateNormal];
     [self.saveBtn setBackgroundImage:[UIImage imageWithColor:UIColorFromRGB(0xd4d4d9)] forState:UIControlStateDisabled];
-    self.saveBtn.titleLabel.font = [UIFont systemFontOfSize:viewAdapter(15)];
+    self.saveBtn.titleLabel.font = [UIFont systemFontOfSize:viewAdapter(14)];
     self.saveBtn.tag = 2001;
     [self.saveBtn addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
+ 
     
-    self.btnBgLineView = [UIView new];
-    [self insertSubview:self.btnBgLineView belowSubview:self.btnBg];
-    [self.btnBgLineView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.height.mas_equalTo(viewAdapter(1.5));
-        make.left.right.equalTo(self);
-        make.centerY.equalTo(self.btnBg);
-    }];
-    self.btnBgLineView.backgroundColor = RGBACOLOR(253, 185, 17, 1);
+//    self.btnBgLineView = [UIView new];
+//    [self insertSubview:self.btnBgLineView belowSubview:self.btnBg];
+//    [self.btnBgLineView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.height.mas_equalTo(viewAdapter(1.5));
+//        make.left.right.equalTo(self);
+//        make.centerY.equalTo(self.btnBg);
+//    }];
+//    self.btnBgLineView.backgroundColor = RGBACOLOR(253, 185, 17, 1);
 }
 
 - (void)setLastExpectViewWithText:(NSString *)text

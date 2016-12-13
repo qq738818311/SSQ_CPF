@@ -41,6 +41,7 @@
 //    _headStyle = SegmentHeadStyleLine;
 
     _headHeight = 50;
+    _headAlignment = MLMSegmentHeadAlignmentLeft;
     currentIndex = 0;
     
     _headColor = [UIColor whiteColor];
@@ -95,6 +96,28 @@
     
     _headView.slideHeight = _slideHeight ? : _headHeight*.8;
     _headView.frame = CGRectMake(0, 0, self.frame.size.width, _headHeight);
+}
+
+- (void)setHeadWidth:(CGFloat)headWidth
+{
+    _headWidth = headWidth;
+    _headView.frame = CGRectMake(0, 0, _headWidth, _headHeight);
+}
+
+- (void)setHeadAlignment:(MLMSegmentHeadAlignment)headAlignment
+{
+    _headAlignment = headAlignment;
+//    CGRect headViewFrame = CGRectMake(0, 0, _headWidth ? : self.frame.size.width, _headHeight);
+//    if (_headAlignment == MLMSegmentHeadAlignmentLeft) {//居左
+//        headViewFrame.origin.x = 0;
+//    }else if (_headAlignment == MLMSegmentHeadAlignmentCenter){//居中
+//        headViewFrame.origin.x = self.frame.size.width/2 - headViewFrame.size.width/2;
+//    }else if (_headAlignment == MLMSegmentHeadAlignmentRight){//居右
+//        headViewFrame.origin.x = self.frame.size.width - headViewFrame.size.width;
+//    }else{//默认居左
+//        headViewFrame.origin.x = 0;
+//    }
+//    _headView.frame = headViewFrame;
 }
 
 - (void)setSelectColor:(UIColor *)selectColor
@@ -214,7 +237,17 @@
 #pragma mark - layoutsubviews
 - (void)layoutSubviews {
     [super layoutSubviews];
-    _headView.frame = CGRectMake(0, 0, self.frame.size.width, _headHeight);
+    CGRect headViewFrame = CGRectMake(0, 0, _headWidth ? : self.frame.size.width, _headHeight);
+    if (_headAlignment == MLMSegmentHeadAlignmentLeft) {//居左
+        headViewFrame.origin.x = 0;
+    }else if (_headAlignment == MLMSegmentHeadAlignmentCenter){//居中
+        headViewFrame.origin.x = self.frame.size.width/2 - headViewFrame.size.width/2;
+    }else if (_headAlignment == MLMSegmentHeadAlignmentRight){//居右
+        headViewFrame.origin.x = self.frame.size.width - headViewFrame.size.width;
+    }else{//默认居左
+        headViewFrame.origin.x = 0;
+    }
+    _headView.frame = headViewFrame;
     _viewsScroll.frame = CGRectMake(0, _headHeight, self.frame.size.width, self.frame.size.height - _headHeight);
     [_viewsScroll setContentOffset:CGPointMake(_showIndex * self.frame.size.width, 0) animated:YES];
     [_viewsScroll setContentSize:CGSizeMake(titlesArray.count *_viewsScroll.frame.size.width, _viewsScroll.frame.size.height)];
@@ -256,9 +289,7 @@
     [self addSubview:self.headView];
     [self createViewsScroll];
     
-    
     [self defaultViewCache];
-
 }
 
 

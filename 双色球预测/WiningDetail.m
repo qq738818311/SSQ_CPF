@@ -22,48 +22,43 @@ static dispatch_source_t timer;
 
 - (void)createUI
 {
-//    UILabel *titleLabel = [UILabel new];
-//    [self addSubview:titleLabel];
-//    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.left.equalTo(self).offset(viewAdapter(5));
-//        make.centerY.equalTo(self);
-//    }];
-//    titleLabel.font = [UIFont fontWithName:@"Menlo-Bold" size:viewAdapter(17)];
-////    titleLabel.text = @"===⭐️中奖信息⭐️===";//
-//    titleLabel.text = @"⭐️中信⭐️\n⭐️奖息⭐️";//
-//    titleLabel.textAlignment = NSTextAlignmentCenter;
-//    titleLabel.numberOfLines = 0;
-//    titleLabel.layer.borderColor = [UIColor lightGrayColor].CGColor;
-//    titleLabel.layer.borderWidth = viewAdapter(1);
-        
     UIImageView *titleImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"中奖信息"]];
     [self addSubview:titleImage];
     [titleImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.top.equalTo(self).priorityLow();
+        make.top.equalTo(self).offset(viewAdapter(0));
         make.left.equalTo(self);
         make.height.width.mas_equalTo(viewAdapter(70));
     }];
     
+    UIView *contentBg = [UIView new];
+    [self addSubview:contentBg];
+    [contentBg mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(titleImage.mas_right).offset(viewAdapter(5));
+        make.top.equalTo(self).offset(viewAdapter(10));
+        make.bottom.equalTo(self).offset(viewAdapter(-10));
+        make.right.equalTo(self).offset(viewAdapter(-10));
+    }];
+    contentBg.backgroundColor = UIColorFromRGBWithAlpha(0xffffff, 0.5);
+    contentBg.layer.cornerRadius = viewAdapter(5);
+    
     self.winingLabel =  [UILabel new];
-    [self addSubview:self.winingLabel];
+    [contentBg addSubview:self.winingLabel];
     [self.winingLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(titleImage.mas_right);
-        make.centerY.equalTo(self).offset(viewAdapter(-12));
+        make.left.equalTo(contentBg).offset(viewAdapter(5));
+        make.centerY.equalTo(contentBg).multipliedBy(1.0/2);
     }];
     self.winingLabel.text = @"未中奖😞😞:";
-//    self.winingLabel.font = [UIFont fontWithName:@"Menlo-Bold" size:viewAdapter(17)];
-    self.winingLabel.font = [UIFont systemFontOfSize:viewAdapter(17)];
+    self.winingLabel.font = [UIFont systemFontOfSize:viewAdapter(16)];
     
     self.conjectureLabel =  [UILabel new];
-    [self addSubview:self.conjectureLabel];
+    [contentBg addSubview:self.conjectureLabel];
     [self.conjectureLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(titleImage.mas_right);
-        make.centerY.equalTo(self).offset(viewAdapter(18));
-//        make.bottom.equalTo(self).offset(viewAdapter(-10)).priorityLow();
+        make.left.equalTo(contentBg).offset(viewAdapter(5));
+        make.centerY.equalTo(contentBg).multipliedBy(3.0/2);
     }];
     self.conjectureLabel.text = @"所有测中号码:";
 //    self.conjectureLabel.font = [UIFont fontWithName:@"Menlo-Bold" size:viewAdapter(17)];
-    self.conjectureLabel.font = [UIFont systemFontOfSize:viewAdapter(17)];
+    self.conjectureLabel.font = [UIFont systemFontOfSize:viewAdapter(16)];
 
     self.winingBg = [UIView new];
     self.conjectureBg = [UIView new];
@@ -84,7 +79,7 @@ static dispatch_source_t timer;
         make.left.right.equalTo(self);
         make.top.equalTo(titleImage.mas_bottom).offset(viewAdapter(10));
         make.height.mas_equalTo(viewAdapter(1));
-        make.bottom.equalTo(self).priorityLow();
+        make.bottom.equalTo(self);
     }];
     lineView.backgroundColor = [UIColor lightGrayColor];
 }
@@ -129,7 +124,7 @@ static dispatch_source_t timer;
             UILabel *numberLabel = [UILabel new];
             numberLabel.backgroundColor = [UIColor redColor];
             numberLabel.layer.masksToBounds = YES;
-            numberLabel.layer.cornerRadius = viewAdapter(22)/2;
+            numberLabel.layer.cornerRadius = viewAdapter(21)/2;
             numberLabel.tag = 1000 + i;
             numberLabel.textAlignment = NSTextAlignmentCenter;
             numberLabel.textColor = [UIColor whiteColor];
@@ -137,7 +132,7 @@ static dispatch_source_t timer;
             [self.winingBg addSubview:numberLabel];
             [numberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.top.bottom.equalTo(self.winingBg);
-                make.width.height.mas_equalTo(viewAdapter(22));
+                make.width.height.mas_equalTo(viewAdapter(21));
                 if (i == 0) {
                     make.left.equalTo(self.winingBg);
                 }else{
@@ -155,7 +150,7 @@ static dispatch_source_t timer;
             UILabel *numberLabel = [UILabel new];
             numberLabel.backgroundColor = [UIColor redColor];
             numberLabel.layer.masksToBounds = YES;
-            numberLabel.layer.cornerRadius = viewAdapter(22)/2;
+            numberLabel.layer.cornerRadius = viewAdapter(21)/2;
             numberLabel.tag = 2000 + i;
             numberLabel.textAlignment = NSTextAlignmentCenter;
             numberLabel.textColor = [UIColor whiteColor];
@@ -163,7 +158,7 @@ static dispatch_source_t timer;
             [self.conjectureBg addSubview:numberLabel];
             [numberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.top.bottom.equalTo(self.conjectureBg);
-                make.width.height.mas_equalTo(viewAdapter(22));
+                make.width.height.mas_equalTo(viewAdapter(21));
                 if (i == 0) {
                     make.left.equalTo(self.conjectureBg);
                 }else{

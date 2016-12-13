@@ -34,8 +34,17 @@
 @property (nonatomic, strong) UIColor *headColor;
 ///顶部高度，默认 - 50
 @property (nonatomic, assign) CGFloat headHeight;
+/** 顶部宽度，默认 - self的宽度 */
+@property (nonatomic, assign) CGFloat headWidth;
 
+typedef NS_ENUM(NSInteger, MLMSegmentHeadAlignment) {
+    MLMSegmentHeadAlignmentLeft      = 0,    // 居左显示
+    MLMSegmentHeadAlignmentCenter    = 1,    // 居中显示
+    MLMSegmentHeadAlignmentRight     = 2,    // 居右显示
+};
 
+/** 头视图的显示位置，默认 - 居左 */
+@property (nonatomic, assign) MLMSegmentHeadAlignment headAlignment;
 
 ///选中颜色，默认 - blackColor
 @property (nonatomic, strong) UIColor *selectColor;

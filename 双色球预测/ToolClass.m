@@ -1024,6 +1024,7 @@ singleton_implementation(ToolClass)
 {
     if (timer) {
         dispatch_source_cancel(timer);
+        timer = nil;
     }
 }
 

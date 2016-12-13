@@ -52,6 +52,8 @@
     [button setTitle:title forState:UIControlStateNormal];
     [button setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
     [button setTitleColor:RGBACOLOR(18, 109, 255, 1) forState:UIControlStateNormal];
+    [button setImage:[UIImage imageNamed:@""] forState:UIControlStateHighlighted];
+    [button setTitleColor:RGBACOLOR(255, 255, 255, 1) forState:UIControlStateHighlighted];
     button.titleLabel.font = [UIFont systemFontOfSize:viewAdapter(13)];
     button.tag = tag;
     [button addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];

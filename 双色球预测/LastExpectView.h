@@ -15,7 +15,7 @@
 @property (nonatomic, strong) UIButton *startBtn;//开始按钮
 @property (nonatomic, strong) UIView *lineView;//竖线
 @property (nonatomic, strong) UIButton *saveBtn;//保存按钮
-@property (nonatomic, strong) UIView *btnBgLineView;//按钮下面的线
+//@property (nonatomic, strong) UIView *btnBgLineView;//按钮下面的线
 
 @property (nonatomic) BOOL buttonEnabled;
 

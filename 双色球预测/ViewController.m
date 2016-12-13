@@ -18,6 +18,7 @@
 
 static BOOL canAddAnimation = NO;
 static dispatch_source_t timer;
+static BOOL isCanCountdown = YES;//是否可以倒计时
 
 @interface ViewController ()<UITextFieldDelegate, WJTextFieldDelegate, MLMSegmentPageDelegate, UIGestureRecognizerDelegate>
 
@@ -119,40 +120,77 @@ static dispatch_source_t timer;
 //    headerImageBg.backgroundColor = RGBACOLOR(236, 237, 236, 1);
 //    [headerImageBg addSubview:self.effectPWView];
     
-    UIView *pageViewBg = [UIView new];
-    [self.view insertSubview:pageViewBg belowSubview:self.winingDetailView];
-    [pageViewBg mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.equalTo(self.view);
-        make.top.equalTo(self.nextExpectView.btnBg.mas_centerY).offset(viewAdapter(0));
-    }];
-//    pageViewBg.backgroundColor = [UIColor whiteColor];
-//    pageViewBg.layer.borderColor = [UIColor lightGrayColor].CGColor;
-//    pageViewBg.layer.borderWidth = viewAdapter(0.5);
-    
     UIView *lastExpectBg = [UIView new];
     UIView *nextExpectBg = [UIView new];
-    lastExpectBg.backgroundColor = RGBACOLOR(251, 244, 211, 0.6);
-    nextExpectBg.backgroundColor = RGBACOLOR(251, 244, 211, 0.6);
+    lastExpectBg.backgroundColor = RGBACOLOR(251, 244, 211, 0.3);
+    nextExpectBg.backgroundColor = RGBACOLOR(251, 244, 211, 0.3);
     //预测信息
     self.pageView = [[MLMSegmentPage alloc] initSegmentWithFrame:CGRectZero titlesArray:@[@"本期预测情况", @"下期预测情况"] vcOrviews:@[lastExpectBg, nextExpectBg] headStyle:SegmentHeadStyleSlide];
     self.pageView.delegate = self;
-    self.pageView.headHeight = viewAdapter(50);
+    self.pageView.headWidth = viewAdapter(230);
+    self.pageView.headHeight = viewAdapter(40);
+    self.pageView.headAlignment = MLMSegmentHeadAlignmentCenter;
     self.pageView.headColor = RGBACOLOR(255, 255, 255, 0);//UIColorFromRGB(0xf4f6f5);
-    self.pageView.fontSize = viewAdapter(16);
+    self.pageView.fontSize = viewAdapter(15);
     self.pageView.deselectColor = UIColorFromRGBWithAlpha(0xffffff, 1);
-    self.pageView.selectColor = RGBACOLOR(18, 109, 255, 1);
+    self.pageView.selectColor = RGBACOLOR(39, 38, 91, 1);
     //滑块占比,默认 - 1
-    self.pageView.slideScale = 0.7;
+    self.pageView.slideScale = 1;
     //滑块高度
-    self.pageView.slideHeight = viewAdapter(30);
+    self.pageView.slideHeight = viewAdapter(32);
     //滑块颜色
-    self.pageView.slideColor = UIColorFromRGBWithAlpha(0xffffff, 0.6);
+    self.pageView.slideColor = UIColorFromRGBWithAlpha(0xffffff, 1);
     self.pageView.bottomLineHeight = viewAdapter(0);
-    [pageViewBg addSubview:self.pageView];
+    [self.view addSubview:self.pageView];
     [self.pageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.bottom.equalTo(pageViewBg);
-        make.top.equalTo(pageViewBg).offset(viewAdapter(20));
+        make.left.right.equalTo(self.view);
+        make.top.equalTo(self.nextExpectView.mas_bottom).offset(viewAdapter(0));
     }];
+    
+    UIView *slideBg = [UIView new];
+    [self.pageView insertSubview:slideBg belowSubview:self.pageView.headView];
+    [slideBg mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.center.equalTo(self.pageView.headView);
+        make.width.equalTo(self.pageView.headView);
+        make.height.mas_equalTo(self.pageView.slideHeight);
+    }];
+    [slideBg.superview layoutIfNeeded];
+    slideBg.layer.cornerRadius = slideBg.bounds.size.height/2;
+    slideBg.layer.borderColor = [UIColor whiteColor].CGColor;
+    slideBg.layer.borderWidth = viewAdapter(1.5);
+    slideBg.backgroundColor = RGBACOLOR(39, 38, 91, 1);
+    
+    UIView *leftLine = [UIView new];
+    [slideBg addSubview:leftLine];
+    [leftLine mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(slideBg);
+        make.left.equalTo(self.pageView);
+        make.right.equalTo(slideBg.mas_left);
+        make.height.mas_equalTo(viewAdapter(1.5));
+    }];
+    leftLine.backgroundColor = [UIColor whiteColor];
+    
+    UIView *rightLine = [UIView new];
+    [slideBg addSubview:rightLine];
+    [rightLine mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(slideBg);
+        make.left.equalTo(slideBg.mas_right);
+        make.right.equalTo(self.pageView);
+        make.height.mas_equalTo(viewAdapter(1.5));
+    }];
+    rightLine.backgroundColor = [UIColor whiteColor];
+    
+    UIView *pageViewBg = [UIView new];
+    [self.pageView insertSubview:pageViewBg belowSubview:slideBg];
+    [pageViewBg mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.equalTo(self.pageView);
+        make.top.equalTo(slideBg.mas_centerY).offset(viewAdapter(0));
+        make.bottom.equalTo(self.pageView.viewsScroll.mas_top).offset(viewAdapter(0));
+    }];
+    pageViewBg.backgroundColor = RGBACOLOR(251, 244, 211, 0.3);
+//    pageViewBg.layer.borderColor = [UIColor lightGrayColor].CGColor;
+//    pageViewBg.layer.borderWidth = viewAdapter(0.5);
+
     
     //上一期
     self.lastExpect = [UITextView new];
@@ -341,7 +379,7 @@ static dispatch_source_t timer;
         self.nextExpectView.startBtn.selected = NO;
         self.model = model;
         [self reloadUI];
-        [[self.pageView.viewsScroll layer] addAnimation:animation forKey:@"animation"];
+        [[self.pageView layer] addAnimation:animation forKey:@"animation"];
     }else{
         [ToolClass showMBMessageTitle:mbMessage toView:self.view];
     }
@@ -372,11 +410,9 @@ static dispatch_source_t timer;
         NSDictionary *winingDetailDict = @{@"sevenArray":sevenArray, @"allArray":allArray};
         //设置中奖信息
         [self.winingDetailView setWiningDetailWithDictionary:winingDetailDict];
-        //设置上期开奖号码
-//        [self.lastExpectView setLastExpectViewWithText:lastTimeModel.number];
         
         //上期预测情况
-        NSString *string = [NSString stringWithFormat:@"========= 7个号码 =========\n=  %@  =\n%@", lastTimeModel.nextNumber, [self getFormatStringWithDict:dict]];
+        NSString *string = [NSString stringWithFormat:@"========= 7个号码 =========\n=  %@  =\n%@", kIsString(lastTimeModel.nextNumber) ? lastTimeModel.nextNumber : @"  本期没有选择7个号码  ", [self getFormatStringWithDict:dict]];
         NSMutableAttributedString *attuibutedString = [[NSMutableAttributedString alloc] initWithString:string];
         [attuibutedString addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Menlo-Bold" size:viewAdapter(16)] range:NSMakeRange(0, attuibutedString.length)];
         for (long i = 0; i < string.length-2; i++) {
@@ -402,20 +438,30 @@ static dispatch_source_t timer;
         [self.nextExpectView setLastExpectViewWithText:self.model.nextNumber];
         self.nextExpect.text = [NSString stringWithFormat:@"========= 7个号码 =========\n=  %@  =\n%@", self.model.nextNumber, string];
     }else{//没有预测号码
-        self.nextExpectView.startBtn.selected = YES;
-        [ToolClass timeCountDownWithCount:6 perTime:0.5 inProgress:^(int time) {
-            if (time%2) {
-                [self.nextExpectView setLastExpectViewWithText:[[@[@"--",@"--",@"--",@"--",@"--",@"--",@"--"] mutableCopy] componentsJoinedByString:@","]];
-            }else{
-                [self.nextExpectView setLastExpectViewWithText:[[@[@"  ",@"  ",@"  ",@"  ",@"  ",@"  ",@"  "] mutableCopy] componentsJoinedByString:@","]];
+        if ([self.model.time isEqualToString:[self getCurrentPeriodsString]]) {//当前期
+            self.nextExpectView.startBtn.selected = YES;
+            if (isCanCountdown) {
+                [ToolClass cancelTimeCountDownWith:timer];
+                [ToolClass timeCountDownWithCount:6 perTime:0.5 inProgress:^(int time) {
+                    isCanCountdown = NO;
+                    if (time%2) {
+                        [self.nextExpectView setLastExpectViewWithText:[[@[@"--",@"--",@"--",@"--",@"--",@"--",@"--"] mutableCopy] componentsJoinedByString:@","]];
+                    }else{
+                        [self.nextExpectView setLastExpectViewWithText:[[@[@"  ",@"  ",@"  ",@"  ",@"  ",@"  ",@"  "] mutableCopy] componentsJoinedByString:@","]];
+                    }
+                } completion:^{
+                    timer = [ToolClass timeCountDownWithCount:3000 perTime:0.02 inProgress:^(int time) {
+                        [self.nextExpectView setLastExpectViewWithText:[[OperationManager allNumbersChooesSevenNumberWithAllNumbers:dict[@"allArray"]] componentsJoinedByString:@","]];
+                    } completion:^{
+                        
+                    }];
+                    isCanCountdown = YES;
+                }];
             }
-        } completion:^{
-            timer = [ToolClass timeCountDownWithCount:3000 perTime:0.02 inProgress:^(int time) {
-                [self.nextExpectView setLastExpectViewWithText:[[OperationManager allNumbersChooesSevenNumberWithAllNumbers:dict[@"allArray"]] componentsJoinedByString:@","]];
-            } completion:^{
-                
-            }];
-        }];
+        }else{//如果当前显示不是当前期数而且还没有预测号码的，随机选择一注
+            [self.nextExpectView setLastExpectViewWithText:@"--,--,--,--,--,--,--"];
+            self.nextExpect.text = [NSString stringWithFormat:@"========= 7个号码 =========\n=    该期没有选择7个号码    =\n%@", string];
+        }
     }
 }
 
