@@ -18,7 +18,6 @@
 
 static BOOL canAddAnimation = NO;
 static dispatch_source_t timer;
-static BOOL isCanCountdown = YES;//是否可以倒计时
 
 @interface ViewController ()<UITextFieldDelegate, WJTextFieldDelegate, MLMSegmentPageDelegate, UIGestureRecognizerDelegate>
 
@@ -326,6 +325,7 @@ static BOOL isCanCountdown = YES;//是否可以倒计时
                 }
             }
             [ToolClass hideMBConnect];
+            [ToolClass showMBMessageTitle:@"网络错误" toView:self.view];
         }];
     }
     if (canAddAnimation) {
@@ -438,26 +438,22 @@ static BOOL isCanCountdown = YES;//是否可以倒计时
         [self.nextExpectView setLastExpectViewWithText:self.model.nextNumber];
         self.nextExpect.text = [NSString stringWithFormat:@"========= 7个号码 =========\n=  %@  =\n%@", self.model.nextNumber, string];
     }else{//没有预测号码
+        [ToolClass cancelTimeCountDownWith:timer];
         if ([self.model.time isEqualToString:[self getCurrentPeriodsString]]) {//当前期
             self.nextExpectView.startBtn.selected = YES;
-            if (isCanCountdown) {
-                [ToolClass cancelTimeCountDownWith:timer];
-                [ToolClass timeCountDownWithCount:6 perTime:0.5 inProgress:^(int time) {
-                    isCanCountdown = NO;
-                    if (time%2) {
-                        [self.nextExpectView setLastExpectViewWithText:[[@[@"--",@"--",@"--",@"--",@"--",@"--",@"--"] mutableCopy] componentsJoinedByString:@","]];
-                    }else{
-                        [self.nextExpectView setLastExpectViewWithText:[[@[@"  ",@"  ",@"  ",@"  ",@"  ",@"  ",@"  "] mutableCopy] componentsJoinedByString:@","]];
-                    }
+            timer = [ToolClass timeCountDownWithCount:6 perTime:0.5 inProgress:^(int time) {
+                if (time%2) {
+                    [self.nextExpectView setLastExpectViewWithText:[[@[@"--",@"--",@"--",@"--",@"--",@"--",@"--"] mutableCopy] componentsJoinedByString:@","]];
+                }else{
+                    [self.nextExpectView setLastExpectViewWithText:[[@[@"  ",@"  ",@"  ",@"  ",@"  ",@"  ",@"  "] mutableCopy] componentsJoinedByString:@","]];
+                }
+            } completion:^{
+                timer = [ToolClass timeCountDownWithCount:9999999 perTime:0.02 inProgress:^(int time) {
+                    [self.nextExpectView setLastExpectViewWithText:[[OperationManager allNumbersChooesSevenNumberWithAllNumbers:dict[@"allArray"]] componentsJoinedByString:@","]];
                 } completion:^{
-                    timer = [ToolClass timeCountDownWithCount:3000 perTime:0.02 inProgress:^(int time) {
-                        [self.nextExpectView setLastExpectViewWithText:[[OperationManager allNumbersChooesSevenNumberWithAllNumbers:dict[@"allArray"]] componentsJoinedByString:@","]];
-                    } completion:^{
-                        
-                    }];
-                    isCanCountdown = YES;
+                    
                 }];
-            }
+            }];
         }else{//如果当前显示不是当前期数而且还没有预测号码的，随机选择一注
             [self.nextExpectView setLastExpectViewWithText:@"--,--,--,--,--,--,--"];
             self.nextExpect.text = [NSString stringWithFormat:@"========= 7个号码 =========\n=    该期没有选择7个号码    =\n%@", string];
