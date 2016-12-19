@@ -27,8 +27,7 @@
 	<key>LEPgyerUKey</key>
 	<string>745a408791af3dd0df4bd4204242a084</string>
 	<key>LEPgyerUpdateNote</key>
-	<string>v1.0.3更新内容：
-修复部分已知bug</string>
+	<string>v1.0.4更新内容：修复算法结果为00的问题</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
