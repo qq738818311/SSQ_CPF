@@ -364,7 +364,11 @@
             [resultArr addObject:bushu];
         }else{//调整
             //[resultArr addObject:@"未知"];
-            [resultArr addObject:gewei];
+            if (![gewei isEqualToString:@"0"]) {
+                [resultArr addObject:gewei];
+            }else{
+                [resultArr addObject:str2];
+            }
         }
     }else{//调整
         //[resultArr addObject:@"未知"];
@@ -665,7 +669,11 @@
             [resultArr addObject:bushu];
         }else{//调整
             //[resultArr addObject:@"未知"];
-            [resultArr addObject:gewei];
+            if (![gewei isEqualToString:@"0"]) {
+                [resultArr addObject:gewei];
+            }else{
+                [resultArr addObject:str2];
+            }
         }
     }else{//调整
         //[resultArr addObject:@"未知"];
