@@ -10,4 +10,5 @@ target '双色球预测' do
 	pod 'Reachability'
 	pod 'Pgyer'
 	pod 'PgyUpdate'
+    pod 'Firebase/Core'
 end

@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "ViewController.h"
 #import "LaunchViewController.h"
+#import "Firebase.h"
 
 @interface AppDelegate ()
 
@@ -18,6 +19,9 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
+    //配置Firebase
+    [FIRApp configure];
     
     //启动基本SDK
     [[PgyManager sharedPgyManager] startManagerWithAppId:PGY_APP_ID];

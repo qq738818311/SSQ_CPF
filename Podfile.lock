@@ -14,9 +14,28 @@ PODS:
   - AFNetworking/Serialization (3.1.0)
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
+  - Firebase/Core (3.11.0):
+    - FirebaseAnalytics (= 3.6.0)
+    - FirebaseCore (= 3.4.6)
+  - FirebaseAnalytics (3.6.0):
+    - FirebaseCore (~> 3.4)
+    - FirebaseInstanceID (~> 1.0)
+    - GoogleInterchangeUtilities (~> 1.2)
+    - GoogleSymbolUtilities (~> 1.1)
+    - GoogleToolboxForMac/NSData+zlib (~> 2.1)
+  - FirebaseCore (3.4.6):
+    - GoogleInterchangeUtilities (~> 1.2)
+    - GoogleToolboxForMac/NSData+zlib (~> 2.1)
+  - FirebaseInstanceID (1.0.8)
   - FMDB (2.6.2):
     - FMDB/standard (= 2.6.2)
   - FMDB/standard (2.6.2)
+  - GoogleInterchangeUtilities (1.2.2):
+    - GoogleSymbolUtilities (~> 1.1)
+  - GoogleSymbolUtilities (1.1.2)
+  - GoogleToolboxForMac/Defines (2.1.0)
+  - GoogleToolboxForMac/NSData+zlib (2.1.0):
+    - GoogleToolboxForMac/Defines (= 2.1.0)
   - IQKeyboardManager (4.0.7)
   - Masonry (1.0.2)
   - MBProgressHUD (1.0.0)
@@ -29,6 +48,7 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking
+  - Firebase/Core
   - FMDB
   - IQKeyboardManager
   - Masonry
@@ -40,7 +60,14 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
+  Firebase: b8134e285eb33201115bc688bc5d7f112923bc1f
+  FirebaseAnalytics: 9c67af0ebeb8d2146c9b4ea2616439affa947b58
+  FirebaseCore: 03da1cb32615569bbc2830a22f9ad753d9a02ef5
+  FirebaseInstanceID: ba1e640935235e5fac39dfa816fe7660e72e1a8a
   FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
+  GoogleInterchangeUtilities: d5bc4d88d5b661ab72f9d70c58d02ca8c27ad1f7
+  GoogleSymbolUtilities: 631ee17048aa5e9ab133470d768ea997a5ef9b96
+  GoogleToolboxForMac: 2b2596cbb7186865e98cadf2b1e262d851c2b168
   IQKeyboardManager: 69002bb4fea60596b710e57d426abc00e5063630
   Masonry: 7c429b56da9d4ee0bbb3ed77a5ea710d6a5df39e
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
@@ -49,6 +76,6 @@ SPEC CHECKSUMS:
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
 
-PODFILE CHECKSUM: aa06fb844bd83f187a5b32389c6ffeed029b7409
+PODFILE CHECKSUM: ab256f25e47add3ffb359127f2b2863ab7e53eb8
 
 COCOAPODS: 1.1.1

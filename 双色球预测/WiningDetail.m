@@ -92,18 +92,19 @@ static dispatch_source_t timer;
     for (UIView *view in self.conjectureBg.subviews) {
         [view removeFromSuperview];
     }
+    [ToolClass cancelTimeCountDownWith:timer];
+
     if (dict) {
         
         [self.winingLabel mas_updateConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(self).offset(viewAdapter(-12));
         }];
         
-        [ToolClass cancelTimeCountDownWith:timer];
         self.winingLabel.textColor = [UIColor blackColor];
         /** @{@"sevenArray":sevenArray, @"allArray":allArray} */
         NSArray *sevenArray = dict[@"sevenArray"];
         NSArray *allArray = dict[@"allArray"];
-        if (sevenArray.count > 4) {
+        if (sevenArray.count >= 4) {
             self.winingLabel.text = @"已中奖😄😄:";
             timer = [ToolClass timeCountDownWithCount:1000 perTime:0.2 inProgress:^(int time) {
                 self.winingLabel.textColor = RGBACOLOR(arc4random()%255, arc4random()%255, arc4random()%255, 1);

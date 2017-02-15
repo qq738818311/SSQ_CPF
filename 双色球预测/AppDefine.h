@@ -47,7 +47,8 @@ fprintf(stderr,  "---------------------完美分割线---结束-----------------
 #define kTwoBitString(str) str.length >= 2 ? str : [NSString stringWithFormat:@"0%@",str]
 
 //本地储存的Key
-#define kLastNumber         @"lastNumber"//上期号码
+#define kLastNumber         @"lastNumber"   //上期号码
+#define kISLOGIN            @"isLogin"      //是否登录
 
 //通知的Key
 #define kSCNOTIFICATION_UPLOADHEADIMAGERESULT   @"uploadHeadImageResult"//上传头像的结果

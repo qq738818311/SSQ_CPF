@@ -9,6 +9,7 @@
 #import "LaunchViewController.h"
 #import "SaveModel.h"
 #import "ViewController.h"
+#import "LoginViewController.h"
 
 @interface LaunchViewController ()
 
@@ -30,26 +31,34 @@
     [ToolClass requestPOSTWithURL:@"http://f.apiplus.cn/ssq-1.json" parameters:nil isCache:NO success:^(id responseObject, NSString *msg) {
         NSArray *data = responseObject[@"data"];
         NSDictionary *dataDict = data.firstObject;
-        NSString *dateStr = [NSString stringWithFormat:@"%@(%@)", [dataDict[@"opentime"] componentsSeparatedByString:@" "].firstObject, [ToolClass getWeekDayFordate:[ToolClass dateFromTimeInterval:[dataDict[@"opentimestamp"] doubleValue]]]];
-        SaveModel *model = (SaveModel *)[FMDatabaseTool findByFirstProperty:dateStr withTableName:NSStringFromClass([SaveModel class]) andModelClass:[SaveModel class]];
+        NSString *expect = dataDict[@"expect"];
+//        NSString *dateStr = [NSString stringWithFormat:@"%@(%@)", [dataDict[@"opentime"] componentsSeparatedByString:@" "].firstObject, [ToolClass getWeekDayFordate:[ToolClass dateFromTimeInterval:[dataDict[@"opentimestamp"] doubleValue]]]];
+        SaveModel *model = (SaveModel *)[FMDatabaseTool findByFirstProperty:expect withTableName:NSStringFromClass([SaveModel class]) andModelClass:[SaveModel class]];
         if (!model) {
             model = [SaveModel new];
-            model.time = dateStr;
+            model.time = [NSString stringWithFormat:@"%@(%@)", [dataDict[@"opentime"] componentsSeparatedByString:@" "].firstObject, [ToolClass getWeekDayFordate:[ToolClass dateFromTimeInterval:[dataDict[@"opentimestamp"] doubleValue]]]];
             model.number = dataDict[@"opencode"];
             model.expect = dataDict[@"expect"];
             [FMDatabaseTool saveObjectToDB:model withTableName:NSStringFromClass([SaveModel class])];
         }
 
         [ToolClass hideMBConnect];
-//        [ToolClass appDelegate].window.rootViewController = [[UINavigationController alloc] initWithRootViewController:[ViewController new]];
-        [ToolClass appDelegate].window.rootViewController = [ViewController new];
+        [self setRootViewController];
     } failure:^(NSString *errorInfo, NSError *error) {
         [ToolClass hideMBConnect];
         if (![errorInfo containsString:@"-有缓存"]) {
-//            [ToolClass appDelegate].window.rootViewController = [ViewController new];
-            [ToolClass appDelegate].window.rootViewController = [ViewController new];
+            [self setRootViewController];
         }
     }];
+}
+
+- (void)setRootViewController
+{
+    if ([ToolClass objectForKey:kISLOGIN]) {
+        [ToolClass appDelegate].window.rootViewController = [ViewController new];
+    }else{
+        [ToolClass appDelegate].window.rootViewController = [LoginViewController new];
+    }
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
