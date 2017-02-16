@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.5</string>
+	<string>1.0.6</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
@@ -27,7 +27,7 @@
 	<key>LEPgyerUKey</key>
 	<string>745a408791af3dd0df4bd4204242a084</string>
 	<key>LEPgyerUpdateNote</key>
-	<string>v1.0.5更新内容：优化数据库表结构，修复如果有没有预测的期数不能显示之前期数的bug</string>
+	<string>v1.0.6更新内容：自定义数据库路径，配合开放Document权限使用</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>

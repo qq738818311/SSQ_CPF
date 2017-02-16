@@ -33,6 +33,10 @@
     //注册Keyboard
     [ToolClass registerIQKeyboard];
     NSLog(@"%@",NSHomeDirectory());
+    
+    //自定义数据库路径
+    [FMDatabaseTool sharedFMDatabaseTool].dbPath = NSSearchPathForDirectoriesInDomains( NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
