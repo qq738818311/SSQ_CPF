@@ -49,6 +49,7 @@ fprintf(stderr,  "---------------------完美分割线---结束-----------------
 //本地储存的Key
 #define kLastNumber         @"lastNumber"   //上期号码
 #define kISLOGIN            @"isLogin"      //是否登录
+#define kLASTEXPECT         @"lastExpect"   //最后一期期数
 
 //通知的Key
 #define kSCNOTIFICATION_UPLOADHEADIMAGERESULT   @"uploadHeadImageResult"//上传头像的结果

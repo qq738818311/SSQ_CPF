@@ -26,21 +26,25 @@
     [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
     }];
-    
+        
     [ToolClass showMBConnectTitle:@"" toView:self.view afterDelay:0 isNeedUserInteraction:NO];
-    [ToolClass requestPOSTWithURL:@"http://f.apiplus.cn/ssq-1.json" parameters:nil isCache:NO success:^(id responseObject, NSString *msg) {
+    [ToolClass requestPOSTWithURL:@"http://f.apiplus.cn/ssq-20.json" parameters:nil isCache:NO success:^(id responseObject, NSString *msg) {
         NSArray *data = responseObject[@"data"];
-        NSDictionary *dataDict = data.firstObject;
-        NSString *dateStr = [NSString stringWithFormat:@"%@(%@)", [dataDict[@"opentime"] componentsSeparatedByString:@" "].firstObject, [ToolClass getWeekDayFordate:[ToolClass dateFromTimeInterval:[dataDict[@"opentimestamp"] doubleValue]]]];
-        SaveModel *model = (SaveModel *)[FMDatabaseTool findByFirstProperty:dateStr withTableName:NSStringFromClass([SaveModel class]) andModelClass:[SaveModel class]];
-        if (!model) {
-            model = [SaveModel new];
-            model.time = dateStr;
-            model.number = dataDict[@"opencode"];
-            model.expect = dataDict[@"expect"];
-            [FMDatabaseTool saveObjectToDB:model withTableName:NSStringFromClass([SaveModel class])];
+        for (int i = 0; i < data.count; i++) {
+            NSDictionary *dataDict = data[i];
+            NSString *expect = dataDict[@"expect"];
+            if (i == 0) {
+                [ToolClass setObject:expect forKey:kLASTEXPECT];
+            }
+            SaveModel *model = (SaveModel *)[FMDatabaseTool findByFirstProperty:expect withTableName:NSStringFromClass([SaveModel class]) andModelClass:[SaveModel class]];
+            if (!model) {
+                model = [SaveModel new];
+                model.expect = dataDict[@"expect"];
+                model.time = [NSString stringWithFormat:@"%@(%@)", [dataDict[@"opentime"] componentsSeparatedByString:@" "].firstObject, [ToolClass getWeekDayFordate:[ToolClass dateFromTimeInterval:[dataDict[@"opentimestamp"] doubleValue]]]];
+                model.number = dataDict[@"opencode"];
+                [FMDatabaseTool saveObjectToDB:model withTableName:NSStringFromClass([SaveModel class])];
+            }
         }
-
         [ToolClass hideMBConnect];
         [self setRootViewController];
     } failure:^(NSString *errorInfo, NSError *error) {
@@ -51,8 +55,21 @@
     }];
 }
 
+- (BOOL)isOverNineClock
+{
+    NSDate *nowDate = [NSDate date];
+    NSString *todayWeek = [ToolClass getWeekDayFordate:nowDate];
+    if ([todayWeek isEqualToString:@"周日"] || [todayWeek isEqualToString:@"周二"] || [todayWeek isEqualToString:@"周四"]) {
+        return ([ToolClass stringFromDateWithFormat:@"HH" date:nowDate].intValue >= 21);
+    }else{
+        return NO;
+    }
+}
+
 - (void)setRootViewController
 {
+    [ToolClass appDelegate].window.rootViewController = [ViewController new];
+    return;
     if ([ToolClass objectForKey:kISLOGIN]) {
         [ToolClass appDelegate].window.rootViewController = [ViewController new];
     }else{

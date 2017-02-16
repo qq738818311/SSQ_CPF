@@ -14,6 +14,6 @@
 @property (nonatomic, strong) UILabel *expectLabel;
 @property (nonatomic, strong) UILabel *timeLabel;
 
-- (void)setOpenAwardViewWithModel:(SaveModel *)model;
+- (void)setOpenAwardViewWithModel:(SaveModel *)model andWiningNumers:(NSArray *)numbers;
 
 @end

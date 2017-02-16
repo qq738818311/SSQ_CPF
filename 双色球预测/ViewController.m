@@ -66,7 +66,7 @@ static dispatch_source_t timer;
     // 控制是否显示键盘上的工具条。
     [IQKeyboardManager sharedManager].enableAutoToolbar = YES;
     [self createUI];
-    [self requestData];
+    [self requestDataIsRefresh:NO];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -247,7 +247,7 @@ static dispatch_source_t timer;
             [ToolClass cancelTimeCountDownWith:timer];
             self.nextExpectView.startBtn.selected = NO;
             canAddAnimation = YES;
-            [selfWeak requestData];
+            [selfWeak requestDataIsRefresh:YES];
         }else if (index == 3){//设置
         
         }
@@ -296,29 +296,37 @@ static dispatch_source_t timer;
     }];
 }
 
-- (void)requestData
+- (void)requestDataIsRefresh:(BOOL)isRefresh
 {
-    SaveModel *model = (SaveModel *)[FMDatabaseTool findByFirstProperty:[self getCurrentPeriodsString] withTableName:NSStringFromClass([SaveModel class]) andModelClass:[SaveModel class]];
-    if (model) {
+    SaveModel *model = (SaveModel *)[FMDatabaseTool findByFirstProperty:[ToolClass objectForKey:kLASTEXPECT] withTableName:NSStringFromClass([SaveModel class]) andModelClass:[SaveModel class]];
+    if (model && !isRefresh) {
         self.model = model;
         [self reloadUI];
     }else{
-        [ToolClass showMBConnectTitle:@"" toView:self.view afterDelay:0 isNeedUserInteraction:NO];
-        [ToolClass requestPOSTWithURL:@"http://f.apiplus.cn/ssq-1.json" parameters:nil isCache:NO success:^(id responseObject, NSString *msg) {
+        [ToolClass showMBConnectTitle:@"" toView:self.view afterDelay:1 isNeedUserInteraction:NO];
+        [ToolClass requestPOSTWithURL:@"http://f.apiplus.cn/ssq-20.json" parameters:nil isCache:NO success:^(id responseObject, NSString *msg) {
             NSArray *data = responseObject[@"data"];
-            NSDictionary *dataDict = data.firstObject;
-            NSString *dateStr = [NSString stringWithFormat:@"%@(%@)", [dataDict[@"opentime"] componentsSeparatedByString:@" "].firstObject, [ToolClass getWeekDayFordate:[ToolClass dateFromTimeInterval:[dataDict[@"opentimestamp"] doubleValue]]]];
-            SaveModel *model =  [SaveModel new];
-            model.time = dateStr;
-            model.number = dataDict[@"opencode"];
-            model.expect = dataDict[@"expect"];
-            [FMDatabaseTool saveObjectToDB:model withTableName:NSStringFromClass([SaveModel class])];
-            self.model = model;
-            [self reloadUI];
+            for (int i = 0; i < data.count; i++) {
+                NSDictionary *dataDict = data[i];
+                NSString *expect = dataDict[@"expect"];
+                SaveModel *model = (SaveModel *)[FMDatabaseTool findByFirstProperty:expect withTableName:NSStringFromClass([SaveModel class]) andModelClass:[SaveModel class]];
+                if (!model) {
+                    model = [SaveModel new];
+                    model.expect = dataDict[@"expect"];
+                    model.time = [NSString stringWithFormat:@"%@(%@)", [dataDict[@"opentime"] componentsSeparatedByString:@" "].firstObject, [ToolClass getWeekDayFordate:[ToolClass dateFromTimeInterval:[dataDict[@"opentimestamp"] doubleValue]]]];
+                    model.number = dataDict[@"opencode"];
+                    [FMDatabaseTool saveObjectToDB:model withTableName:NSStringFromClass([SaveModel class])];
+                }
+                if (i == 0) {
+                    [ToolClass setObject:expect forKey:kLASTEXPECT];
+                    self.model = model;
+                    [self reloadUI];
+                }
+            }
             [ToolClass hideMBConnect];
         } failure:^(NSString *errorInfo, NSError *error) {
             if ([errorInfo containsString:@"无缓存"]) {
-                SaveModel *model = (SaveModel *)[FMDatabaseTool findByFirstProperty:[self getCurrentPeriodsString] withTableName:NSStringFromClass([SaveModel class]) andModelClass:[SaveModel class]];
+                SaveModel *model = (SaveModel *)[FMDatabaseTool findByFirstProperty:[ToolClass objectForKey:kLASTEXPECT] withTableName:NSStringFromClass([SaveModel class]) andModelClass:[SaveModel class]];
                 if (model) {
                     self.model = model;
                     [self reloadUI];
@@ -340,6 +348,59 @@ static dispatch_source_t timer;
     }
 }
 
+- (void)requestDataWithExpect:(NSInteger)expect animation:(CATransition *)animation isShowNoData:(BOOL)isShowNoData
+{
+    [ToolClass showMBConnectTitle:@"" toView:self.view afterDelay:0 isNeedUserInteraction:NO];
+    [ToolClass requestPOSTWithURL:@"http://f.apiplus.cn/ssq-20.json" parameters:nil isCache:NO success:^(id responseObject, NSString *msg) {
+        NSArray *data = responseObject[@"data"];
+        NSDictionary *dataDict = data.firstObject;
+        NSString *expect = dataDict[@"expect"];
+        SaveModel *model =  [SaveModel new];
+        model.expect = expect;
+        model.time = [NSString stringWithFormat:@"%@(%@)", [dataDict[@"opentime"] componentsSeparatedByString:@" "].firstObject, [ToolClass getWeekDayFordate:[ToolClass dateFromTimeInterval:[dataDict[@"opentimestamp"] doubleValue]]]];
+        model.number = dataDict[@"opencode"];
+        [FMDatabaseTool saveObjectToDB:model withTableName:NSStringFromClass([SaveModel class])];
+        self.model = model;
+        [self reloadUI];
+        [ToolClass hideMBConnect];
+    } failure:^(NSString *errorInfo, NSError *error) {
+        if ([errorInfo containsString:@"无缓存"]) {
+            SaveModel *model = (SaveModel *)[FMDatabaseTool findByFirstProperty:[ToolClass objectForKey:kLASTEXPECT] withTableName:NSStringFromClass([SaveModel class]) andModelClass:[SaveModel class]];
+            if (model) {
+                self.model = model;
+                [self reloadUI];
+            }
+        }
+        [ToolClass hideMBConnect];
+        [ToolClass showMBMessageTitle:@"网络错误" toView:self.view];
+    }];
+}
+
+- (void)reloadUIWithAnimation:(CATransition *)animation
+{
+    [ToolClass cancelTimeCountDownWith:timer];
+    self.nextExpectView.startBtn.selected = NO;
+    [self reloadUI];
+    [[self.pageView layer] addAnimation:animation forKey:@"animation"];
+}
+
+- (SaveModel *)findLastYearLastExpectWithExpect:(NSInteger)expect
+{
+    return (SaveModel *)[FMDatabaseTool findByFirstProperty:[NSString stringWithFormat:@"%ld%@", [ToolClass stringFromNowDateFormat:@"yyyy"].integerValue -1, [self getOkExpectWith:expect]] withTableName:NSStringFromClass([SaveModel class]) andModelClass:[SaveModel class]];
+}
+
+- (NSString *)getOkExpectWith:(NSInteger)expect
+{
+    NSString *str = [NSString stringWithFormat:@"%ld", expect];
+    if (str.length == 1) {
+        return [NSString stringWithFormat:@"00%@", str];
+    }else if (str.length == 2){
+        return [NSString stringWithFormat:@"0%@", str];
+    }else{
+        return str;
+    }
+}
+
 - (void)upAndDownButtonClick:(id)object
 {
     CATransition *animation = [CATransition animation];
@@ -349,53 +410,115 @@ static dispatch_source_t timer;
     animation.type = @"cube";
 
     SaveModel *model = nil;
-    NSString *mbMessage = @"";
     if ([object isKindOfClass:[UIButton class]]) {
         UIButton *button = (UIButton *)object;
         if (button.tag == 2000) {//上一期
-            model = (SaveModel *)[FMDatabaseTool findByFirstProperty:[self getUpOrDownPeriodsString:YES withPeriodString:self.model.time] withTableName:NSStringFromClass([SaveModel class]) andModelClass:[SaveModel class]];
-            mbMessage = @"未找到上期数据";
             animation.subtype = kCATransitionFromLeft;
+            NSInteger lastExpect = [self.model.expect substringFromIndex:4].integerValue - 1;
+            if (lastExpect > 0) {//如果不是去年
+                model = (SaveModel *)[FMDatabaseTool findByFirstProperty:[NSString stringWithFormat:@"%@%@", [ToolClass stringFromDateWithFormat:@"yyyy" date:[ToolClass dateFromDateString:[self.model.time substringToIndex:10] format:@"yyyy-MM-dd"]], [self getOkExpectWith:lastExpect]] withTableName:NSStringFromClass([SaveModel class]) andModelClass:[SaveModel class]];
+                if (model) {//如果数据库有就直接显示
+                    self.model = model;
+                    [self reloadUIWithAnimation:animation];
+                }else{//如果没有
+                    [ToolClass showMBMessageTitle:@"未找到上期数据" toView:self.view];
+                }
+            }else{//如果是去年
+                for (int i = 155; i > 151; i--) {
+                    model = [self findLastYearLastExpectWithExpect:i];
+                    if (model) {
+                        break;
+                    }
+                }
+                if (model) {//如果数据库有就直接显示
+                    self.model = model;
+                    [self reloadUIWithAnimation:animation];
+                }else{//如果没有
+                    [ToolClass showMBMessageTitle:@"未找到上期数据" toView:self.view];
+                }
+            }
         }else{//下一期
-            model = (SaveModel *)[FMDatabaseTool findByFirstProperty:[self getUpOrDownPeriodsString:NO withPeriodString:self.model.time] withTableName:NSStringFromClass([SaveModel class]) andModelClass:[SaveModel class]];
-            mbMessage = @"最后一期";
             animation.subtype = kCATransitionFromRight;
+            NSInteger nextExpect = self.model.expect.integerValue + 1;
+            if (nextExpect > [[ToolClass objectForKey:kLASTEXPECT] integerValue]){
+                [ToolClass showMBMessageTitle:@"最后一期" toView:self.view];
+            }else{
+                model = (SaveModel *)[FMDatabaseTool findByFirstProperty:@(nextExpect) withTableName:NSStringFromClass([SaveModel class]) andModelClass:[SaveModel class]];
+                if (model) {//如果数据库有就直接显示
+                    self.model = model;
+                    [self reloadUIWithAnimation:animation];
+                }else{
+                    model = (SaveModel *)[FMDatabaseTool findByFirstProperty:[NSString stringWithFormat:@"%ld001", [self.model.time substringToIndex:4].integerValue + 1] withTableName:NSStringFromClass([SaveModel class]) andModelClass:[SaveModel class]];
+                    if (model) {//如果数据库有就直接显示
+                        self.model = model;
+                        [self reloadUIWithAnimation:animation];
+                    }else{
+                    
+                    }
+                }
+            }
         }
     }else{
         UISwipeGestureRecognizer *swipe = (UISwipeGestureRecognizer *)object;
         if (swipe.direction == UISwipeGestureRecognizerDirectionRight) {//上一期
-            model = (SaveModel *)[FMDatabaseTool findByFirstProperty:[self getUpOrDownPeriodsString:YES withPeriodString:self.model.time] withTableName:NSStringFromClass([SaveModel class]) andModelClass:[SaveModel class]];
-            mbMessage = @"未找到上期数据";
             animation.subtype = kCATransitionFromLeft;
+            NSInteger lastExpect = [self.model.expect substringFromIndex:4].integerValue - 1;
+            if (lastExpect > 0) {//如果不是去年
+                model = (SaveModel *)[FMDatabaseTool findByFirstProperty:[NSString stringWithFormat:@"%@%@", [ToolClass stringFromDateWithFormat:@"yyyy" date:[ToolClass dateFromDateString:[self.model.time substringToIndex:10] format:@"yyyy-MM-dd"]], [self getOkExpectWith:lastExpect]] withTableName:NSStringFromClass([SaveModel class]) andModelClass:[SaveModel class]];
+                if (model) {//如果数据库有就直接显示
+                    self.model = model;
+                    [self reloadUIWithAnimation:animation];
+                }else{//如果没有
+                    [ToolClass showMBMessageTitle:@"未找到上期数据" toView:self.view];
+                }
+            }else{//如果是去年
+                for (int i = 155; i > 151; i--) {
+                    model = [self findLastYearLastExpectWithExpect:i];
+                    if (model) {
+                        break;
+                    }
+                }
+                if (model) {//如果数据库有就直接显示
+                    self.model = model;
+                    [self reloadUIWithAnimation:animation];
+                }else{//如果没有
+                    [ToolClass showMBMessageTitle:@"未找到上期数据" toView:self.view];
+                }
+            }
         }else{//下一期
-            model = (SaveModel *)[FMDatabaseTool findByFirstProperty:[self getUpOrDownPeriodsString:NO withPeriodString:self.model.time] withTableName:NSStringFromClass([SaveModel class]) andModelClass:[SaveModel class]];
-            mbMessage = @"最后一期";
             animation.subtype = kCATransitionFromRight;
+            NSInteger nextExpect = self.model.expect.integerValue + 1;
+            if (nextExpect > [[ToolClass objectForKey:kLASTEXPECT] integerValue]){
+                [ToolClass showMBMessageTitle:@"最后一期" toView:self.view];
+            }else{
+                model = (SaveModel *)[FMDatabaseTool findByFirstProperty:@(nextExpect) withTableName:NSStringFromClass([SaveModel class]) andModelClass:[SaveModel class]];
+                if (model) {//如果数据库有就直接显示
+                    self.model = model;
+                    [self reloadUIWithAnimation:animation];
+                }else{
+                    model = (SaveModel *)[FMDatabaseTool findByFirstProperty:[NSString stringWithFormat:@"%ld001", [self.model.time substringToIndex:4].integerValue + 1] withTableName:NSStringFromClass([SaveModel class]) andModelClass:[SaveModel class]];
+                    if (model) {//如果数据库有就直接显示
+                        self.model = model;
+                        [self reloadUIWithAnimation:animation];
+                    }else{
+                        
+                    }
+                }
+            }
         }
         self.pageView.viewsScroll.scrollEnabled = YES;
-    }
-    if (model) {
-        [ToolClass cancelTimeCountDownWith:timer];
-        self.nextExpectView.startBtn.selected = NO;
-        self.model = model;
-        [self reloadUI];
-        [[self.pageView layer] addAnimation:animation forKey:@"animation"];
-    }else{
-        [ToolClass showMBMessageTitle:mbMessage toView:self.view];
     }
 }
 
 //设置显示数据
 - (void)reloadUI
 {
-    self.nextExpectView.buttonEnabled = [self.model.time isEqualToString:[self getCurrentPeriodsString]];
+    self.nextExpectView.buttonEnabled = [self.model.expect isEqualToString:[ToolClass objectForKey:kLASTEXPECT]];
 
-    //设置当前期开奖号码
-    [self.openAwardView setOpenAwardViewWithModel:self.model];
     //上一期的时间
-    NSString *lastTimeStr = [self getUpOrDownPeriodsString:YES withPeriodString:self.model.time];
+    NSString *lastExpect = @(self.model.expect.integerValue - 1);
     //上一期的模型
-    SaveModel *lastTimeModel = (SaveModel *)[FMDatabaseTool findByFirstProperty:lastTimeStr withTableName:NSStringFromClass([SaveModel class]) andModelClass:[SaveModel class]];
+    SaveModel *lastTimeModel = (SaveModel *)[FMDatabaseTool findByFirstProperty:lastExpect withTableName:NSStringFromClass([SaveModel class]) andModelClass:[SaveModel class]];
     
     if (lastTimeModel) {
         //获取上期预测结果
@@ -408,6 +531,8 @@ static dispatch_source_t timer;
         NSArray *allArray = [self findIsWinningWithArray1:okNums array2:dict[@"allArray"]];
         //中奖信息拼参
         NSDictionary *winingDetailDict = @{@"sevenArray":sevenArray, @"allArray":allArray};
+        //设置当前期开奖号码
+        [self.openAwardView setOpenAwardViewWithModel:self.model andWiningNumers:sevenArray];
         //设置中奖信息
         [self.winingDetailView setWiningDetailWithDictionary:winingDetailDict];
         
@@ -424,9 +549,53 @@ static dispatch_source_t timer;
         self.lastExpect.attributedText = attuibutedString;
         self.pageView.showIndex = 0;
     }else{
-        [self.winingDetailView setWiningDetailWithDictionary:nil];
-        self.lastExpect.text = @"未查询到上期开奖号码";
-        self.pageView.showIndex = 1;
+        if ([[self.model.expect substringFromIndex:4] isEqualToString:@"001"]) {
+            for (int i = 155; i > 151; i--) {
+                lastTimeModel = [self findLastYearLastExpectWithExpect:i];
+                if (lastTimeModel) {
+                    break;
+                }
+            }
+            if (lastTimeModel) {
+                //获取上期预测结果
+                NSDictionary *dict = [OperationManager getResultWithArray:[lastTimeModel.number componentsSeparatedByString:@","]];
+                //本期中奖号码
+                NSArray *okNums = [[self.model.number componentsSeparatedByString:@"+"].firstObject componentsSeparatedByString:@","];
+                //7个号码中买中的号码
+                NSArray *sevenArray = [self findIsWinningWithArray1:okNums array2:[lastTimeModel.nextNumber componentsSeparatedByString:@","]];
+                //所有个号码中测中的号码
+                NSArray *allArray = [self findIsWinningWithArray1:okNums array2:dict[@"allArray"]];
+                //中奖信息拼参
+                NSDictionary *winingDetailDict = @{@"sevenArray":sevenArray, @"allArray":allArray};
+                //设置当前期开奖号码
+                [self.openAwardView setOpenAwardViewWithModel:self.model andWiningNumers:sevenArray];
+                //设置中奖信息
+                [self.winingDetailView setWiningDetailWithDictionary:winingDetailDict];
+                
+                //上期预测情况
+                NSString *string = [NSString stringWithFormat:@"========= 7个号码 =========\n=  %@  =\n%@", kIsString(lastTimeModel.nextNumber) ? lastTimeModel.nextNumber : @"  本期没有选择7个号码  ", [self getFormatStringWithDict:dict]];
+                NSMutableAttributedString *attuibutedString = [[NSMutableAttributedString alloc] initWithString:string];
+                [attuibutedString addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Menlo-Bold" size:viewAdapter(16)] range:NSMakeRange(0, attuibutedString.length)];
+                for (long i = 0; i < string.length-2; i++) {
+                    NSString *str = [string substringWithRange:NSMakeRange(i, 2)];
+                    if ([allArray containsObject:str]) {
+                        [attuibutedString addAttributes:@{NSForegroundColorAttributeName : [UIColor redColor]} range:NSMakeRange(i, 2)];
+                    }
+                }
+                self.lastExpect.attributedText = attuibutedString;
+                self.pageView.showIndex = 0;
+            }else{//如果没有
+                [self.winingDetailView setWiningDetailWithDictionary:nil];
+                self.lastExpect.text = @"未查询到上期开奖号码";
+                self.pageView.showIndex = 1;
+            }
+        }else{
+            //设置当前期开奖号码
+            [self.openAwardView setOpenAwardViewWithModel:self.model andWiningNumers:@[]];
+            [self.winingDetailView setWiningDetailWithDictionary:nil];
+            self.lastExpect.text = @"未查询到上期开奖号码";
+            self.pageView.showIndex = 1;
+        }
     }
     
     //下期预测情况

@@ -47,6 +47,7 @@
         UILabel *numberLabel = [UILabel new];
         numberLabel.layer.borderColor = i == 6 ? [UIColor blueColor].CGColor : [UIColor redColor].CGColor;
         numberLabel.layer.borderWidth = viewAdapter(2.5);
+        numberLabel.layer.masksToBounds = YES;
         numberLabel.layer.cornerRadius = ((WIDTH - viewAdapter(40) - SPACING*6)/7)/2;
         numberLabel.tag = 1000 + i;
         numberLabel.textAlignment = NSTextAlignmentCenter;
@@ -73,13 +74,23 @@
     }
 }
 
-- (void)setOpenAwardViewWithModel:(SaveModel *)model
+- (void)setOpenAwardViewWithModel:(SaveModel *)model andWiningNumers:(NSArray *)numbers
 {
     self.expectLabel.text = [NSString stringWithFormat:@"第%@期", model.expect];
     self.timeLabel.text = [NSString stringWithFormat:@"开奖日期:%@", model.time];
     for (int i = 0; i < 7; i++) {
         UILabel *numberLabel = [self viewWithTag:1000 + i];
-        numberLabel.text = [model.number substringWithRange:NSMakeRange(i*3, 2)];
+        NSString *str = [model.number substringWithRange:NSMakeRange(i*3, 2)];
+        if (i < 6) {
+            if ([numbers containsObject:str]) {
+                numberLabel.backgroundColor = [UIColor redColor];
+                numberLabel.textColor = [UIColor whiteColor];
+            }else{
+                numberLabel.backgroundColor = [UIColor clearColor];
+                numberLabel.textColor = [UIColor redColor];
+            }
+        }
+        numberLabel.text = str;
     }
 }
 
