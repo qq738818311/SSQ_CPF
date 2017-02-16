@@ -35,7 +35,7 @@
     NSLog(@"%@",NSHomeDirectory());
     
     //自定义数据库路径
-    [FMDatabaseTool sharedFMDatabaseTool].dbPath = NSSearchPathForDirectoriesInDomains( NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
+    [FMDatabaseTool sharedFMDatabaseTool].dbPath = [NSSearchPathForDirectoriesInDomains( NSDocumentDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:@"user.db"];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
