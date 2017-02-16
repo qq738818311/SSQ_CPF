@@ -23,7 +23,7 @@
     //配置Firebase
     [FIRApp configure];
     
-    //启动基本SDK
+    //蒲公英启动基本SDK
     [[PgyManager sharedPgyManager] startManagerWithAppId:PGY_APP_ID];
     //启动更新检查SDK
     [[PgyUpdateManager sharedPgyManager] startManagerWithAppId:PGY_APP_ID];
