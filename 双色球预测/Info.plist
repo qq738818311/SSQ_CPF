@@ -27,7 +27,10 @@
 	<key>LEPgyerUKey</key>
 	<string>745a408791af3dd0df4bd4204242a084</string>
 	<key>LEPgyerUpdateNote</key>
-	<string>v1.0.6更新内容：自定义数据库路径，配合开放Document权限使用</string>
+	<string>v1.0.7更新内容：
+1.修复在停止按钮停止状态下也能保存下次预测号码的bug
+2.优化提示框背景显示为黑色
+v1.0.6更新内容：自定义数据库路径，配合开放Document权限使用</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>

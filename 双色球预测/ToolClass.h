@@ -437,6 +437,15 @@ singleton_interface(ToolClass)
 + (NSString *)stringFromNowDateFormat:(NSString *)format;
 
 /**
+ 时间戳格式化为字符串(format:yyyy-MM-dd HH:mm:ss)
+
+ @param format        YYYY-MM-DD HH:mm:ss
+ @param timeInterval  时间戳
+ @return              当前时间格式化后的字符串
+ */
++ (NSString *)stringFromTimeIntervalWithFormat:(NSString *)format timeInterval:(NSTimeInterval)timeInterval;
+
+/**
  *  获取传入时间的时间戳
  *
  *  @param date 传入的时间对象

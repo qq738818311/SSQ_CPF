@@ -59,8 +59,6 @@ singleton_implementation(ToolClass)
     if (self = [super init]) {
         //请求数据缓存超时时间，默认为永远不超时
         self.cacheTime = 0;
-        //控制台输出中文的方法，在appdelegate中调用TOOL，或者直接调用该方法
-        [NSDictionary jr_swizzleMethod:@selector(description) withMethod:@selector(my_description) error:nil];
     }
     return self;
 }
@@ -254,6 +252,9 @@ singleton_implementation(ToolClass)
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:tempView animated:YES];
     hud.mode = MBProgressHUDModeText;
     hud.label.text = @"";
+    hud.bezelView.style = MBProgressHUDBackgroundStyleSolidColor;
+    hud.bezelView.color = UIColorFromRGBWithAlpha(0x000000, 0.8);
+    hud.detailsLabel.textColor = [UIColor whiteColor];
     hud.detailsLabel.text = text ? : @"";
     hud.detailsLabel.font = [UIFont systemFontOfSize:14];
     hud.margin = 10;
@@ -273,8 +274,11 @@ singleton_implementation(ToolClass)
     hud.detailsLabel.text = text ? : @"";
     // 再设置模式
     hud.mode = MBProgressHUDModeText;
+    hud.bezelView.style = MBProgressHUDBackgroundStyleSolidColor;
+    hud.bezelView.color = UIColorFromRGBWithAlpha(0x000000, 0.8);
+    hud.detailsLabel.textColor = [UIColor whiteColor];
     hud.detailsLabel.font = [UIFont systemFontOfSize:14];
-    hud.margin = 10.f;
+    hud.margin = 10;
     hud.removeFromSuperViewOnHide = YES;
     [hud showAnimated:YES];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -299,17 +303,24 @@ singleton_implementation(ToolClass)
     UIView *tempView = view ? : [ToolClass appDelegate].window;
     TOOL.hudView = tempView;
     
-    MBProgressHUD *processHud = [[MBProgressHUD alloc] initWithView:tempView];
-    [tempView addSubview:processHud];
-    processHud.mode = MBProgressHUDModeIndeterminate;
-    processHud.detailsLabel.text = @"";
-    processHud.label.text = text ? : @"";
-    processHud.margin = 10;
-    processHud.userInteractionEnabled = isNeed ? NO : YES;
+    // 设置HUD的菊花为白色
+    [UIActivityIndicatorView appearanceWhenContainedIn:[MBProgressHUD class], nil].color = [UIColor whiteColor];
+
+    MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:tempView];
+    [tempView addSubview:hud];
+    hud.mode = MBProgressHUDModeIndeterminate;
+    hud.detailsLabel.text = @"";
+    hud.bezelView.style = MBProgressHUDBackgroundStyleSolidColor;
+    hud.bezelView.color = UIColorFromRGBWithAlpha(0x000000, 0.8);
+    hud.bezelView.layer.cornerRadius = 7;
+    hud.label.textColor = [UIColor whiteColor];
+    hud.label.text = text ? : @"";
+    hud.margin = 13;
+    hud.userInteractionEnabled = isNeed ? NO : YES;
     // 隐藏时候从父控件中移除
-    processHud.removeFromSuperViewOnHide = YES;
+    hud.removeFromSuperViewOnHide = YES;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [processHud showAnimated:YES];
+        [hud showAnimated:YES];
     });
 }
 
@@ -661,6 +672,7 @@ singleton_implementation(ToolClass)
                     }];
                 }
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                NSLog(@"Error:GET请求错误-%@", error);
                 if (cacheData.length > 0 && jsonObj) {//如果请求错误&&有缓存展示缓存
                     if (success) success(jsonObj,@"Error:GET请求错误");
                     if (failure) failure(@"GET请求错误-有缓存", error);
@@ -687,6 +699,7 @@ singleton_implementation(ToolClass)
                     }];
                 }
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                NSLog(@"Error:POST请求错误-%@", error);
                 if (cacheData.length > 0 && jsonObj) {//如果请求错误&&有缓存展示缓存
                     if (success) success(jsonObj,@"Error:POST请求错误");
                     if (failure) failure(@"POST请求错误-有缓存", error);
@@ -716,6 +729,7 @@ singleton_implementation(ToolClass)
                     }];
                 }
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                NSLog(@"Error:上传文件出现错误-%@", error);
                 if (cacheData.length > 0 && jsonObj) {//如果请求错误&&有缓存展示缓存
                     if (success) success(jsonObj,@"Error:上传文件出现错误");
                     if (failure) failure(@"上传文件出现错误-有缓存", error);
@@ -872,6 +886,12 @@ singleton_implementation(ToolClass)
 + (NSString *)stringFromNowDateFormat:(NSString *)format
 {
     return [ToolClass stringFromDateWithFormat:format date:[NSDate date]];
+}
+
+/** 时间戳格式化为字符串(format:yyyy-MM-dd HH:mm:ss) */
++ (NSString *)stringFromTimeIntervalWithFormat:(NSString *)format timeInterval:(NSTimeInterval)timeInterval
+{
+    return [ToolClass stringFromDateWithFormat:format date:[ToolClass dateFromTimeInterval:timeInterval]];
 }
 
 /** 获取传入时间的时间戳 */
@@ -1311,6 +1331,13 @@ userInfo:[NSDictionary dictionaryWithObject:errStr forKey:NSLocalizedDescription
 
 @implementation NSDictionary (Unicode)
 
++ (void)load
+{
+    [super load];
+    //控制台输出中文的方法
+    [self jr_swizzleMethod:@selector(description) withMethod:@selector(my_description) error:nil];
+}
+
 - (NSString*)my_description {
     NSString *desc = [self my_description];
     desc = [NSString stringWithCString:[desc cStringUsingEncoding:NSUTF8StringEncoding] encoding:NSNonLossyASCIIStringEncoding];
@@ -1324,6 +1351,7 @@ userInfo:[NSDictionary dictionaryWithObject:errStr forKey:NSLocalizedDescription
 - (NSString*)my_description {
     NSString *desc = [self my_description];
     desc = [NSString stringWithCString:[desc cStringUsingEncoding:NSUTF8StringEncoding] encoding:NSNonLossyASCIIStringEncoding];
+    
     return desc;
 }
 
