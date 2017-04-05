@@ -239,8 +239,10 @@ static dispatch_source_t timer;
         make.height.mas_equalTo(viewAdapter(50));
     }];
     
+    __block NSString *nextNumber = @"";
     WeakObj(self);
     [bottomBar setButtonClick:^(UIButton *button, NSInteger index) {
+        nextNumber = @"";
         if (index == 0 || index == 1) {//上一期或下一期
             [selfWeak upAndDownButtonClick:button];
         }else if (index == 2){//刷新
@@ -253,7 +255,6 @@ static dispatch_source_t timer;
         }
     }];
     
-    __block NSString *nextNumber = @"";
     [self.nextExpectView setButtonClick:^(UIButton *button, NSInteger index) {
         NSDictionary *dict = [OperationManager getResultWithArray:[[selfWeak.model.number componentsSeparatedByString:@"+"].firstObject componentsSeparatedByString:@","]];
         if (index == 0) {//开始&停止
@@ -273,17 +274,21 @@ static dispatch_source_t timer;
             if (!selfWeak.nextExpectView.startBtn.selected) {//只有在停止状态下才可以保存
                 if (nextNumber.length > 0) {
                     NSString *string = [selfWeak getFormatStringWithDict:dict];
-                    if (kIsString(selfWeak.model.nextNumber)) {
-                        [ToolClass showAlertControllerWithPreferredStyle:UIAlertControllerStyleAlert title:@"检测到已有保存过的号码\n是否更新?" message:@"" handlerBlock:^(NSUInteger buttonIndex) {
-                            if (buttonIndex == 1) {
-                                selfWeak.nextExpect.text = [NSString stringWithFormat:@"========= 7个号码 =========\n=  %@  =\n%@", nextNumber, string];
-                                selfWeak.model.nextNumber = nextNumber;
-                                [FMDatabaseTool saveObjectToDB:selfWeak.model withTableName:NSStringFromClass([SaveModel class])];
-                                [ToolClass showMBMessageTitle:@"保存成功" toView:selfWeak.view completion:^{
-                                    nextNumber = @"";
-                                }];
-                            }
-                        } cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+                    if (kIsString(selfWeak.model.nextNumber)) {//判断是否已经保存过下期预测号码了
+                        if ([nextNumber isEqualToString:selfWeak.model.nextNumber]) {
+                            [ToolClass showMBMessageTitle:@"显示的账号与保存的账号一样，无需保存" toView:selfWeak.view];
+                        }else{
+                            [ToolClass showAlertControllerWithPreferredStyle:UIAlertControllerStyleAlert title:@"检测到已有保存过的号码\n是否更新?" message:@"" handlerBlock:^(NSUInteger buttonIndex) {
+                                if (buttonIndex == 1) {
+                                    selfWeak.nextExpect.text = [NSString stringWithFormat:@"========= 7个号码 =========\n=  %@  =\n%@", nextNumber, string];
+                                    selfWeak.model.nextNumber = nextNumber;
+                                    [FMDatabaseTool saveObjectToDB:selfWeak.model withTableName:NSStringFromClass([SaveModel class])];
+                                    [ToolClass showMBMessageTitle:@"保存成功" toView:selfWeak.view completion:^{
+                                        nextNumber = @"";
+                                    }];
+                                }
+                            } cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+                        }
                     }else{
                         selfWeak.nextExpect.text = [NSString stringWithFormat:@"========= 7个号码 =========\n=  %@  =\n%@", nextNumber, string];
                         selfWeak.model.nextNumber = nextNumber;
@@ -292,6 +297,8 @@ static dispatch_source_t timer;
                             nextNumber = @"";
                         }];
                     }
+                }else{
+                    [ToolClass showMBMessageTitle:@"显示的账号与保存的账号一样，无需保存" toView:selfWeak.view];
                 }
             }
         }
@@ -628,11 +635,11 @@ static dispatch_source_t timer;
                 }];
             }];
         }else{//如果当前显示不是当前期数而且还没有预测号码的，随机选择一注
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.02 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [self.nextExpectView setLastExpectViewWithText:@"--,--,--,--,--,--,--"];
-                NSLog(@"ssssssssssss: 没有预测号码设置好了");
-                self.nextExpect.text = [NSString stringWithFormat:@"========= 7个号码 =========\n=    该期没有选择7个号码    =\n%@", string];
-            });
+            //dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.02 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            //});
+            [self.nextExpectView setLastExpectViewWithText:@"--,--,--,--,--,--,--"];
+            NSLog(@"ssssssssssss: 没有预测号码设置好了");
+            self.nextExpect.text = [NSString stringWithFormat:@"========= 7个号码 =========\n=    该期没有选择7个号码    =\n%@", string];
         }
     }
 }

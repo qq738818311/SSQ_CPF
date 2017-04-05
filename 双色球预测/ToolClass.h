@@ -151,6 +151,9 @@ typedef void (^successBlock)(id responseObject, NSString *msg);     //请求成�
 typedef void (^failureBlock)(NSString *errorInfo, NSError *error);  //请求失败回调block
 typedef void (^loadProgressBlock)(float progress);                  //请求中回调block
 
+typedef void (^tcd_inProgressBlock)(int time);  //倒计时(timeCountDown)运行中回调block
+typedef void (^tcd_completionBlock)();          //倒计时(timeCountDown)完成回调block
+
 /************************************************************
  *  说明:
  *      需要集成的框架
@@ -576,6 +579,8 @@ singleton_interface(ToolClass)
 /********************************* 以下为设置控制台输出中文代码 ***********************************/
 #pragma mark - 以下为设置控制台输出中文代码
 
+#if DEBUG
+
 @interface NSObject (JRSwizzle)
 
 + (BOOL)jr_swizzleMethod:(SEL)origSel_ withMethod:(SEL)altSel_ error:(NSError**)error_;
@@ -594,6 +599,8 @@ singleton_interface(ToolClass)
 - (NSString*)my_description;
 
 @end
+
+#endif
 
 /************************************ 以下为字符串类别代码 **************************************/
 

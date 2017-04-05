@@ -1012,9 +1012,14 @@ singleton_implementation(ToolClass)
     manager.enableAutoToolbar = NO;
 }
 
+static tcd_inProgressBlock tcd_inProgress;
+static tcd_completionBlock tcd_completion;
+
 /** 倒计时(Count:执行总次数 perTime:每几秒执行一次 inProgress:倒计时中回调(time:第几次) completion:完成回调) */
-+ (dispatch_source_t)timeCountDownWithCount:(NSTimeInterval)count perTime:(NSTimeInterval)perTime inProgress:(void (^)(int time))inProgressBlock completion:(void (^)())completionBlock
++ (dispatch_source_t)timeCountDownWithCount:(NSTimeInterval)count perTime:(NSTimeInterval)perTime inProgress:(tcd_inProgressBlock)inProgress completion:(tcd_completionBlock)completion
 {
+    tcd_inProgress = inProgress;
+    tcd_completion = completion;
     //倒计时函数
     __block int timeout = count; //倒计时时间
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
@@ -1025,12 +1030,12 @@ singleton_implementation(ToolClass)
             dispatch_source_cancel(_timer);
             dispatch_async(dispatch_get_main_queue(), ^{
                 //这里可以替换成自己需要的
-                if (completionBlock) completionBlock();
+                if (tcd_completion) tcd_completion();
             });
         }else{
             dispatch_async(dispatch_get_main_queue(), ^{
                 //这里可以替换成自己需要的
-                if (inProgressBlock) inProgressBlock(timeout);
+                if (tcd_inProgress) tcd_inProgress(timeout);
                 timeout--;
             });
         }
@@ -1045,6 +1050,8 @@ singleton_implementation(ToolClass)
     if (timer) {
         dispatch_source_cancel(timer);
         timer = nil;
+        tcd_inProgress = nil;
+        tcd_completion = nil;
     }
 }
 
@@ -1200,6 +1207,8 @@ singleton_implementation(ToolClass)
 
 /********************************* 以下为设置控制台输出中文代码 ***********************************/
 #pragma mark - 以下为设置控制台输出中文代码
+
+#if DEBUG
 
 #if TARGET_OS_IPHONE
 #import <objc/runtime.h>
@@ -1410,6 +1419,8 @@ userInfo:[NSDictionary dictionaryWithObject:errStr forKey:NSLocalizedDescription
 }
 
 @end
+
+#endif
 
 /************************************ 以下为字符串类别代码 **************************************/
 
