@@ -7,8 +7,11 @@
 //
 
 #import "OpenAwardView.h"
+#import "ViewController.h"
 
 #define SPACING viewAdapter(10)//间距
+
+static TCTimer *tcd;
 
 @implementation OpenAwardView
 
@@ -76,6 +79,8 @@
 
 - (void)setOpenAwardViewWithModel:(SaveModel *)model andWiningNumers:(NSArray *)numbers
 {
+    [ToolClass cancelTimeCountDownWith:tcd];
+    
     self.expectLabel.text = [NSString stringWithFormat:@"第%@期", model.expect];
     self.timeLabel.text = [NSString stringWithFormat:@"开奖日期:%@", model.time];
     for (int i = 0; i < 7; i++) {
@@ -88,6 +93,20 @@
             }else{
                 numberLabel.backgroundColor = [UIColor clearColor];
                 numberLabel.textColor = [UIColor redColor];
+            }
+        }else{
+            NSLog(@"tempCurrentChase == %@", tempCurrentChase);
+            if ([str isEqualToString:tempCurrentChase]) {
+                tcd = [ToolClass timeCountDownWithCount:1000 perTime:0.2 inProgress:^(int time) {
+                    numberLabel.layer.borderColor = RANDOMCOLOR.CGColor;
+                    numberLabel.backgroundColor = RGBACOLOR(arc4random()%255, arc4random()%255, arc4random()%255, 0.5);
+                } completion:^{
+                    numberLabel.layer.borderColor = [UIColor blueColor].CGColor;
+                    numberLabel.backgroundColor = [UIColor clearColor];
+                }];
+            }else{
+                numberLabel.layer.borderColor = [UIColor blueColor].CGColor;
+                numberLabel.backgroundColor = [UIColor clearColor];
             }
         }
         numberLabel.text = str;

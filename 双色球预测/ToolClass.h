@@ -39,6 +39,8 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:a]
 #define UIColorFromRGB(rgbValue) UIColorFromRGBWithAlpha(rgbValue,1.0)
 //RGB
 #define RGBACOLOR(r,g,b,a) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:(a)]
+//随机色
+#define RANDOMCOLOR RGBACOLOR(arc4random_uniform(255), arc4random_uniform(255), arc4random_uniform(255), 1)
 
 #define DEBUGCOLOR(color) [UIColor color]
 
@@ -153,6 +155,12 @@ typedef void (^loadProgressBlock)(float progress);                  //请求中�
 
 typedef void (^tcd_inProgressBlock)(int time);  //倒计时(timeCountDown)运行中回调block
 typedef void (^tcd_completionBlock)();          //倒计时(timeCountDown)完成回调block
+
+#pragma mark - ToolClassTimer
+
+@interface TCTimer : NSObject
+
+@end
 
 /************************************************************
  *  说明:
@@ -526,14 +534,14 @@ singleton_interface(ToolClass)
  *  @param inProgressBlock 倒计时中回调(time:第几次)
  *  @param completionBlock 完成回调
  */
-+ (dispatch_source_t)timeCountDownWithCount:(NSTimeInterval)count perTime:(NSTimeInterval)perTime inProgress:(void (^)(int time))inProgressBlock completion:(void (^)())completionBlock;
++ (TCTimer *)timeCountDownWithCount:(NSTimeInterval)count perTime:(NSTimeInterval)perTime inProgress:(tcd_inProgressBlock)inProgress completion:(tcd_completionBlock)completion;
 
 /**
  *  手动结束倒计时
  *
- *  @param timer 开启倒计时时创建的dispatch_source_t对象
+ *  @param timer 开启倒计时时创建的TCTimer对象
  */
-+ (void)cancelTimeCountDownWith:(dispatch_source_t)timer;
++ (void)cancelTimeCountDownWith:(TCTimer *)tcTimer;
 
 /**
  *  图片转字符串

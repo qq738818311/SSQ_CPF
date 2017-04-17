@@ -25,10 +25,12 @@
     
     //蒲公英启动基本SDK
     [[PgyManager sharedPgyManager] startManagerWithAppId:PGY_APP_ID];
+#if !DEBUG
     //启动更新检查SDK
     [[PgyUpdateManager sharedPgyManager] startManagerWithAppId:PGY_APP_ID];
     //检查是否有版本更新
     [[PgyUpdateManager sharedPgyManager] checkUpdate];
+#endif
     
     //注册Keyboard
     [ToolClass registerIQKeyboard];

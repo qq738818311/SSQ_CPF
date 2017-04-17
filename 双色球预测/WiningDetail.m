@@ -8,7 +8,7 @@
 
 #import "WiningDetail.h"
 
-static dispatch_source_t timer;
+static TCTimer *tcd;
 
 @implementation WiningDetail
 
@@ -92,7 +92,7 @@ static dispatch_source_t timer;
     for (UIView *view in self.conjectureBg.subviews) {
         [view removeFromSuperview];
     }
-    [ToolClass cancelTimeCountDownWith:timer];
+    [ToolClass cancelTimeCountDownWith:tcd];
 
     if (dict) {
         
@@ -106,7 +106,7 @@ static dispatch_source_t timer;
         NSArray *allArray = dict[@"allArray"];
         if (sevenArray.count >= 4) {
             self.winingLabel.text = @"已中奖😄😄:";
-            timer = [ToolClass timeCountDownWithCount:1000 perTime:0.2 inProgress:^(int time) {
+            tcd = [ToolClass timeCountDownWithCount:1000 perTime:0.2 inProgress:^(int time) {
                 self.winingLabel.textColor = RGBACOLOR(arc4random()%255, arc4random()%255, arc4random()%255, 1);
             } completion:^{
                 self.winingLabel.textColor = [UIColor redColor];

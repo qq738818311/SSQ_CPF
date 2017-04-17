@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0DDB7FD2F7683AB9613C8FFE /* libPods-双色球预测.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 437E14CC7E5998D5A6E6409F /* libPods-双色球预测.a */; };
 		8F1541FE1DC72B7C009C3495 /* ToolClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F1541FD1DC72B7C009C3495 /* ToolClass.m */; };
+		8F2277951E9CC9EA009128F0 /* CustomSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F2277941E9CC9EA009128F0 /* CustomSlider.m */; };
 		8F241E9E1DC32B050010ED86 /* OperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F241E9D1DC32B050010ED86 /* OperationManager.m */; };
 		8F3982D11E25CDF800B2D3F3 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F3982D01E25CDF600B2D3F3 /* LoginViewController.m */; };
 		8F3B50541DE7D94B003F8A63 /* WiningDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F3B50531DE7D94B003F8A63 /* WiningDetail.m */; };
@@ -16,6 +17,8 @@
 		8F3B50601DE7FF69003F8A63 /* MLMSegmentHead.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F3B505A1DE7FF68003F8A63 /* MLMSegmentHead.m */; };
 		8F3B50611DE7FF69003F8A63 /* MLMSegmentPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F3B505C1DE7FF68003F8A63 /* MLMSegmentPage.m */; };
 		8F3B50621DE7FF69003F8A63 /* UIView+ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F3B505F1DE7FF68003F8A63 /* UIView+ViewController.m */; };
+		8F74823B1E9B81320056D58E /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F74823A1E9B81320056D58E /* SettingViewController.m */; };
+		8F74823E1E9B87A50056D58E /* SetBlueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F74823D1E9B87A50056D58E /* SetBlueViewController.m */; };
 		8F8615281DF6B80E008C6F2F /* BottomBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F8615271DF6B80E008C6F2F /* BottomBar.m */; };
 		8F9C37F61DDF111F009D5F69 /* FMDatabaseTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F9C37F51DDF111F009D5F69 /* FMDatabaseTool.m */; };
 		8F9C37F91DDF162D009D5F69 /* SaveModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F9C37F81DDF162D009D5F69 /* SaveModel.m */; };
@@ -55,6 +58,8 @@
 		8F1541FB1DC72B51009C3495 /* PrefixHeader.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		8F1541FC1DC72B7C009C3495 /* ToolClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToolClass.h; sourceTree = "<group>"; };
 		8F1541FD1DC72B7C009C3495 /* ToolClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToolClass.m; sourceTree = "<group>"; };
+		8F2277931E9CC9EA009128F0 /* CustomSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomSlider.h; sourceTree = "<group>"; };
+		8F2277941E9CC9EA009128F0 /* CustomSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomSlider.m; sourceTree = "<group>"; };
 		8F241E9C1DC32B050010ED86 /* OperationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OperationManager.h; sourceTree = "<group>"; };
 		8F241E9D1DC32B050010ED86 /* OperationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OperationManager.m; sourceTree = "<group>"; };
 		8F3982CF1E25CDF600B2D3F3 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
@@ -70,6 +75,10 @@
 		8F3B505D1DE7FF68003F8A63 /* SegmentPageHead.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SegmentPageHead.h; sourceTree = "<group>"; };
 		8F3B505E1DE7FF68003F8A63 /* UIView+ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+ViewController.h"; sourceTree = "<group>"; };
 		8F3B505F1DE7FF68003F8A63 /* UIView+ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+ViewController.m"; sourceTree = "<group>"; };
+		8F7482391E9B81320056D58E /* SettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
+		8F74823A1E9B81320056D58E /* SettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
+		8F74823C1E9B87A50056D58E /* SetBlueViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetBlueViewController.h; sourceTree = "<group>"; };
+		8F74823D1E9B87A50056D58E /* SetBlueViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SetBlueViewController.m; sourceTree = "<group>"; };
 		8F8615261DF6B80E008C6F2F /* BottomBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BottomBar.h; sourceTree = "<group>"; };
 		8F8615271DF6B80E008C6F2F /* BottomBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BottomBar.m; sourceTree = "<group>"; };
 		8F9209CA1DCB371500B60B9A /* AppDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDefine.h; sourceTree = "<group>"; };
@@ -191,6 +200,12 @@
 				8F3982D01E25CDF600B2D3F3 /* LoginViewController.m */,
 				F7F51B261DBA674F00F639E9 /* ViewController.h */,
 				F7F51B271DBA674F00F639E9 /* ViewController.m */,
+				8F7482391E9B81320056D58E /* SettingViewController.h */,
+				8F74823A1E9B81320056D58E /* SettingViewController.m */,
+				8F74823C1E9B87A50056D58E /* SetBlueViewController.h */,
+				8F74823D1E9B87A50056D58E /* SetBlueViewController.m */,
+				8F2277931E9CC9EA009128F0 /* CustomSlider.h */,
+				8F2277941E9CC9EA009128F0 /* CustomSlider.m */,
 				8FBEC9331DE6DE7200933A51 /* OpenAwardView.h */,
 				8FBEC9341DE6DE7200933A51 /* OpenAwardView.m */,
 				8F3B50521DE7D94B003F8A63 /* WiningDetail.h */,
@@ -433,9 +448,11 @@
 				8F3B50621DE7FF69003F8A63 /* UIView+ViewController.m in Sources */,
 				F7F51B281DBA674F00F639E9 /* ViewController.m in Sources */,
 				8F3B50601DE7FF69003F8A63 /* MLMSegmentHead.m in Sources */,
+				8F74823B1E9B81320056D58E /* SettingViewController.m in Sources */,
 				8F241E9E1DC32B050010ED86 /* OperationManager.m in Sources */,
 				8F3B50611DE7FF69003F8A63 /* MLMSegmentPage.m in Sources */,
 				8F3982D11E25CDF800B2D3F3 /* LoginViewController.m in Sources */,
+				8F74823E1E9B87A50056D58E /* SetBlueViewController.m in Sources */,
 				8F9C37F61DDF111F009D5F69 /* FMDatabaseTool.m in Sources */,
 				8F3B50541DE7D94B003F8A63 /* WiningDetail.m in Sources */,
 				8FF3E9E01DF1546A0038D69A /* LaunchViewController.m in Sources */,
@@ -445,6 +462,7 @@
 				8F3B50571DE7E573003F8A63 /* LastExpectView.m in Sources */,
 				F7F51B221DBA674F00F639E9 /* main.m in Sources */,
 				8FBEC9351DE6DE7200933A51 /* OpenAwardView.m in Sources */,
+				8F2277951E9CC9EA009128F0 /* CustomSlider.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

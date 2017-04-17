@@ -11,6 +11,8 @@
 #import "ViewController.h"
 #import "LoginViewController.h"
 
+TCTimer *tcd;
+
 @interface LaunchViewController ()
 
 @end
@@ -54,6 +56,29 @@
         }
     }];
 }
+
+//- (void)viewDidLoad {
+//    [super viewDidLoad];
+//    tcd = [ToolClass timeCountDownWithCount:6 perTime:0.5 inProgress:^(int time) {
+//        if (time%2) {
+////            [self.nextExpectView setLastExpectViewWithText:[[@[@"--",@"--",@"--",@"--",@"--",@"--",@"--"] mutableCopy] componentsJoinedByString:@","]];
+//        }else{
+////            [self.nextExpectView setLastExpectViewWithText:[[@[@"  ",@"  ",@"  ",@"  ",@"  ",@"  ",@"  "] mutableCopy] componentsJoinedByString:@","]];
+//        }
+//    } completion:^{
+//        tcd = [ToolClass timeCountDownWithCount:9999999 perTime:0.02 inProgress:^(int time) {
+////            [self.nextExpectView setLastExpectViewWithText:[[OperationManager allNumbersChooesSevenNumberWithAllNumbers:dict[@"allArray"]] componentsJoinedByString:@","]];
+//            //                    NSLog(@"ssssssssssss: 倒计时回调又给刷新预测号码了");
+//        } completion:^{
+//            
+//        }];
+//    }];
+//}
+//
+//- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+//{
+//    [ToolClass cancelTimeCountDownWith:tcd];
+//}
 
 - (BOOL)isOverNineClock
 {

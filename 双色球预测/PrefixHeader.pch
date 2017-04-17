@@ -9,6 +9,7 @@
 #ifndef PrefixHeader_pch
 #define PrefixHeader_pch
 
+#import <Foundation/Foundation.h>
 #import "AppDefine.h"
 #import "ProvisioningProfiles.h"
 #import "ToolClass.h"

@@ -23,6 +23,58 @@
 #define IP_ADDR_IPv4    @"ipv4"
 #define IP_ADDR_IPv6    @"ipv6"
 
+#pragma mark - ToolClassTimer
+
+@interface TCTimer ()
+
+@property (nonatomic, copy) tcd_inProgressBlock tcd_inProgress;
+@property (nonatomic, copy) tcd_completionBlock tcd_completion;
+@property (nonatomic, strong) dispatch_source_t timer;
+
+@end
+
+@implementation TCTimer
+
+- (dispatch_source_t)timer
+{
+    if (!_timer) {
+        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+        _timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0,queue);
+    }
+    return _timer;
+}
+
+- (instancetype)initWithTimeCountDownWithCount:(NSTimeInterval)count perTime:(NSTimeInterval)perTime inProgress:(tcd_inProgressBlock)inProgress completion:(tcd_completionBlock)completion
+{
+    if (self = [super init]) {
+        self.tcd_inProgress = inProgress;
+        self.tcd_completion = completion;
+        //倒计时函数
+        __block int timeout = count; //倒计时时间
+        dispatch_source_set_timer(self.timer,dispatch_walltime(NULL, 0), (perTime ? : 1.0)*NSEC_PER_SEC, 0); //每1秒执行
+        dispatch_source_set_event_handler(self.timer, ^{
+            if(timeout <= 0){ //倒计时结束，关闭
+                dispatch_source_cancel(self.timer);
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    //这里可以替换成自己需要的
+                    if (self.tcd_completion) self.tcd_completion();
+                    [ToolClass cancelTimeCountDownWith:self];
+                });
+            }else{
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    //这里可以替换成自己需要的
+                    if (self.tcd_inProgress) self.tcd_inProgress(timeout);
+                    timeout--;
+                });
+            }
+        });
+        dispatch_resume(self.timer);
+    }
+    return self;
+}
+
+@end
+
 NSString *const NetIsConnectedNotification = @"NetIsConnectedNotification";    //网络改变通知
 NSString *const NetConnectStatu = @"NetConnectStatu";                          //网络连接状态
 NSString *const NetIsConnected = @"NetIsConnected";                            //是否连接网络
@@ -48,6 +100,9 @@ typedef NS_ENUM(NSInteger, RequestType) {
 @property (nonatomic, strong) FMDatabase *db;
 
 @property (nonatomic, copy) void (^alertViewClickedButtonAtIndexBlock)(NSUInteger buttonIndex);
+
+/** 储存倒计时TCTimer对象的数组 */
+@property (nonatomic, strong) NSMutableArray *timers;
 
 @end
 
@@ -127,6 +182,14 @@ singleton_implementation(ToolClass)
         [_db close];
     }
     return _db;
+}
+
+- (NSMutableArray *)timers
+{
+    if (!_timers) {
+        _timers = [NSMutableArray array];
+    }
+    return _timers;
 }
 
 #pragma mark - 本地储存相关
@@ -1012,46 +1075,25 @@ singleton_implementation(ToolClass)
     manager.enableAutoToolbar = NO;
 }
 
-static tcd_inProgressBlock tcd_inProgress;
-static tcd_completionBlock tcd_completion;
-
 /** 倒计时(Count:执行总次数 perTime:每几秒执行一次 inProgress:倒计时中回调(time:第几次) completion:完成回调) */
-+ (dispatch_source_t)timeCountDownWithCount:(NSTimeInterval)count perTime:(NSTimeInterval)perTime inProgress:(tcd_inProgressBlock)inProgress completion:(tcd_completionBlock)completion
++ (TCTimer *)timeCountDownWithCount:(NSTimeInterval)count perTime:(NSTimeInterval)perTime inProgress:(tcd_inProgressBlock)inProgress completion:(tcd_completionBlock)completion
 {
-    tcd_inProgress = inProgress;
-    tcd_completion = completion;
-    //倒计时函数
-    __block int timeout = count; //倒计时时间
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    dispatch_source_t _timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0,queue);
-    dispatch_source_set_timer(_timer,dispatch_walltime(NULL, 0), (perTime ? : 1.0)*NSEC_PER_SEC, 0); //每1秒执行
-    dispatch_source_set_event_handler(_timer, ^{
-        if(timeout <= 0){ //倒计时结束，关闭
-            dispatch_source_cancel(_timer);
-            dispatch_async(dispatch_get_main_queue(), ^{
-                //这里可以替换成自己需要的
-                if (tcd_completion) tcd_completion();
-            });
-        }else{
-            dispatch_async(dispatch_get_main_queue(), ^{
-                //这里可以替换成自己需要的
-                if (tcd_inProgress) tcd_inProgress(timeout);
-                timeout--;
-            });
-        }
-    });
-    dispatch_resume(_timer);
-    return _timer;
+    TCTimer *timer = [[TCTimer alloc] initWithTimeCountDownWithCount:count perTime:perTime inProgress:inProgress completion:completion];
+    [TOOL.timers addObject:timer];
+    return timer;
 }
 
 /** 手动结束倒计时 */
-+ (void)cancelTimeCountDownWith:(dispatch_source_t)timer
++ (void)cancelTimeCountDownWith:(TCTimer *)tcTimer
 {
-    if (timer) {
-        dispatch_source_cancel(timer);
-        timer = nil;
-        tcd_inProgress = nil;
-        tcd_completion = nil;
+    if ([TOOL.timers containsObject:tcTimer]) {
+        if (tcTimer.timer) {
+            dispatch_source_cancel(tcTimer.timer);
+            tcTimer.timer = nil;
+            tcTimer.tcd_inProgress = nil;
+            tcTimer.tcd_completion = nil;
+            [TOOL.timers removeObject:tcTimer];
+        }
     }
 }
 

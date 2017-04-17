@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+extern NSString *tempCurrentChase;
+//tempCurrentChase = @"";
+
 @interface ViewController : UIViewController
 
 

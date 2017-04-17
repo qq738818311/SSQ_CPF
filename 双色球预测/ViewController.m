@@ -15,9 +15,14 @@
 #import "LastExpectView.h"
 #import "SegmentPageHead.h"
 #import "BottomBar.h"
+#import "SettingViewController.h"
+
+NSString *tempCurrentChase = @"";
+BOOL currentExceptIsWinning = NO;
+BOOL lastClickIsNext = NO;  // 上次操作是否是下一期
 
 static BOOL canAddAnimation = NO;
-static dispatch_source_t timer;
+static TCTimer *tcd;
 
 @interface ViewController ()<UITextFieldDelegate, WJTextFieldDelegate, MLMSegmentPageDelegate, UIGestureRecognizerDelegate>
 
@@ -59,14 +64,25 @@ static dispatch_source_t timer;
     return _effectPWView;
 }
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"双色球预测";
     self.view.backgroundColor = UIColorFromRGB(0xf4f6f5);
     // 控制是否显示键盘上的工具条。
     [IQKeyboardManager sharedManager].enableAutoToolbar = YES;
+    // 获取到当前期追号的号码
+    tempCurrentChase = [ToolClass objectForKey:kCurrentChase] ? : @"";
     [self createUI];
+    /** 设置好篮球后刷新数据以及UI */
+    [NotificationCenter addObserver:self selector:@selector(refreshAction) name:kNOTIFICATION_SETBLUENUMBERSDONE object:nil];
     [self requestDataIsRefresh:NO];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self reloadUI];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -246,12 +262,12 @@ static dispatch_source_t timer;
         if (index == 0 || index == 1) {//上一期或下一期
             [selfWeak upAndDownButtonClick:button];
         }else if (index == 2){//刷新
-            [ToolClass cancelTimeCountDownWith:timer];
-            selfWeak.nextExpectView.startBtn.selected = NO;
-            canAddAnimation = YES;
-            [selfWeak requestDataIsRefresh:YES];
+            [selfWeak refreshAction];
         }else if (index == 3){//设置
-        
+            [selfWeak presentViewController:[[UINavigationController alloc] initWithRootViewController:[[SettingViewController alloc] init]] animated:YES completion:^{
+                [ToolClass cancelTimeCountDownWith:tcd];
+                selfWeak.nextExpectView.startBtn.selected = NO;
+            }];
         }
     }];
     
@@ -259,14 +275,14 @@ static dispatch_source_t timer;
         NSDictionary *dict = [OperationManager getResultWithArray:[[selfWeak.model.number componentsSeparatedByString:@"+"].firstObject componentsSeparatedByString:@","]];
         if (index == 0) {//开始&停止
             if (button.selected) {//开始
-                [ToolClass cancelTimeCountDownWith:timer];
-                timer = [ToolClass timeCountDownWithCount:3000 perTime:0.02 inProgress:^(int time) {
+                [ToolClass cancelTimeCountDownWith:tcd];
+                tcd = [ToolClass timeCountDownWithCount:3000 perTime:0.02 inProgress:^(int time) {
                     [selfWeak.nextExpectView setLastExpectViewWithText:[[OperationManager allNumbersChooesSevenNumberWithAllNumbers:dict[@"allArray"]] componentsJoinedByString:@","]];
                 } completion:^{
                     
                 }];
             }else{//停止
-                [ToolClass cancelTimeCountDownWith:timer];
+                [ToolClass cancelTimeCountDownWith:tcd];
                 nextNumber = [[OperationManager allNumbersChooesSevenNumberWithAllNumbers:dict[@"allArray"]] componentsJoinedByString:@","];
                 [selfWeak.nextExpectView setLastExpectViewWithText:nextNumber];
             }
@@ -305,8 +321,21 @@ static dispatch_source_t timer;
     }];
 }
 
+/** 刷新触发事件 */
+- (void)refreshAction
+{
+    [ToolClass cancelTimeCountDownWith:tcd];
+    self.nextExpectView.startBtn.selected = NO;
+    canAddAnimation = YES;
+    [self requestDataIsRefresh:YES];
+}
+
 - (void)requestDataIsRefresh:(BOOL)isRefresh
 {
+    /** 如果是刷新将当前期追号置为最新的追号 */
+    if (isRefresh) {
+        tempCurrentChase = [ToolClass objectForKey:kCurrentChase];
+    }
     SaveModel *model = (SaveModel *)[FMDatabaseTool findByFirstProperty:[ToolClass objectForKey:kLASTEXPECT] withTableName:NSStringFromClass([SaveModel class]) andModelClass:[SaveModel class]];
     if (model && !isRefresh) {
         self.model = model;
@@ -387,8 +416,8 @@ static dispatch_source_t timer;
 
 - (void)reloadUIWithAnimation:(CATransition *)animation
 {
-    [ToolClass cancelTimeCountDownWith:timer];
-    NSLog(@"ssssssssssss: 倒计时停止");
+//    [ToolClass cancelTimeCountDownWith:timer];
+//    NSLog(@"ssssssssssss: 倒计时停止");
     self.nextExpectView.startBtn.selected = NO;
     [self reloadUI];
     [[self.pageView layer] addAnimation:animation forKey:@"animation"];
@@ -411,6 +440,15 @@ static dispatch_source_t timer;
     }
 }
 
+- (NSArray *)getChasenumbers
+{
+    NSString *str = [ToolClass objectForKey:kSelectedNumbers];
+    if (kIsString(str)) {
+        return [str componentsSeparatedByString:@","];
+    }
+    return @[];
+}
+
 - (void)upAndDownButtonClick:(id)object
 {
     CATransition *animation = [CATransition animation];
@@ -420,9 +458,20 @@ static dispatch_source_t timer;
     animation.type = @"cube";
 
     SaveModel *model = nil;
+    NSArray *chaseNumbers = [self getChasenumbers];
     if ([object isKindOfClass:[UIButton class]]) {
         UIButton *button = (UIButton *)object;
         if (button.tag == 2000) {//上一期
+            /** 
+             chaseNumbers.count 数组有值，设置了追号以后
+             currentExceptIsWinning 当前期是否中奖，已中奖
+             [self.model.expect isEqualToString:[ToolClass objectForKey:kLASTEXPECT]] 当前期是否是最新的一期，是最新的一期
+             lastClickIsNext 上次操作是否是下一期，是下一期
+             */
+            if (chaseNumbers.count && (currentExceptIsWinning || [self.model.expect isEqualToString:[ToolClass objectForKey:kLASTEXPECT]] || lastClickIsNext)) {
+                NSUInteger index = [chaseNumbers indexOfObject:tempCurrentChase];
+                tempCurrentChase = chaseNumbers[index > 0 ? index - 1 : chaseNumbers.count - 1];
+            }
             animation.subtype = kCATransitionFromLeft;
             NSInteger lastExpect = [self.model.expect substringFromIndex:4].integerValue - 1;
             if (lastExpect > 0) {//如果不是去年
@@ -447,7 +496,18 @@ static dispatch_source_t timer;
                     [ToolClass showMBMessageTitle:@"未找到上期数据" toView:self.view];
                 }
             }
+            // 将上次操作是否是下一期置为NO
+            lastClickIsNext = NO;
         }else{//下一期
+            /**
+             chaseNumbers.count 数组有值，设置了追号以后
+             currentExceptIsWinning 当前期是否中奖，已中奖
+             lastClickIsNext 上次操作是否是下一期，不是下一期
+             */
+            if (chaseNumbers.count && (currentExceptIsWinning || !lastClickIsNext)) {
+                NSUInteger index = [chaseNumbers indexOfObject:tempCurrentChase];
+                tempCurrentChase = chaseNumbers[index < chaseNumbers.count - 1 ? index + 1 : 0];
+            }
             animation.subtype = kCATransitionFromRight;
             NSInteger nextExpect = self.model.expect.integerValue + 1;
             if (nextExpect > [[ToolClass objectForKey:kLASTEXPECT] integerValue]){
@@ -467,10 +527,22 @@ static dispatch_source_t timer;
                     }
                 }
             }
+            // 将上次操作是否是下一期置为YES
+            lastClickIsNext = YES;
         }
     }else{
         UISwipeGestureRecognizer *swipe = (UISwipeGestureRecognizer *)object;
         if (swipe.direction == UISwipeGestureRecognizerDirectionRight) {//上一期
+            /**
+             chaseNumbers.count 数组有值，设置了追号以后
+             currentExceptIsWinning 当前期是否中奖，已中奖
+             [self.model.expect isEqualToString:[ToolClass objectForKey:kLASTEXPECT]] 当前期是否是最新的一期，是最新的一期
+             lastClickIsNext 上次操作是否是下一期，是下一期
+             */
+            if (chaseNumbers.count && (currentExceptIsWinning || [self.model.expect isEqualToString:[ToolClass objectForKey:kLASTEXPECT]] || lastClickIsNext)) {
+                NSUInteger index = [chaseNumbers indexOfObject:tempCurrentChase];
+                tempCurrentChase = chaseNumbers[index > 0 ? index - 1 : chaseNumbers.count - 1];
+            }
             animation.subtype = kCATransitionFromLeft;
             NSInteger lastExpect = [self.model.expect substringFromIndex:4].integerValue - 1;
             if (lastExpect > 0) {//如果不是去年
@@ -495,7 +567,18 @@ static dispatch_source_t timer;
                     [ToolClass showMBMessageTitle:@"未找到上期数据" toView:self.view];
                 }
             }
+            // 将上次操作是否是下一期置为NO
+            lastClickIsNext = NO;
         }else{//下一期
+            /**
+             chaseNumbers.count 数组有值，设置了追号以后
+             currentExceptIsWinning 当前期是否中奖，已中奖
+             lastClickIsNext 上次操作是否是下一期，不是下一期
+             */
+            if (chaseNumbers.count && (currentExceptIsWinning || !lastClickIsNext)) {
+                NSUInteger index = [chaseNumbers indexOfObject:tempCurrentChase];
+                tempCurrentChase = chaseNumbers[index < chaseNumbers.count - 1 ? index + 1 : 0];
+            }
             animation.subtype = kCATransitionFromRight;
             NSInteger nextExpect = self.model.expect.integerValue + 1;
             if (nextExpect > [[ToolClass objectForKey:kLASTEXPECT] integerValue]){
@@ -515,6 +598,8 @@ static dispatch_source_t timer;
                     }
                 }
             }
+            // 将上次操作是否是下一期置为YES
+            lastClickIsNext = YES;
         }
         self.pageView.viewsScroll.scrollEnabled = YES;
     }
@@ -523,10 +608,11 @@ static dispatch_source_t timer;
 //设置显示数据
 - (void)reloadUI
 {
+    currentExceptIsWinning = [[self.model.number substringFromIndex:self.model.number.length - 2] isEqualToString:tempCurrentChase];
     self.nextExpectView.buttonEnabled = [self.model.expect isEqualToString:[ToolClass objectForKey:kLASTEXPECT]];
 
     //上一期的时间
-    NSString *lastExpect = @(self.model.expect.integerValue - 1);
+    NSString *lastExpect = @(self.model.expect.integerValue - 1).stringValue;
     //上一期的模型
     SaveModel *lastTimeModel = (SaveModel *)[FMDatabaseTool findByFirstProperty:lastExpect withTableName:NSStringFromClass([SaveModel class]) andModelClass:[SaveModel class]];
     
@@ -612,24 +698,24 @@ static dispatch_source_t timer;
     NSDictionary *dict = [OperationManager getResultWithArray:[[self.model.number componentsSeparatedByString:@"+"].firstObject componentsSeparatedByString:@","]];
     NSString *string = [self getFormatStringWithDict:dict];
     self.nextExpect.text = string;
-    
+    [ToolClass cancelTimeCountDownWith:tcd];
+
     if (self.model.nextNumber.length > 0) {//已有预测号码
         [self.nextExpectView setLastExpectViewWithText:self.model.nextNumber];
         self.nextExpect.text = [NSString stringWithFormat:@"========= 7个号码 =========\n=  %@  =\n%@", self.model.nextNumber, string];
     }else{//没有预测号码
-        [ToolClass cancelTimeCountDownWith:timer];
         if ([self.model.time isEqualToString:[self getCurrentPeriodsString]]) {//当前期
             self.nextExpectView.startBtn.selected = YES;
-            timer = [ToolClass timeCountDownWithCount:6 perTime:0.5 inProgress:^(int time) {
+            tcd = [ToolClass timeCountDownWithCount:6 perTime:0.5 inProgress:^(int time) {
                 if (time%2) {
                     [self.nextExpectView setLastExpectViewWithText:[[@[@"--",@"--",@"--",@"--",@"--",@"--",@"--"] mutableCopy] componentsJoinedByString:@","]];
                 }else{
                     [self.nextExpectView setLastExpectViewWithText:[[@[@"  ",@"  ",@"  ",@"  ",@"  ",@"  ",@"  "] mutableCopy] componentsJoinedByString:@","]];
                 }
             } completion:^{
-                timer = [ToolClass timeCountDownWithCount:9999999 perTime:0.02 inProgress:^(int time) {
+                tcd = [ToolClass timeCountDownWithCount:9999999 perTime:0.02 inProgress:^(int time) {
                     [self.nextExpectView setLastExpectViewWithText:[[OperationManager allNumbersChooesSevenNumberWithAllNumbers:dict[@"allArray"]] componentsJoinedByString:@","]];
-                    NSLog(@"ssssssssssss: 倒计时回调又给刷新预测号码了");
+//                    NSLog(@"ssssssssssss: 倒计时回调又给刷新预测号码了");
                 } completion:^{
                     
                 }];
@@ -638,7 +724,7 @@ static dispatch_source_t timer;
             //dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.02 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             //});
             [self.nextExpectView setLastExpectViewWithText:@"--,--,--,--,--,--,--"];
-            NSLog(@"ssssssssssss: 没有预测号码设置好了");
+//            NSLog(@"ssssssssssss: 没有预测号码设置好了");
             self.nextExpect.text = [NSString stringWithFormat:@"========= 7个号码 =========\n=    该期没有选择7个号码    =\n%@", string];
         }
     }

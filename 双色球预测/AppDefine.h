@@ -35,7 +35,7 @@ fprintf(stderr,  "---------------------完美分割线---结束-----------------
 #define iOS9Later ([UIDevice currentDevice].systemVersion.floatValue >= 9.0f)
 
 /** 屏幕适配 */
-#define viewAdapter(f)  f*WIDTH/414
+#define viewAdapter(f)  f*WIDTH/414.0
 
 #define WeakObj(o) __weak typeof(o) o##Weak = o;
 #define StrongObj(o) __strong typeof(o) o = o##Weak;
@@ -50,9 +50,11 @@ fprintf(stderr,  "---------------------完美分割线---结束-----------------
 #define kLastNumber         @"lastNumber"   //上期号码
 #define kISLOGIN            @"isLogin"      //是否登录
 #define kLASTEXPECT         @"lastExpect"   //最后一期期数
+#define kSelectedNumbers    @"selectedNumbers"  //选择追号的几个号码
+#define kCurrentChase       @"currentChase" //当前追号
 
 //通知的Key
-#define kSCNOTIFICATION_UPLOADHEADIMAGERESULT   @"uploadHeadImageResult"//上传头像的结果
+#define kNOTIFICATION_SETBLUENUMBERSDONE   @"setBlueNumbersDone"    // 设置追号的篮球完成
 
 //本地储存表名
 #define SCUPLOADIMAGE_TABELNAME [NSString stringWithFormat:@"upload_image_%@",[ToolClass objectForKey:kSCCHILD_ID]]
