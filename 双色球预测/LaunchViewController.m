@@ -30,7 +30,7 @@ TCTimer *tcd;
     }];
         
     [ToolClass showMBConnectTitle:@"" toView:self.view afterDelay:0 isNeedUserInteraction:NO];
-    [ToolClass requestPOSTWithURL:@"http://f.apiplus.cn/ssq-20.json" parameters:nil isCache:NO success:^(id responseObject, NSString *msg) {
+    [ToolClass requestPOSTWithURL:NET_API parameters:nil isCache:NO success:^(id responseObject, NSString *msg) {
         NSArray *data = responseObject[@"data"];
         for (int i = 0; i < data.count; i++) {
             NSDictionary *dataDict = data[i];

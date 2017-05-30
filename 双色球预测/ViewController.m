@@ -342,7 +342,7 @@ static TCTimer *tcd;
         [self reloadUI];
     }else{
         [ToolClass showMBConnectTitle:@"" toView:self.view afterDelay:1 isNeedUserInteraction:NO];
-        [ToolClass requestPOSTWithURL:@"http://f.apiplus.cn/ssq-20.json" parameters:nil isCache:NO success:^(id responseObject, NSString *msg) {
+        [ToolClass requestPOSTWithURL:NET_API parameters:nil isCache:NO success:^(id responseObject, NSString *msg) {
             NSArray *data = responseObject[@"data"];
             for (int i = 0; i < data.count; i++) {
                 NSDictionary *dataDict = data[i];
@@ -389,7 +389,7 @@ static TCTimer *tcd;
 - (void)requestDataWithExpect:(NSInteger)expect animation:(CATransition *)animation isShowNoData:(BOOL)isShowNoData
 {
     [ToolClass showMBConnectTitle:@"" toView:self.view afterDelay:0 isNeedUserInteraction:NO];
-    [ToolClass requestPOSTWithURL:@"http://f.apiplus.cn/ssq-20.json" parameters:nil isCache:NO success:^(id responseObject, NSString *msg) {
+    [ToolClass requestPOSTWithURL:NET_API parameters:nil isCache:NO success:^(id responseObject, NSString *msg) {
         NSArray *data = responseObject[@"data"];
         NSDictionary *dataDict = data.firstObject;
         NSString *expect = dataDict[@"expect"];
