@@ -3,6 +3,7 @@
 //  ToolClass
 //
 //  Created by CPF on 16/4/5.
+//  Revision on 17/8/4.
 //  Copyright © 2016年 CPF. All rights reserved.
 //
 
@@ -342,6 +343,9 @@ singleton_interface(ToolClass)
  *  结束MBHUD
  */
 + (void)hideMBConnect;
+
+/** 结束MBHUD附带一句提示语 */
++ (void)hideMBConnectWithMessage:(NSString *)text;
 
 /**
  *  显示一个AlertController

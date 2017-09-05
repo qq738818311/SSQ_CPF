@@ -3,6 +3,7 @@
 //  ToolClass
 //
 //  Created by CPF on 16/4/5.
+//  Revision on 17/8/4.
 //  Copyright © 2016年 CPF. All rights reserved.
 //
 
@@ -307,22 +308,24 @@ singleton_implementation(ToolClass)
 /** 提示控件 */
 + (void)showMBMessageTitle:(NSString *)text toView:(UIView *)view showTime:(NSTimeInterval)second
 {
-    [MBProgressHUD hideHUDForView:TOOL.hudView animated:YES];
-    
-    UIView *tempView = view ? : [ToolClass appDelegate].window;
-    TOOL.hudView = tempView;
-    
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:tempView animated:YES];
-    hud.mode = MBProgressHUDModeText;
-    hud.label.text = @"";
-    hud.bezelView.style = MBProgressHUDBackgroundStyleSolidColor;
-    hud.bezelView.color = UIColorFromRGBWithAlpha(0x000000, 0.8);
-    hud.detailsLabel.textColor = [UIColor whiteColor];
-    hud.detailsLabel.text = text ? : @"";
-    hud.detailsLabel.font = [UIFont systemFontOfSize:14];
-    hud.margin = 10;
-    hud.removeFromSuperViewOnHide = YES;
-    [hud hideAnimated:YES afterDelay:second];
+    dispatch_async_get_main_queue_safe(^{
+        [MBProgressHUD hideHUDForView:TOOL.hudView animated:YES];
+        
+        UIView *tempView = view ? : [ToolClass appDelegate].window;
+        TOOL.hudView = tempView;
+        
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:tempView animated:YES];
+        hud.mode = MBProgressHUDModeText;
+        hud.label.text = @"";
+        hud.bezelView.style = MBProgressHUDBackgroundStyleSolidColor;
+        hud.bezelView.color = UIColorFromRGBWithAlpha(0x000000, 0.8);
+        hud.detailsLabel.textColor = [UIColor whiteColor];
+        hud.detailsLabel.text = [text isKindOfClass:NSClassFromString(@"NSString")] ? text : @"提示控件参数错误";
+        hud.detailsLabel.font = [UIFont systemFontOfSize:14];
+        hud.margin = 10;
+        hud.removeFromSuperViewOnHide = YES;
+        [hud hideAnimated:YES afterDelay:second];
+    });
 }
 
 /** 提示控件带成功回调 */
@@ -399,7 +402,22 @@ singleton_implementation(ToolClass)
 /** 结束MBHUD */
 + (void)hideMBConnect
 {
-    [MBProgressHUD hideHUDForView:TOOL.hudView animated:YES];
+    dispatch_async_get_main_queue_safe(^{
+        [MBProgressHUD hideHUDForView:TOOL.hudView animated:YES];
+    });
+}
+
+/** 结束MBHUD附带一句提示语 */
++ (void)hideMBConnectWithMessage:(NSString *)text
+{
+    dispatch_async_get_main_queue_safe(^{
+        [MBProgressHUD hideHUDForView:TOOL.hudView animated:YES];
+        if ([text isKindOfClass:[NSString class]]) {
+            if (text.length > 0) {
+                [self showMBMessageTitle:text toView:TOOL.hudView];
+            }
+        }
+    });
 }
 
 /** 显示一个AlertController */
@@ -566,7 +584,7 @@ singleton_implementation(ToolClass)
 - (void)reachabilityChanged:(NSNotification *)notification
 {
     Reachability *reachability = notification.object;
-    NSParameterAssert([reachability isKindOfClass:[Reachability class]]);
+//    NSParameterAssert([reachability isKindOfClass:[Reachability class]]);
     NetworkStatus netStatus = [reachability currentReachabilityStatus];
     switch (netStatus)
     {
@@ -843,6 +861,7 @@ singleton_implementation(ToolClass)
 {
     return [TOOL requestWithURL:url parameters:parameters requestType:RequestTypePost isCache:isCache fileData:nil attachName:nil fileName:nil mimeType:nil upLoadProgress:nil success:^(id responseObject, NSString *msg) {
         if (success) {
+            NSLog(@"响应数据：\n%@", responseObject);
             success(responseObject, msg);
         }
     } failure:^(NSString *errorInfo, NSError *error) {
@@ -1089,7 +1108,7 @@ singleton_implementation(ToolClass)
     if ([TOOL.timers containsObject:tcTimer]) {
         if (tcTimer.timer) {
             dispatch_source_cancel(tcTimer.timer);
-            tcTimer.timer = nil;
+//            tcTimer.timer = nil;
             tcTimer.tcd_inProgress = nil;
             tcTimer.tcd_completion = nil;
             [TOOL.timers removeObject:tcTimer];
@@ -1414,13 +1433,17 @@ userInfo:[NSDictionary dictionaryWithObject:errStr forKey:NSLocalizedDescription
     NSMutableString *string = [NSMutableString string];
     
     // 开头有个{
-    [string appendString:@"{\n"];
+    [string appendString:self.allKeys.count ? @"{\n" : @"{"];
     
     // 遍历所有的键值对
     [self enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
-        [string appendFormat:@"\t%@", key];
-        [string appendString:@" : "];
-        [string appendFormat:@"%@,\n", obj];
+        [string appendFormat:@"\t\"%@\"", key];
+        [string appendString:@": "];
+        if ([obj isKindOfClass:[NSString class]]) {
+            [string appendFormat:@"\"%@\",\n", obj];
+        }else{
+            [string appendFormat:@"%@,\n", obj];
+        }
     }];
     
     // 结尾有个}
@@ -1431,7 +1454,7 @@ userInfo:[NSDictionary dictionaryWithObject:errStr forKey:NSLocalizedDescription
     if (range.location != NSNotFound)
         [string deleteCharactersInRange:range];
     
-    return string;
+    return [string stringByReplacingOccurrencesOfString:@"<null>" withString:@"null"];
 }
 @end
 
@@ -1442,11 +1465,15 @@ userInfo:[NSDictionary dictionaryWithObject:errStr forKey:NSLocalizedDescription
     NSMutableString *string = [NSMutableString string];
     
     // 开头有个[
-    [string appendString:@"[\n"];
+    [string appendString:self.count ? @"[\n" : @"["];
     
     // 遍历所有的元素
     [self enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        [string appendFormat:@"\t%@,\n", obj];
+        if ([obj isKindOfClass:[NSString class]]) {
+            [string appendFormat:@"\t\"%@\",\n", obj];
+        }else{
+            [string appendFormat:@"\t%@,\n", obj];
+        }
     }];
     
     // 结尾有个]

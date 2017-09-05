@@ -95,7 +95,7 @@ static TCTimer *tcd;
                 numberLabel.textColor = [UIColor redColor];
             }
         }else{
-            NSLog(@"tempCurrentChase == %@", tempCurrentChase);
+//            NSLog(@"tempCurrentChase == %@", tempCurrentChase);
             if ([str isEqualToString:tempCurrentChase]) {
                 tcd = [ToolClass timeCountDownWithCount:1000 perTime:0.2 inProgress:^(int time) {
                     numberLabel.layer.borderColor = RANDOMCOLOR.CGColor;

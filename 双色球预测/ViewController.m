@@ -17,7 +17,7 @@
 #import "BottomBar.h"
 #import "SettingViewController.h"
 
-NSString *tempCurrentChase = @"";
+NSString *tempCurrentChase = @"00";
 BOOL currentExceptIsWinning = NO;
 BOOL lastClickIsNext = NO;  // 上次操作是否是下一期
 
@@ -72,7 +72,7 @@ static TCTimer *tcd;
     // 控制是否显示键盘上的工具条。
     [IQKeyboardManager sharedManager].enableAutoToolbar = YES;
     // 获取到当前期追号的号码
-    tempCurrentChase = [ToolClass objectForKey:kCurrentChase] ? : @"";
+    tempCurrentChase = [ToolClass objectForKey:kCurrentChase] ? : @"00";
     [self createUI];
     /** 设置好篮球后刷新数据以及UI */
     [NotificationCenter addObserver:self selector:@selector(refreshAction) name:kNOTIFICATION_SETBLUENUMBERSDONE object:nil];
@@ -334,7 +334,7 @@ static TCTimer *tcd;
 {
     /** 如果是刷新将当前期追号置为最新的追号 */
     if (isRefresh) {
-        tempCurrentChase = [ToolClass objectForKey:kCurrentChase];
+        tempCurrentChase = [ToolClass objectForKey:kCurrentChase] ? : @"00";
     }
     SaveModel *model = (SaveModel *)[FMDatabaseTool findByFirstProperty:[ToolClass objectForKey:kLASTEXPECT] withTableName:NSStringFromClass([SaveModel class]) andModelClass:[SaveModel class]];
     if (model && !isRefresh) {
@@ -727,6 +727,11 @@ static TCTimer *tcd;
 //            NSLog(@"ssssssssssss: 没有预测号码设置好了");
             self.nextExpect.text = [NSString stringWithFormat:@"========= 7个号码 =========\n=    该期没有选择7个号码    =\n%@", string];
         }
+    }
+    NSLog(@"self.model.number == %@\nself.model.expect == %@\n[ToolClass objectForKey:kLASTEXPECT] == %@", [self.model.number substringFromIndex:self.model.number.length - 2], self.model.expect, [ToolClass objectForKey:kLASTEXPECT]);
+    if ([[ToolClass objectForKey:kLASTEXPECT] isEqualToString:self.model.expect] && tempCurrentChase.integerValue > 0) {
+        [ToolClass setObject:tempCurrentChase forKey:kCurrentChase];
+        NSLog(@"self.model.number == %@\nself.model.expect == %@\n[ToolClass objectForKey:kLASTEXPECT] == %@\ntempCurrentChase == %@", [self.model.number substringFromIndex:self.model.number.length - 2], self.model.expect, [ToolClass objectForKey:kLASTEXPECT], tempCurrentChase);
     }
 }
 

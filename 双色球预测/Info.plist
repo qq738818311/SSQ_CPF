@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.1.0</string>
+	<string>1.1.2</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
@@ -27,8 +27,19 @@
 	<key>LEPgyerUKey</key>
 	<string>745a408791af3dd0df4bd4204242a084</string>
 	<key>LEPgyerUpdateNote</key>
-	<string>v1.1.0更新内容：
+	<string>v1.1.2更新内容：
+修复篮球不能追号的bug
+v1.1.1更新内容：
+接口更改
+v1.1.0更新内容：
 新增篮球追号功能
+v1.0.8更新内容：
+1.优化代码逻辑
+2.优化在刚选上下期号码以后，再按保存按钮提示“显示的账号与保存的账号一样，无需保存”
+v1.0.7更新内容：
+1.修复在停止按钮停止状态下也能保存下次预测号码的bug
+2.优化提示框背景显示为黑色
+v1.0.6更新内容：自定义数据库路径，配合开放Document权限使用新增篮球追号功能
 v1.0.8更新内容：
 1.优化代码逻辑
 2.优化在刚选上下期号码以后，再按保存按钮提示“显示的账号与保存的账号一样，无需保存”
