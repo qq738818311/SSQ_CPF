@@ -59,4 +59,31 @@ fprintf(stderr,  "---------------------完美分割线---结束-----------------
 //本地储存表名
 #define SCUPLOADIMAGE_TABELNAME [NSString stringWithFormat:@"upload_image_%@",[ToolClass objectForKey:kSCCHILD_ID]]
 
+/**
+ 根据需要请求的数量获取请求参数期数
+ - (NSString *)getExpectWithQuantity:(NSInteger)num
+ {
+ NSString *expect = @"";
+ NSString *currentYear = [ToolClass stringFromNowDateFormat:@"yyyy"];
+ if ([ToolClass objectForKey:kLASTEXPECT]) {
+ NSString *lastExpect = [[ToolClass objectForKey:kLASTEXPECT] substringFromIndex:4];
+ if (lastExpect.integerValue < num) {
+ expect = [NSString stringWithFormat:@"%ld%ld", currentYear.integerValue - 1 , 151 - (num - lastExpect.integerValue)];
+ }else{
+ expect = [NSString stringWithFormat:@"%@%ld", currentYear, lastExpect.integerValue - num];
+ }
+ }else{
+ expect = [NSString stringWithFormat:@"%@000", currentYear];
+ }
+ return expect;
+ }
+ */
+
+#define threeNum(i) i > 99 ? [NSString stringWithFormat:@"%ld", i] : (i > 9 ? [NSString stringWithFormat:@"0%ld", i] : [NSString stringWithFormat:@"00%ld", i])
+
+#define currentYear [ToolClass stringFromNowDateFormat:@"yyyy"]
+#define kExpect [[ToolClass objectForKey:kLASTEXPECT] substringFromIndex:4]
+#define GETEXPECT(num) [ToolClass objectForKey:kLASTEXPECT] ? (kExpect.integerValue < num ? [NSString stringWithFormat:@"%ld%@", currentYear.integerValue - 1 , threeNum(151 - (num - kExpect.integerValue))] : [NSString stringWithFormat:@"%@%@", currentYear, threeNum(kExpect.integerValue - num)]) : [NSString stringWithFormat:@"%@000", currentYear]
+
+
 #endif /* AppDefine_h */

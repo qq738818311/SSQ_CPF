@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.1.2</string>
+	<string>1.2.2</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
@@ -27,7 +27,9 @@
 	<key>LEPgyerUKey</key>
 	<string>745a408791af3dd0df4bd4204242a084</string>
 	<key>LEPgyerUpdateNote</key>
-	<string>v1.1.2更新内容：
+	<string>v1.2.0更新内容：
+接口更改为网易彩票的接口
+v1.1.2更新内容：
 修复篮球不能追号的bug
 v1.1.1更新内容：
 接口更改

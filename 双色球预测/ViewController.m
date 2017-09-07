@@ -342,17 +342,20 @@ static TCTimer *tcd;
         [self reloadUI];
     }else{
         [ToolClass showMBConnectTitle:@"" toView:self.view afterDelay:1 isNeedUserInteraction:NO];
-        [ToolClass requestPOSTWithURL:NET_API parameters:nil isCache:NO success:^(id responseObject, NSString *msg) {
-            NSArray *data = responseObject[@"data"];
+        [ToolClass requestGETWithURL:NET_API_NEW parameters:@{@"gameEn":@"ssq", @"currentPeriod":GETEXPECT(20)} isCache:NO success:^(id responseObject, NSString *msg) {
+            NSArray *data = responseObject[@"game"][@"period"];
             for (int i = 0; i < data.count; i++) {
                 NSDictionary *dataDict = data[i];
-                NSString *expect = dataDict[@"expect"];
+                NSString *expect = dataDict[@"periodName"];
+                if (i == 0) {
+                    [ToolClass setObject:expect forKey:kLASTEXPECT];
+                }
                 SaveModel *model = (SaveModel *)[FMDatabaseTool findByFirstProperty:expect withTableName:NSStringFromClass([SaveModel class]) andModelClass:[SaveModel class]];
                 if (!model) {
                     model = [SaveModel new];
-                    model.expect = dataDict[@"expect"];
-                    model.time = [NSString stringWithFormat:@"%@(%@)", [dataDict[@"opentime"] componentsSeparatedByString:@" "].firstObject, [ToolClass getWeekDayFordate:[ToolClass dateFromTimeInterval:[dataDict[@"opentimestamp"] doubleValue]]]];
-                    model.number = dataDict[@"opencode"];
+                    model.expect = dataDict[@"periodName"];
+                    model.time = [NSString stringWithFormat:@"%@(%@)", [dataDict[@"awardTime"] componentsSeparatedByString:@" "].firstObject, [ToolClass getWeekDayFordate:[ToolClass dateFromDateString:dataDict[@"awardTime"] format:@"yyyy-MM-dd HH:mm:ss"]]];
+                    model.number = [[dataDict[@"awardNo"] stringByReplacingOccurrencesOfString:@" " withString:@","] stringByReplacingOccurrencesOfString:@":" withString:@"+"];
                     [FMDatabaseTool saveObjectToDB:model withTableName:NSStringFromClass([SaveModel class])];
                 }
                 if (i == 0) {
@@ -373,6 +376,37 @@ static TCTimer *tcd;
             [ToolClass hideMBConnect];
             [ToolClass showMBMessageTitle:@"网络错误" toView:self.view];
         }];
+//        [ToolClass requestPOSTWithURL:NET_API parameters:nil isCache:NO success:^(id responseObject, NSString *msg) {
+//            NSArray *data = responseObject[@"data"];
+//            for (int i = 0; i < data.count; i++) {
+//                NSDictionary *dataDict = data[i];
+//                NSString *expect = dataDict[@"expect"];
+//                SaveModel *model = (SaveModel *)[FMDatabaseTool findByFirstProperty:expect withTableName:NSStringFromClass([SaveModel class]) andModelClass:[SaveModel class]];
+//                if (!model) {
+//                    model = [SaveModel new];
+//                    model.expect = dataDict[@"expect"];
+//                    model.time = [NSString stringWithFormat:@"%@(%@)", [dataDict[@"opentime"] componentsSeparatedByString:@" "].firstObject, [ToolClass getWeekDayFordate:[ToolClass dateFromTimeInterval:[dataDict[@"opentimestamp"] doubleValue]]]];
+//                    model.number = dataDict[@"opencode"];
+//                    [FMDatabaseTool saveObjectToDB:model withTableName:NSStringFromClass([SaveModel class])];
+//                }
+//                if (i == 0) {
+//                    [ToolClass setObject:expect forKey:kLASTEXPECT];
+//                    self.model = model;
+//                    [self reloadUI];
+//                }
+//            }
+//            [ToolClass hideMBConnect];
+//        } failure:^(NSString *errorInfo, NSError *error) {
+//            if ([errorInfo containsString:@"无缓存"]) {
+//                SaveModel *model = (SaveModel *)[FMDatabaseTool findByFirstProperty:[ToolClass objectForKey:kLASTEXPECT] withTableName:NSStringFromClass([SaveModel class]) andModelClass:[SaveModel class]];
+//                if (model) {
+//                    self.model = model;
+//                    [self reloadUI];
+//                }
+//            }
+//            [ToolClass hideMBConnect];
+//            [ToolClass showMBMessageTitle:@"网络错误" toView:self.view];
+//        }];
     }
     if (canAddAnimation) {
         CATransition *animation = [CATransition animation];
@@ -389,14 +423,14 @@ static TCTimer *tcd;
 - (void)requestDataWithExpect:(NSInteger)expect animation:(CATransition *)animation isShowNoData:(BOOL)isShowNoData
 {
     [ToolClass showMBConnectTitle:@"" toView:self.view afterDelay:0 isNeedUserInteraction:NO];
-    [ToolClass requestPOSTWithURL:NET_API parameters:nil isCache:NO success:^(id responseObject, NSString *msg) {
-        NSArray *data = responseObject[@"data"];
+    [ToolClass requestGETWithURL:NET_API_NEW parameters:@{@"gameEn":@"ssq", @"currentPeriod":GETEXPECT(20)} isCache:NO success:^(id responseObject, NSString *msg) {
+        NSArray *data = responseObject[@"game"][@"period"];
         NSDictionary *dataDict = data.firstObject;
-        NSString *expect = dataDict[@"expect"];
+        NSString *expect = dataDict[@"periodName"];
         SaveModel *model =  [SaveModel new];
         model.expect = expect;
-        model.time = [NSString stringWithFormat:@"%@(%@)", [dataDict[@"opentime"] componentsSeparatedByString:@" "].firstObject, [ToolClass getWeekDayFordate:[ToolClass dateFromTimeInterval:[dataDict[@"opentimestamp"] doubleValue]]]];
-        model.number = dataDict[@"opencode"];
+        model.time = [NSString stringWithFormat:@"%@(%@)", [dataDict[@"awardTime"] componentsSeparatedByString:@" "].firstObject, [ToolClass getWeekDayFordate:[ToolClass dateFromDateString:dataDict[@"awardTime"] format:@"yyyy-MM-dd HH:mm:ss"]]];
+        model.number = [[dataDict[@"awardNo"] stringByReplacingOccurrencesOfString:@" " withString:@","] stringByReplacingOccurrencesOfString:@":" withString:@"+"];
         [FMDatabaseTool saveObjectToDB:model withTableName:NSStringFromClass([SaveModel class])];
         self.model = model;
         [self reloadUI];
@@ -412,6 +446,29 @@ static TCTimer *tcd;
         [ToolClass hideMBConnect];
         [ToolClass showMBMessageTitle:@"网络错误" toView:self.view];
     }];
+//    [ToolClass requestPOSTWithURL:NET_API parameters:nil isCache:NO success:^(id responseObject, NSString *msg) {
+//        NSArray *data = responseObject[@"data"];
+//        NSDictionary *dataDict = data.firstObject;
+//        NSString *expect = dataDict[@"expect"];
+//        SaveModel *model =  [SaveModel new];
+//        model.expect = expect;
+//        model.time = [NSString stringWithFormat:@"%@(%@)", [dataDict[@"opentime"] componentsSeparatedByString:@" "].firstObject, [ToolClass getWeekDayFordate:[ToolClass dateFromTimeInterval:[dataDict[@"opentimestamp"] doubleValue]]]];
+//        model.number = dataDict[@"opencode"];
+//        [FMDatabaseTool saveObjectToDB:model withTableName:NSStringFromClass([SaveModel class])];
+//        self.model = model;
+//        [self reloadUI];
+//        [ToolClass hideMBConnect];
+//    } failure:^(NSString *errorInfo, NSError *error) {
+//        if ([errorInfo containsString:@"无缓存"]) {
+//            SaveModel *model = (SaveModel *)[FMDatabaseTool findByFirstProperty:[ToolClass objectForKey:kLASTEXPECT] withTableName:NSStringFromClass([SaveModel class]) andModelClass:[SaveModel class]];
+//            if (model) {
+//                self.model = model;
+//                [self reloadUI];
+//            }
+//        }
+//        [ToolClass hideMBConnect];
+//        [ToolClass showMBMessageTitle:@"网络错误" toView:self.view];
+//    }];
 }
 
 - (void)reloadUIWithAnimation:(CATransition *)animation

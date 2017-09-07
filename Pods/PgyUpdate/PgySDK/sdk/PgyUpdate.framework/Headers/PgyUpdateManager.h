@@ -13,29 +13,33 @@
 + (PgyUpdateManager *)sharedPgyManager;
 
 /**
- *  启动蒲公英SDK
- *  @param appId 应用程序ID，从蒲公英网站上获取。
+ *  Start update manager.
+ *  @param appId App ID，you will find it in the website.
  */
 - (void)startManagerWithAppId:(NSString *)appId;
 
 /**
- *  检查是否有版本更新。
- *  如果开发者在蒲公英上提交了新版本，则调用此方法后会弹出更新提示界面。
+ *  Check is there new version that developer uploaded. 
+ *  If a new version has been uploaded, user will be prompted to download new version after this 
+ *  method was called.
  */
 - (void)checkUpdate;
 
 /**
- *  检查是否有版本更新。
+ *  Check is there new version with customized delegate method.
+ *  You should call - (void)updateLocalBuildNumber to update local number after you finished the
+ *  customized update process if you called this method.
  *
- *  @param delegate 自定义checkUpdateWithDelegete方法的对象
- *  @param updateMethodWithDictionary 当checkUpdateWithDelegete事件完成时此方法会被调用，包含更新信息的字典也被回传。
- *         如果有更新信息，那么字典里就会包含新版本的信息，否则的话字典信息为nil。
+ *  @param delegate Delegate of checkupdate.
+ *  @param updateMethodWithDictionary When checkUpdateWithDelegete was called, this delegate method 
+ *  will be called, the dicitonary which coantains version information will be passed to this method also.
+ *  If there isn't new version ,the dictionary will be null.
  */
 - (void)checkUpdateWithDelegete:(id)delegate selector:(SEL)updateMethodWithDictionary;
 
 /**
- *  检查更新是根据本地存储的Build号和蒲公英上的最新Build号比较来完成的。如果调用checkUpdateWithDelegete，SDK会获取到最新的
- *  Build号，但是checkUpdateWithDelegete方法自己不会来更新本地版本号，如果需要更新本地版本号，则需要调用此方法。
+ *  If you used checkUpdateWithDelegete, and there is new vesion you should call this method to 
+ *  update loacal build number to avoid SDK to prompt there is new version next time.
  */
 - (void)updateLocalBuildNumber;
 

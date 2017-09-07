@@ -24,6 +24,7 @@
 		8F9C37F91DDF162D009D5F69 /* SaveModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F9C37F81DDF162D009D5F69 /* SaveModel.m */; };
 		8FA5A0061E236AC9002799A5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8FA5A0051E236AC9002799A5 /* GoogleService-Info.plist */; };
 		8FB009521DCB7D2D004B5864 /* UITextField+Delete.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FB009511DCB7D2D004B5864 /* UITextField+Delete.m */; };
+		8FBA4BB21F61573600A8F34A /* ToolClass+Xml.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FBA4BB11F61573600A8F34A /* ToolClass+Xml.m */; };
 		8FBEC9351DE6DE7200933A51 /* OpenAwardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FBEC9341DE6DE7200933A51 /* OpenAwardView.m */; };
 		8FF3E9E01DF1546A0038D69A /* LaunchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FF3E9DF1DF1546A0038D69A /* LaunchViewController.m */; };
 		F7F51B221DBA674F00F639E9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F7F51B211DBA674F00F639E9 /* main.m */; };
@@ -90,6 +91,8 @@
 		8FA5A0051E236AC9002799A5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8FB009501DCB7D2D004B5864 /* UITextField+Delete.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextField+Delete.h"; sourceTree = "<group>"; };
 		8FB009511DCB7D2D004B5864 /* UITextField+Delete.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextField+Delete.m"; sourceTree = "<group>"; };
+		8FBA4BB01F61573600A8F34A /* ToolClass+Xml.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ToolClass+Xml.h"; sourceTree = "<group>"; };
+		8FBA4BB11F61573600A8F34A /* ToolClass+Xml.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ToolClass+Xml.m"; sourceTree = "<group>"; };
 		8FBEC9331DE6DE7200933A51 /* OpenAwardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenAwardView.h; sourceTree = "<group>"; };
 		8FBEC9341DE6DE7200933A51 /* OpenAwardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenAwardView.m; sourceTree = "<group>"; };
 		8FF3E9DE1DF1546A0038D69A /* LaunchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LaunchViewController.h; sourceTree = "<group>"; };
@@ -223,6 +226,8 @@
 				8FB009511DCB7D2D004B5864 /* UITextField+Delete.m */,
 				8F1541FC1DC72B7C009C3495 /* ToolClass.h */,
 				8F1541FD1DC72B7C009C3495 /* ToolClass.m */,
+				8FBA4BB01F61573600A8F34A /* ToolClass+Xml.h */,
+				8FBA4BB11F61573600A8F34A /* ToolClass+Xml.m */,
 				8F9C37F41DDF111F009D5F69 /* FMDatabaseTool.h */,
 				8F9C37F51DDF111F009D5F69 /* FMDatabaseTool.m */,
 				F7F51B2C1DBA674F00F639E9 /* Assets.xcassets */,
@@ -433,7 +438,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -452,6 +457,7 @@
 				8F241E9E1DC32B050010ED86 /* OperationManager.m in Sources */,
 				8F3B50611DE7FF69003F8A63 /* MLMSegmentPage.m in Sources */,
 				8F3982D11E25CDF800B2D3F3 /* LoginViewController.m in Sources */,
+				8FBA4BB21F61573600A8F34A /* ToolClass+Xml.m in Sources */,
 				8F74823E1E9B87A50056D58E /* SetBlueViewController.m in Sources */,
 				8F9C37F61DDF111F009D5F69 /* FMDatabaseTool.m in Sources */,
 				8F3B50541DE7D94B003F8A63 /* WiningDetail.m in Sources */,

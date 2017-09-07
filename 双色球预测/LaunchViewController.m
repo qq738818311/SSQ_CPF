@@ -28,22 +28,22 @@ TCTimer *tcd;
     [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
     }];
-        
+       
     [ToolClass showMBConnectTitle:@"" toView:self.view afterDelay:0 isNeedUserInteraction:NO];
-    [ToolClass requestPOSTWithURL:NET_API parameters:nil isCache:NO success:^(id responseObject, NSString *msg) {
-        NSArray *data = responseObject[@"data"];
+    [ToolClass requestGETWithURL:NET_API_NEW parameters:@{@"gameEn":@"ssq", @"currentPeriod":GETEXPECT(20)} isCache:NO success:^(id responseObject, NSString *msg) {
+        NSArray *data = responseObject[@"game"][@"period"];
         for (int i = 0; i < data.count; i++) {
             NSDictionary *dataDict = data[i];
-            NSString *expect = dataDict[@"expect"];
+            NSString *expect = dataDict[@"periodName"];
             if (i == 0) {
                 [ToolClass setObject:expect forKey:kLASTEXPECT];
             }
             SaveModel *model = (SaveModel *)[FMDatabaseTool findByFirstProperty:expect withTableName:NSStringFromClass([SaveModel class]) andModelClass:[SaveModel class]];
             if (!model) {
                 model = [SaveModel new];
-                model.expect = dataDict[@"expect"];
-                model.time = [NSString stringWithFormat:@"%@(%@)", [dataDict[@"opentime"] componentsSeparatedByString:@" "].firstObject, [ToolClass getWeekDayFordate:[ToolClass dateFromTimeInterval:[dataDict[@"opentimestamp"] doubleValue]]]];
-                model.number = dataDict[@"opencode"];
+                model.expect = dataDict[@"periodName"];
+                model.time = [NSString stringWithFormat:@"%@(%@)", [dataDict[@"awardTime"] componentsSeparatedByString:@" "].firstObject, [ToolClass getWeekDayFordate:[ToolClass dateFromDateString:dataDict[@"awardTime"] format:@"yyyy-MM-dd HH:mm:ss"]]];
+                model.number = [[dataDict[@"awardNo"] stringByReplacingOccurrencesOfString:@" " withString:@","] stringByReplacingOccurrencesOfString:@":" withString:@"+"];
                 [FMDatabaseTool saveObjectToDB:model withTableName:NSStringFromClass([SaveModel class])];
             }
         }
@@ -55,30 +55,32 @@ TCTimer *tcd;
             [self setRootViewController];
         }
     }];
-}
-
-//- (void)viewDidLoad {
-//    [super viewDidLoad];
-//    tcd = [ToolClass timeCountDownWithCount:6 perTime:0.5 inProgress:^(int time) {
-//        if (time%2) {
-////            [self.nextExpectView setLastExpectViewWithText:[[@[@"--",@"--",@"--",@"--",@"--",@"--",@"--"] mutableCopy] componentsJoinedByString:@","]];
-//        }else{
-////            [self.nextExpectView setLastExpectViewWithText:[[@[@"  ",@"  ",@"  ",@"  ",@"  ",@"  ",@"  "] mutableCopy] componentsJoinedByString:@","]];
+//    [ToolClass requestPOSTWithURL:NET_API parameters:nil isCache:NO success:^(id responseObject, NSString *msg) {
+//        NSArray *data = responseObject[@"data"];
+//        for (int i = 0; i < data.count; i++) {
+//            NSDictionary *dataDict = data[i];
+//            NSString *expect = dataDict[@"expect"];
+//            if (i == 0) {
+//                [ToolClass setObject:expect forKey:kLASTEXPECT];
+//            }
+//            SaveModel *model = (SaveModel *)[FMDatabaseTool findByFirstProperty:expect withTableName:NSStringFromClass([SaveModel class]) andModelClass:[SaveModel class]];
+//            if (!model) {
+//                model = [SaveModel new];
+//                model.expect = dataDict[@"expect"];
+//                model.time = [NSString stringWithFormat:@"%@(%@)", [dataDict[@"opentime"] componentsSeparatedByString:@" "].firstObject, [ToolClass getWeekDayFordate:[ToolClass dateFromTimeInterval:[dataDict[@"opentimestamp"] doubleValue]]]];
+//                model.number = dataDict[@"opencode"];
+//                [FMDatabaseTool saveObjectToDB:model withTableName:NSStringFromClass([SaveModel class])];
+//            }
 //        }
-//    } completion:^{
-//        tcd = [ToolClass timeCountDownWithCount:9999999 perTime:0.02 inProgress:^(int time) {
-////            [self.nextExpectView setLastExpectViewWithText:[[OperationManager allNumbersChooesSevenNumberWithAllNumbers:dict[@"allArray"]] componentsJoinedByString:@","]];
-//            //                    NSLog(@"ssssssssssss: 倒计时回调又给刷新预测号码了");
-//        } completion:^{
-//            
-//        }];
+//        [ToolClass hideMBConnect];
+//        [self setRootViewController];
+//    } failure:^(NSString *errorInfo, NSError *error) {
+//        [ToolClass hideMBConnect];
+//        if (![errorInfo containsString:@"-有缓存"]) {
+//            [self setRootViewController];
+//        }
 //    }];
-//}
-//
-//- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
-//{
-//    [ToolClass cancelTimeCountDownWith:tcd];
-//}
+}
 
 - (BOOL)isOverNineClock
 {
