@@ -11,4 +11,5 @@ target '双色球预测' do
 	pod 'Pgyer'
 	pod 'PgyUpdate'
     pod 'Firebase/Core'
+    pod 'XMLDictionary'
 end
